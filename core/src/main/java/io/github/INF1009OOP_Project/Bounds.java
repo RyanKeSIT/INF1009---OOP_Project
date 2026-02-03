@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.lwjgl3;
+package io.github.INF1009OOP_Project;
 
 public class Bounds {
 	private float x;
@@ -6,7 +6,7 @@ public class Bounds {
 	private float height;
 	private float width;
 	
-	public Bounds(float x, float y, float h, float w) {
+	public Bounds(float x, float y, float w, float h) {
 		this.x = x;
 		this.y = y;
 		this.height = h;

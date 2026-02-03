@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.lwjgl3;
+package io.github.INF1009OOP_Project;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,12 +16,12 @@ public class Entity {
 		this.setHeight(0);
 		this.setWidth(0);
 	}
-	public Entity(float x, float y, float h, float w) {
+	public Entity(float x, float y, float w, float h) {
 		this.setX(x);
 		this.setY(y);
 		this.setHeight(h);
 		this.setWidth(w);
-		this.bounds = new Bounds(x,y,h,w);
+		this.bounds = new Bounds(x,y,w,h);
 	}
 	public float getX() {
 		return x;

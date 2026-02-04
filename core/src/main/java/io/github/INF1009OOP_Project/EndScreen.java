@@ -3,7 +3,6 @@ package io.github.INF1009OOP_Project;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class EndScreen extends ScreenAdapter {

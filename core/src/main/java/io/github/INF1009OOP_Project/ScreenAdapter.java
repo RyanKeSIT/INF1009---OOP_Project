@@ -1,9 +1,6 @@
 package io.github.INF1009OOP_Project;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Screen;
-
 
 public class ScreenAdapter implements Screen {
 	

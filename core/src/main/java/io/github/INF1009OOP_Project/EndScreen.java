@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Input.Keys;
 
-import com.badlogic.gdx.utils.ScreenUtils;
 
 public class EndScreen extends ScreenAdapter {
 

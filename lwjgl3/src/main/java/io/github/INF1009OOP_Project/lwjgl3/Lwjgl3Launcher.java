@@ -4,7 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import io.github.INF1009OOP_Project.GameMaster;
-//import io.github.INF1009OOP_Project.Main ;
+//import io.github.INF1009OOP_Project.Main;
 
 
 

@@ -24,28 +24,20 @@ public class SoundManager {
 		bgm.setVolume(volume);
 	}
 
-	public void playMusic() {
+	public void soundOn() {
 		bgm.play();
 	}
 
-	public void stopMusic() {
+	public void soundOff() {
 		bgm.stop();
 	}
 
-	public void playShoot() {
+	public void playShootingSound() {
 		shootingSound.play(volume);
 	}
 
 	public void setVolume(float volume) {
 		this.volume = volume;
 		bgm.setVolume(volume);
-	}
-
-	public void soundOff() {
-		setVolume(0f);
-	}
-
-	public void soundOn() {
-		setVolume(0.5f);
 	}
 }

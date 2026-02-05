@@ -7,6 +7,7 @@ public class Bounds {
 	private float height;
 	private float width;
 	
+	//construct a box around entity for collision detection
 	public Bounds(float x, float y, float h, float w) {
 		this.x = x;
 		this.y = y;
@@ -27,6 +28,7 @@ public class Bounds {
     	return height;
     }
     
+    //aabb intersect check
     public boolean intersects(Bounds e) {
     	Objects.requireNonNull(e,"entity bounds cannot be null");
     	return this.x < e.x + e.width &&

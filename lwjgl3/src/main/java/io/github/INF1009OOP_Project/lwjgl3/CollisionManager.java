@@ -15,7 +15,7 @@ public class CollisionManager {
 	public void deleteEntity(Collidable e) {
 		collidables.remove(e);
 	}
-	//
+	//called in render(), loops through collisions and resolves
 	public void update() {
 		ArrayList<Collision> collisions = detection.detect(collidables);
 		for(Collision c : collisions) {

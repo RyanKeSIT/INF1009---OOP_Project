@@ -2,7 +2,7 @@ package io.github.INF1009OOP_Project.lwjgl3;
 
 import java.util.Objects;
 //collision stores pair of collided objects 
-//created in CollisionDetection and temp stored in an arraylist
+//created in CollisionDetection if collidables intersect and temporarily stored in an arraylist
 public class Collision {
 	private final Collidable a;
 	private final Collidable b;

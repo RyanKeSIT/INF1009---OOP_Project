@@ -18,7 +18,7 @@ public class SoundManager {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("pending"));
 		shootingSound = Gdx.audio.newSound(Gdx.files.internal("pending"));
 
-		// play bgm throughout
+		// loop bgm
 		bgm.setLooping(true);
 
 		bgm.setVolume(volume);

@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Keyboard {
 
-	// stores current pressed keys
+	// stores current pressed key
 	private Set<Integer> keysPressed;
 
 	public Keyboard() {

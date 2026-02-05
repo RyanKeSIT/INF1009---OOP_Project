@@ -10,7 +10,7 @@ public class Mouse {
 	private int x;
 	private int y;
 
-	// stores pressed buttons
+	// stores pressed button
 	private Set<Integer> mousePressed;
 
 	public Mouse() {

@@ -1,4 +1,5 @@
 package io.github.INF1009OOP_Project.lwjgl3;
+import java.util.Objects;
 
 public class Bounds {
 	private float x;
@@ -12,8 +13,26 @@ public class Bounds {
 		this.height = h;
 		this.width = w;
 	}
-	public boolean intersects(Bounds e) {
-		return false;
-	}
+	
+	public float getX() {
+    	return x;
+    }
+    public float getY() {
+    	return y; 
+    }
+    public float getWidth() {
+    	return width;
+    }
+    public float getHeight() {
+    	return height;
+    }
+    
+    public boolean intersects(Bounds e) {
+    	Objects.requireNonNull(e,"entity bounds cannot be null");
+    	return this.x < e.x + e.width &&
+                this.x + this.width > e.x &&
+                this.y < e.y + e.height &&
+                this.y + this.height > e.y;
+    }
 	
 }

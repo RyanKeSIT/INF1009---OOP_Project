@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.lwjgl3;
+package io.github.INF1009OOP_Project;
 
 import java.util.Objects;
 //collision stores pair of collided objects 

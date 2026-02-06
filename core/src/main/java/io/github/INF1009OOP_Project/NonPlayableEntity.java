@@ -46,8 +46,7 @@ public class NonPlayableEntity extends Entity implements iMoveable {
 		
 	}
 	
-	public void move(float x,float y,float speed,float delta) {
-		setSpeed(speed);
+	public void move(float x,float y,float delta) {
 		float tempDropY = super.getY();
 		tempDropY -= getSpeed() * delta;
 		super.setX(x);

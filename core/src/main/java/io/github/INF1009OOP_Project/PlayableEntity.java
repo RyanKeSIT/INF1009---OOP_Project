@@ -35,7 +35,7 @@ public class PlayableEntity extends Entity implements iMoveable{
 	}
 	
 	public void draw(SpriteBatch spritebatch) {
-		
+		spritebatch.draw(getTexture(), super.getX(),super.getY(),super.getWidth(),super.getHeight());
 	}
 	
 	public void getBounds(Bounds bounds) {
@@ -47,8 +47,7 @@ public class PlayableEntity extends Entity implements iMoveable{
 	}
 	
 	@Override
-	public void move(float x,float y,float speed,float delta) {
-		setSpeed(speed);
+	public void move(float x,float y,float delta) {
 		if (Gdx.input.isKeyPressed(Keys.LEFT) && super.getX()>50) {
 			float tempX = super.getX();
 			tempX -= getSpeed() * delta;
@@ -59,7 +58,6 @@ public class PlayableEntity extends Entity implements iMoveable{
 			tempX += getSpeed() * delta;
 			super.setX(tempX);
 		}
-		
 	}
 
 }

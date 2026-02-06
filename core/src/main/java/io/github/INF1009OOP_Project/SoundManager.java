@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.lwjgl3;
+package io.github.INF1009OOP_Project;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

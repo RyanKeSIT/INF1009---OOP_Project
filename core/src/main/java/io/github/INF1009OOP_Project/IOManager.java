@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.lwjgl3;
+package io.github.INF1009OOP_Project;
 
 public class IOManager {
 
@@ -23,7 +23,6 @@ public class IOManager {
     public Mouse getMouse() {
         return mouse;
     }
-    
     
     public void update() {
         keyboard.update();

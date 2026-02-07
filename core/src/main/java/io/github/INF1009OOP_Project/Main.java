@@ -18,7 +18,7 @@ import io.github.INF1009OOP_Project.UI.Button;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Entity player;
+    private Entity player,bullet;
     private Texture image;
     private ArrayList<Button> buttonList = new ArrayList<Button>();
     private BitmapFont font;
@@ -29,8 +29,8 @@ public class Main extends ApplicationAdapter {
         font = new BitmapFont();
         buttonList.add(new Button(100,100, 100, 50,"Options", 20, font));
         buttonList.add(new Button(100,300, 100, 50,"Start", 20, font));
-        player = new PlayableEntity(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
-        
+        player = new Player(0,100,100,100, new Texture(Gdx.files.internal("bucket.png")),400);
+        bullet = new NonPlayableEntity(player.getX(),player.getY(),100, 100,new Texture(Gdx.files.internal("droplet.png")),400);
         // Example usage of button
         Gdx.input.setInputProcessor(new InputAdapter() {
         	@Override
@@ -57,9 +57,10 @@ public class Main extends ApplicationAdapter {
     public void render() {
     	float delta = Gdx.graphics.getDeltaTime();
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-    	((PlayableEntity) player).move(player.getX(),player.getY(),delta); //move example
+    	((Player) player).move(player.getX(),player.getY(),delta); //move example
         batch.begin();
         player.draw(batch); //draw example
+        ((Player)player).shoot(delta,batch);
         batch.draw(image, 140, 210);
         for(Button b : buttonList) {
         	b.draw(batch);

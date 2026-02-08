@@ -3,7 +3,7 @@ package io.github.INF1009OOP_Project;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class NonPlayableEntity extends Entity implements iMoveable {
+public class NonPlayableEntity extends Entity implements iMoveable , Collidable{
 
 	private Texture texture;
 	private float speed;
@@ -35,22 +35,19 @@ public class NonPlayableEntity extends Entity implements iMoveable {
 	}
 	
 	public void draw(SpriteBatch spritebatch) {
-		
+		spritebatch.draw(getTexture(), super.getX(),super.getY(),super.getWidth(),super.getHeight());
 	}
 	
-	public void getBounds(Bounds bounds) {
-		
+	public Bounds getBounds() {
+		return new Bounds(getX(),getY(),getWidth(),getHeight());
 	}
 	
-	public void onCollision(Entity collidable) {
-		
+	public void onCollision(Collidable collidable) {
+		System.out.println("Collided with playable");
 	}
 	
 	public void move(float x,float y,float delta) {
-		float tempDropY = super.getY();
-		tempDropY -= getSpeed() * delta;
-		super.setX(x);
-		super.setY(tempDropY);
+		
 	}
 
 }

@@ -8,7 +8,7 @@ public class Bounds {
 	private float width;
 	
 	//construct a box around entity for collision detection
-	public Bounds(float x, float y, float h, float w) {
+	public Bounds(float x, float y, float w, float h) {
 		this.x = x;
 		this.y = y;
 		this.height = h;

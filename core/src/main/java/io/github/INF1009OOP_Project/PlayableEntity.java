@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class PlayableEntity extends Entity implements iMoveable{
+public class PlayableEntity extends Entity implements iMoveable,Collidable{
 	private Texture texture;
 	private float speed;
 	//private Keyboard keyboard(?)
@@ -38,12 +38,13 @@ public class PlayableEntity extends Entity implements iMoveable{
 		spritebatch.draw(getTexture(), super.getX(),super.getY(),super.getWidth(),super.getHeight());
 	}
 	
-	public void getBounds(Bounds bounds) {
-		
+	public Bounds getBounds() {
+		return new Bounds(getX(),getY(),getWidth(),getHeight());
 	}
 	
-	public void onCollision(Entity collidable) {
-		
+	public void onCollision(Collidable collidable) {
+		System.out.println("Collided with non playable");
+
 	}
 	
 	@Override

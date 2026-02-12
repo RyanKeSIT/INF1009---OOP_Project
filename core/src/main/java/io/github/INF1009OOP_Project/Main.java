@@ -51,7 +51,7 @@ public class Main extends Game {
             }
         });
         
-        setScreen(new IOTest());
+        setScreen(new IOTest()); // io test
     }
 
     @Override

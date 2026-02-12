@@ -18,7 +18,7 @@ public class IOTest extends ScreenAdapter {
 	public void render(float delta) {
 		io.update();
 
-		// Keyboard, mouse, sound test
+		// Keyboard, Mouse, Sound test
 		if (io.getKeyboard().moveLeft()) {
 			Gdx.app.log("IO TEST", "Move Left detected");
 		}

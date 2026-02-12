@@ -27,7 +27,7 @@ public class Keyboard {
 			keysPressed.add(Keys.RIGHT);
 		}
 
-		// shooting
+		// for shooting
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			keysPressed.add(Keys.SPACE);
 		}

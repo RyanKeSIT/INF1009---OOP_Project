@@ -14,9 +14,9 @@ public class SoundManager {
 	public SoundManager() {
 		volume = 0.5f;
 
-		// pending suitable bgm and audio effect
-		bgm = Gdx.audio.newMusic(Gdx.files.internal("pending"));
-		shootingSound = Gdx.audio.newSound(Gdx.files.internal("pending"));
+		// bgm and audio effect
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm.mp3"));
+		shootingSound = Gdx.audio.newSound(Gdx.files.internal("shootingsound.mp3"));
 
 		// loop bgm
 		bgm.setLooping(true);

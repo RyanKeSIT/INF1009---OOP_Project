@@ -10,13 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-
+import com.badlogic.gdx.Game;
 
 
 import io.github.INF1009OOP_Project.UI.Button;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+public class Main extends Game {
     private SpriteBatch batch;
     private Texture image;
     private ArrayList<Button> buttonList = new ArrayList<Button>();
@@ -50,10 +50,13 @@ public class Main extends ApplicationAdapter {
                 return true;
             }
         });
+        
+        setScreen(new IOTest());
     }
 
     @Override
     public void render() {
+    	super.render();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.draw(image, 140, 210);
@@ -68,4 +71,5 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
         image.dispose();
     }
+    
 }

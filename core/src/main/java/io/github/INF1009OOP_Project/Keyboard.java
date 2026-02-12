@@ -46,11 +46,11 @@ public class Keyboard {
 	}
 
 	public boolean moveLeft() {
-		return isKeyPressed(Keys.LEFT);
+		return Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A);
 	}
 
 	public boolean moveRight() {
-		return isKeyPressed(Keys.RIGHT);
+		return isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D);
 	}
 
 	public boolean isShooting() {

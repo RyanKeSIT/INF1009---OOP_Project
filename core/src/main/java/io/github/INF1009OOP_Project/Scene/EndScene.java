@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

@@ -1,9 +1,10 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.INF1009OOP_Project.Collision.*;
 
 public class PlayableEntity extends Entity implements iMoveable,Collidable{
 	private Texture texture;

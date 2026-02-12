@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Entities;
 
 import java.util.ArrayList;
 
@@ -31,9 +31,6 @@ public class Player extends PlayableEntity{
 		    if (tempY > Gdx.graphics.getHeight()) {
 		    	activeBullets.remove(i); 
 		    } else {
-		        //tempY += ((NonPlayableEntity) bullet).getSpeed() * delta;
-		        //bullet.setY(tempY);
-		        //spritebatch.draw(((NonPlayableEntity) bullet).getTexture(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
 		        ((Bullet) bullet).moveBullet(delta,tempY);
 		        ((Bullet) bullet).drawBullet(spritebatch);
 		    }

@@ -1,8 +1,9 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import io.github.INF1009OOP_Project.Collision.*;
 
 public class Entity {
 	private float x = 0;

@@ -1,13 +1,13 @@
 package io.github.INF1009OOP_Project;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import io.github.INF1009OOP_Project.Scene.*;
 
-public class GameMaster extends ApplicationAdapter {
+public class GameMaster  {
 
 	private SceneManager sceneManager;
 
-	@Override
-	public void create() {
+	public GameMaster() {
 		sceneManager = new SceneManager();
 
 		// add scenes
@@ -19,12 +19,10 @@ public class GameMaster extends ApplicationAdapter {
 		sceneManager.setScene(0);
 	}
 
-	@Override
 	public void render() {
 		sceneManager.render();
 	}
 
-	@Override
 	public void dispose() {
 		sceneManager.dispose();
 	}

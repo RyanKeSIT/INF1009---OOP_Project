@@ -3,8 +3,8 @@ package io.github.INF1009OOP_Project.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-import io.github.INF1009OOP_Project.GameMaster;
-//import io.github.INF1009OOP_Project.Main;
+//import io.github.INF1009OOP_Project.GameMaster;
+import io.github.INF1009OOP_Project.Main;
 
 
 
@@ -17,7 +17,7 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3Application createApplication() {
         //return new Lwjgl3Application(new Main(), getDefaultConfiguration());
-    	return new Lwjgl3Application(new GameMaster(), getDefaultConfiguration());
+    	return new Lwjgl3Application(new Main(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

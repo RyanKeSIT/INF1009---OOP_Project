@@ -19,8 +19,7 @@ import io.github.INF1009OOP_Project.UI.Button;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
-    private PlayableEntity player;
-    private NonPlayableEntity nonPlayer;
+    private Entity player,bullet;
     private Texture image;
     private ShapeRenderer shape;
     private ArrayList<Button> buttonList = new ArrayList<Button>();
@@ -41,13 +40,13 @@ public class Main extends ApplicationAdapter {
         entityManager.addEntity(optionsButton);
         entityManager.addEntity(startButton);
         
-        player = new PlayableEntity(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
-        nonPlayer = new NonPlayableEntity(20,100,70,70, new Texture(Gdx.files.internal("droplet.png")),100);
+        player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
+        bullet = new Bullet(20,100,70,70,100);
         
         entityManager.addEntity(player);
-        entityManager.addEntity(nonPlayer);
-        collisionManager.registerEntity(player);
-        collisionManager.registerEntity(nonPlayer);
+        entityManager.addEntity(bullet);
+        collisionManager.registerEntity((Collidable) player);
+        collisionManager.registerEntity((Collidable) bullet);
         
         // Example usage of button
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -75,12 +74,20 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+    	float delta = Gdx.graphics.getDeltaTime();
+    	((Player) player).move(player.getX(),player.getY(),delta); //move example
+        batch.begin();
+        player.draw(batch); //draw example
+        ((Player)player).shoot(delta,batch);
+        batch.draw(image, 140, 210);
+        for(Button b : buttonList) {
+        	b.draw(batch);
+        }
+        batch.end();
     	
     	//batch.begin();
     	//batch.draw(image, 140, 210);
     	//batch.end();
-    	
-    	float delta = Gdx.graphics.getDeltaTime();
     	entityManager.moveAll();
     	entityManager.updateEntities();
     	collisionManager.update();
@@ -92,7 +99,7 @@ public class Main extends ApplicationAdapter {
         Bounds a = player.getBounds();
         shape.rect(a.getX(), a.getY(), a.getWidth(), a.getHeight());
 
-        Bounds b = nonPlayer.getBounds();
+        Bounds b = bullet.getBounds();
         shape.rect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
 
         shape.end();

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class PlayableEntity extends Entity implements iMoveable{
+public class PlayableEntity extends Entity implements iMoveable,Collidable{
 	private Texture texture;
 	private float speed;
 	//private Keyboard keyboard(?)
@@ -35,20 +35,20 @@ public class PlayableEntity extends Entity implements iMoveable{
 	}
 	
 	public void draw(SpriteBatch spritebatch) {
-		
+		spritebatch.draw(getTexture(), super.getX(),super.getY(),super.getWidth(),super.getHeight());
 	}
 	
-	public void getBounds(Bounds bounds) {
-		
+	public Bounds getBounds() {
+		return new Bounds(getX(),getY(),getWidth(),getHeight());
 	}
 	
-	public void onCollision(Entity collidable) {
-		
+	public void onCollision(Collidable collidable) {
+		System.out.println("Collided with non playable");
+
 	}
 	
 	@Override
-	public void move(float x,float y,float speed,float delta) {
-		setSpeed(speed);
+	public void move(float x,float y,float delta) {
 		if (Gdx.input.isKeyPressed(Keys.LEFT) && super.getX()>50) {
 			float tempX = super.getX();
 			tempX -= getSpeed() * delta;
@@ -59,7 +59,6 @@ public class PlayableEntity extends Entity implements iMoveable{
 			tempX += getSpeed() * delta;
 			super.setX(tempX);
 		}
-		
 	}
 
 }

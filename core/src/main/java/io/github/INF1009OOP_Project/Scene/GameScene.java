@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,6 +35,17 @@ public class GameScene extends Scene {
         entityManager.addEntity(bullet);
         collisionManager.registerEntity((Collidable) player);
         collisionManager.registerEntity((Collidable) bullet);
+        
+        
+        Gdx.input.setInputProcessor(new InputAdapter() {
+        	@Override
+        	public boolean keyDown (int keycode) {
+        		if(keycode == Keys.SPACE) {
+        			((Player)player).shoot();
+        		}
+        		return false;
+        	}
+        });
     }
 
     @Override
@@ -48,8 +61,6 @@ public class GameScene extends Scene {
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
     	float delta = Gdx.graphics.getDeltaTime();
         batch.begin();
-        ((Player)player).shoot(delta,batch);
-        batch.draw(image, 140, 210);
         batch.end();
     	
     	//batch.begin();

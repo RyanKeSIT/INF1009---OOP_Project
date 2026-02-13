@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 
@@ -22,6 +25,7 @@ public class GameScene extends Scene {
     private ShapeRenderer shape;
     private EntityManager entityManager = new EntityManager();
     private CollisionManager collisionManager = new CollisionManager();
+    private IOManager io = new IOManager();
     
 	public GameScene(SceneManager sceneManager) {
         super(sceneManager);
@@ -30,6 +34,7 @@ public class GameScene extends Scene {
         image = new Texture("libgdx.png");
         player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
         bullet = new Bullet(20,100,70,70,100);
+        io.getSound().soundOn();
         
         entityManager.addEntity(player);
         entityManager.addEntity(bullet);
@@ -62,6 +67,8 @@ public class GameScene extends Scene {
     	float delta = Gdx.graphics.getDeltaTime();
         batch.begin();
         batch.end();
+    	io.update();
+    	// Keyboard, Mouse, Sound test
     	
     	//batch.begin();
     	//batch.draw(image, 140, 210);

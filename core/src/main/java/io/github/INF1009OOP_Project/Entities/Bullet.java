@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities;
+/*package io.github.INF1009OOP_Project.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,4 +23,4 @@ public class Bullet extends NonPlayableEntity {
 		spritebatch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
 		//spritebatch.draw(getTexture(), getX(), getY(), getWidth(), getHeight(), 0, 0,(int)super.getWidth() , (int)super.getHeight(), false, true);
 	}
-}
+}*/

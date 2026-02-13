@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities;
+/*package io.github.INF1009OOP_Project.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -63,3 +63,4 @@ public class PlayableEntity extends Entity implements iMoveable,Collidable{
 	}
 
 }
+*/

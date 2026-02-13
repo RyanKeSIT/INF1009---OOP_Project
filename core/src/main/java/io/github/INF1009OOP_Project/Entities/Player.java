@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities;
+/*package io.github.INF1009OOP_Project.Entities;
 
 import java.util.ArrayList;
 
@@ -53,4 +53,4 @@ public class Player extends PlayableEntity{
 	public void setBulletSpeed(float bulletSpeed) {
 		this.bulletSpeed = bulletSpeed;
 	}
-}
+}*/

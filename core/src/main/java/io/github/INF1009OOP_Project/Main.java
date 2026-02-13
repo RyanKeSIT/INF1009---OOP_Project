@@ -23,14 +23,6 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-    	super.render();
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        for(Button b : buttonList) {
-        	b.draw(batch);
-        }
-        batch.end();
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
     	gameMaster.render();
     }

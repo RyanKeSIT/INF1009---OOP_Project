@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player extends PlayableEntity{
 	private ArrayList<Entity> activeBullets = new ArrayList<>();
+	private float bulletSpeed = 10;
 	
 
 	public Player() {
@@ -19,21 +20,37 @@ public class Player extends PlayableEntity{
 		super(x,y,height,width,texture,speed);
 	}
 	
-	public void shoot(float delta,SpriteBatch spritebatch) {
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			Entity newBullet = new Bullet(super.getX(), super.getY(), super.getWidth(), super.getHeight(), super.getSpeed());
-		    activeBullets.add(newBullet);
-		}
+	public void shoot() {
+		Entity newBullet = new Bullet(super.getX(), super.getY(), super.getWidth(), super.getHeight(), this.getBulletSpeed());
+		activeBullets.add(newBullet);
+		
+	}
+	
+	@Override
+	public void update() {
 		for (int i = activeBullets.size() - 1; i >= 0; i--) {
 		    Entity bullet = activeBullets.get(i);
-		    float tempY = bullet.getY();
-		        
-		    if (tempY > Gdx.graphics.getHeight()) {
+		    if (bullet.getY() > Gdx.graphics.getHeight()) {
 		    	activeBullets.remove(i); 
 		    } else {
-		        ((Bullet) bullet).moveBullet(delta,tempY);
-		        ((Bullet) bullet).drawBullet(spritebatch);
+		        ((Bullet) bullet).update();
 		    }
 		}
+	}
+	
+	@Override
+	public void draw(SpriteBatch sb) {
+		for(Entity b : this.activeBullets) {
+	        ((Bullet) b).draw(sb);
+		}
+		sb.draw(this.getTexture(), this.getX(), this.getY());
+	}
+
+	public float getBulletSpeed() {
+		return bulletSpeed;
+	}
+
+	public void setBulletSpeed(float bulletSpeed) {
+		this.bulletSpeed = bulletSpeed;
 	}
 }

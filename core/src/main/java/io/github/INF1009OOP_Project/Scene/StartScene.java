@@ -30,29 +30,8 @@ public class StartScene extends Scene {
         
         optionsButton = new Button(100,100, 100, 50,"Options", 20, font);
         startButton = new Button(100,300, 100, 50,"Start", 20, font);
-     // Example usage of button
-        Gdx.input.setInputProcessor(new InputAdapter() {
-        	@Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                if (button == Input.Buttons.LEFT) {
-                    
-                	// Convert input coordinates to canvas coordinates
-                	// input coords: y0 is top left of window
-                	// canvas coords: y0 is bottom left of window
-                    float y = Gdx.graphics.getHeight() - screenY;
-                    System.out.println("Left click at " + screenX + ", " + y);
-                    //didnt know how to fix this so temp comment
-                    /*
-                    for (Entity e : entityManager.getEntities()) {
-                        if (e instanceof Button) {
-                            Button b = (Button) e;
-                            if (b.isHover(screenX, y)) b.onClick();
-                        }
-                    }*/
-                }
-                return true;
-            }
-        });
+     
+        
 	}
 
 	@Override

@@ -11,20 +11,22 @@ import io.github.INF1009OOP_Project.GameMaster;
 import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.UI.Button;
 
-public class EndScene extends Scene{
+public class PauseScene extends Scene{
 	
-	private Button homeButton;
+	private Button resumeButton;
 	private SpriteBatch batch;
+	
 
-	public EndScene(SceneManager sceneManager, IOManager io) {
+	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-		batch = new SpriteBatch();
+
+        batch = new SpriteBatch();
         
-		homeButton = new Button(300,300, 100, 50,"Main menu", 20, GameMaster.font, new ClickEvent(){
+		resumeButton = new Button(100,300, 100, 50,"Resume", 20, GameMaster.font, new ClickEvent(){
 	        	@Override
 	        	public void onClick(){
-	        		System.out.println("Back to main menu");
-	        		sceneManager.setScene(0);
+	        		System.out.println("Resume button clicked");
+	        		sceneManager.setScene(1);
 	        	}
 	     });
 	}
@@ -32,13 +34,10 @@ public class EndScene extends Scene{
 	@Override
 	public void update() {
 		io.update();
-		// switch to start scene
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            sceneManager.setScene(0); 
-        }	
+		
 		if (io.getMouse().mousePressed(Buttons.LEFT)) {
-			if(homeButton.isHover(io.getMouse().getX(), io.getMouse().getY())) {
-				homeButton.onClick();
+			if(resumeButton.isHover(io.getMouse().getX(), io.getMouse().getY())) {
+				resumeButton.onClick();
 			}
 			
 		}
@@ -46,11 +45,10 @@ public class EndScene extends Scene{
 
 	@Override
 	public void render() {
-		ScreenUtils.clear(0,0,1,0);
+		ScreenUtils.clear(0,0,0,0);
 		batch.begin();
-		homeButton.draw(batch);
+		resumeButton.draw(batch);
 		batch.end();
-		
 	}
 
 	@Override

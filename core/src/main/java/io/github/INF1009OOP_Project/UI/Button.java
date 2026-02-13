@@ -1,12 +1,16 @@
 package io.github.INF1009OOP_Project.UI;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
+import io.github.INF1009OOP_Project.ClickEvent;
 import io.github.INF1009OOP_Project.Entities.*;
+
+
 
 public class Button extends Entity{
 	public static Texture white1x1 = new Texture("white1x1.png");
@@ -16,14 +20,15 @@ public class Button extends Entity{
 	private Color textColor = Color.BLACK;
 	private BitmapFont font;
 	private float fontSize;
+	private ClickEvent clickEvent;
 	
 	
-	
-	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f){
+	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f, ClickEvent ce){
 		super(x,y,w,h);
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
+		this.clickEvent = ce;
 	}
 	public void draw(SpriteBatch sb) {
 		sb.draw(white1x1, this.getX(), this.getY(), this.getWidth(), this.getHeight());
@@ -31,10 +36,11 @@ public class Button extends Entity{
 		this.getFont().draw(sb, this.getText(), this.getX(), this.getY() + (this.getHeight() + this.fontSize/2f)/2f, this.getWidth(), Align.center, false);
 	}
 	public void onClick() {
-		System.out.println("Button clicked");
+		this.clickEvent.onClick();
 	};
 	
 	public boolean isHover(float x, float y) {
+		y =  Gdx.graphics.getHeight() - y;
 		if(
 				x > this.getX() && 
 				x < this.getX() + this.getWidth() &&

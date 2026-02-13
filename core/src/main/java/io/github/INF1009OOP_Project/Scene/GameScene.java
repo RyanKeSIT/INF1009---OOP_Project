@@ -27,8 +27,8 @@ public class GameScene extends Scene {
     private CollisionManager collisionManager = new CollisionManager();
     private IOManager io = new IOManager();
     
-	public GameScene(SceneManager sceneManager) {
-        super(sceneManager);
+	public GameScene(SceneManager sceneManager, IOManager io) {
+        super(sceneManager, io);
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         image = new Texture("libgdx.png");
@@ -52,12 +52,23 @@ public class GameScene extends Scene {
         	}
         });
     }
+	
+	// TODO : call when game ends
+	public void resetState() {
+		
+	}
 
     @Override
     public void update() {
+    	io.update();
     	// switch to end scene
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             sceneManager.setScene(2); 
+        }
+        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        	System.out.println("Pause game");
+        	sceneManager.setScene(3);
         }
     }
 

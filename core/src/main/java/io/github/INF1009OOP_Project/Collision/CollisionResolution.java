@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Collision;
 
 public class CollisionResolution {
 	public void resolve(Collision collision) {

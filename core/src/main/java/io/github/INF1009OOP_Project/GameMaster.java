@@ -14,6 +14,7 @@ public class GameMaster  {
 		sceneManager.addScene(new StartScene(sceneManager));
 		sceneManager.addScene(new GameScene(sceneManager));
 		sceneManager.addScene(new EndScene(sceneManager));
+		sceneManager.addScene(new PauseScene(sceneManager));
 
 		// set scene to start scene
 		sceneManager.setScene(0);

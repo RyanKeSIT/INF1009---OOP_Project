@@ -16,15 +16,17 @@ public class Button extends Entity{
 	private Color textColor = Color.BLACK;
 	private BitmapFont font;
 	private float fontSize;
+
 	
 	
-	
-	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f){
+	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f, ClickEvent e){
 		super();
         this.add(new Transform(x, y, w, h));
+        this.add(new Clickable(e, this.get(Transform.class)));
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
+		
 	}
 	public void draw(SpriteBatch sb) {
         Transform tr = get(Transform.class);
@@ -32,24 +34,8 @@ public class Button extends Entity{
 		this.getFont().setColor(this.textColor);
 		this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
 	}
-	public void onClick() {
-		System.out.println("Button clicked");
-	};
 	
-	public boolean isHover(float x, float y) {
-        Transform tr = get(Transform.class);
-
-		if(
-				x > tr.getX() && 
-				x < tr.getX() + tr.getWidth() &&
-				y > tr.getY() &&
-				y < tr.getY() + tr.getHeight()
-		) {
-			return true;
-		}
-		
-		return false;
-	}
+	
 	
 	
 	

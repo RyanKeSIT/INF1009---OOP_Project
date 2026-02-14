@@ -32,7 +32,7 @@ public class Mouse {
 	}
 
 	public int getY() {
-		return y;
+		return Gdx.graphics.getHeight() - y;
 	}
 
 	public boolean mousePressed(int button) {

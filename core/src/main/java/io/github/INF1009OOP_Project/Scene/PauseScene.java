@@ -17,25 +17,23 @@ import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 
-public class StartScene extends Scene {
-	private Texture image;
+public class PauseScene extends Scene {
 	private SpriteBatch batch;
     private BitmapFont font;
     private EntityManager entityManager = new EntityManager();
 
     private IOManager io = new IOManager();
     
-	public StartScene(SceneManager sceneManager) {
+	public PauseScene(SceneManager sceneManager) {
 		super(sceneManager);
-		image = new Texture("libgdx.png");
         font = new BitmapFont();
         batch = new SpriteBatch();
         
         
-         entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {
+         entityManager.addEntity(new Button(100,300, 100, 50,"Resume", 20, font, new ClickEvent() {
         	 @Override
         	 public void onClick(){
-        		 System.out.println("Start button clicked");
+        		 System.out.println("Resume game");
         		 sceneManager.setScene(1);
         	 }
          }), false);
@@ -50,7 +48,7 @@ public class StartScene extends Scene {
 		
 		// switch to game scene
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-			sceneManager.setScene(1); 
+			sceneManager.setScene(2); 
 		}
 		
 		

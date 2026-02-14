@@ -65,10 +65,18 @@ public class GameScene extends Scene {
 
     @Override
     public void update() {
+    	io.update();
     	// switch to end scene
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             sceneManager.setScene(2); 
         }
+        // TODO: Change to use IOManager
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        	System.out.println("Pause game");
+        	sceneManager.setScene(3);
+        }
+        
+        
         
         float delta = Gdx.graphics.getDeltaTime();
 
@@ -86,13 +94,13 @@ public class GameScene extends Scene {
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.end();
-    	io.update();
+    	
     	// Keyboard, Mouse, Sound test
     	
     	//batch.begin();
     	//batch.draw(image, 140, 210);
     	//batch.end();
-    	entityManager.updateEntities(delta);
+    	// entityManager.updateEntities(delta);
     	entityManager.draw(batch);
     	
     	//visualize bounds hitbox

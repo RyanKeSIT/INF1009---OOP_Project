@@ -6,12 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import io.github.INF1009OOP_Project.UI.Button;
+import io.github.INF1009OOP_Project.UI.*;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
 import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
@@ -33,13 +34,14 @@ public class StartScene extends Scene {
         batch = new SpriteBatch();
         
         
-         entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {
+        entityManager.addEntity(new Text(300, 300, 200, 50, "Space Invaders", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {
         	 @Override
         	 public void onClick(){
         		 System.out.println("Start button clicked");
         		 sceneManager.setScene(1);
         	 }
-         }), false);
+        }), false);
      
         
 	}

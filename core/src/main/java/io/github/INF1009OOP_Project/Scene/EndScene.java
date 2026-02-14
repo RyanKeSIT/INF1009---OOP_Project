@@ -31,7 +31,7 @@ public class EndScene extends Scene {
         batch = new SpriteBatch();
         
         
-         entityManager.addEntity(new Button(100,300, 150, 50,"Main Menu", 20, font, new ClickEvent() {
+         entityManager.addEntity(new Button(300,300, 150, 50,"Main Menu", 20, font, new ClickEvent() {
         	 @Override
         	 public void onClick(){
         		 System.out.println("Main menu");

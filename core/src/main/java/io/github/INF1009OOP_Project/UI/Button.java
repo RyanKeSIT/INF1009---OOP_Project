@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
 import io.github.INF1009OOP_Project.Entities.*;
-
+//made minimal changes to implement new entity system
 public class Button extends Entity{
 	public static Texture white1x1 = new Texture("white1x1.png");
 	private boolean isOutline = false;
@@ -20,26 +20,30 @@ public class Button extends Entity{
 	
 	
 	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f){
-		super(x,y,w,h);
+		super();
+        this.add(new Transform(x, y, w, h));
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
 	}
 	public void draw(SpriteBatch sb) {
-		sb.draw(white1x1, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        Transform tr = get(Transform.class);
+		sb.draw(white1x1, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
 		this.getFont().setColor(this.textColor);
-		this.getFont().draw(sb, this.getText(), this.getX(), this.getY() + (this.getHeight() + this.fontSize/2f)/2f, this.getWidth(), Align.center, false);
+		this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
 	}
 	public void onClick() {
 		System.out.println("Button clicked");
 	};
 	
 	public boolean isHover(float x, float y) {
+        Transform tr = get(Transform.class);
+
 		if(
-				x > this.getX() && 
-				x < this.getX() + this.getWidth() &&
-				y > this.getY() &&
-				y < this.getY() + this.getHeight()
+				x > tr.getX() && 
+				x < tr.getX() + tr.getWidth() &&
+				y > tr.getY() &&
+				y < tr.getY() + tr.getHeight()
 		) {
 			return true;
 		}

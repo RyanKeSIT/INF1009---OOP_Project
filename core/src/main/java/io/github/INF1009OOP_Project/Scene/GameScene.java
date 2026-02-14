@@ -20,29 +20,39 @@ import io.github.INF1009OOP_Project.Entities.*;
 
 public class GameScene extends Scene {
 	private SpriteBatch batch;
-    private Entity player,bullet;
+    //private Entity player,bullet;
+	
     private Texture image;
     private ShapeRenderer shape;
-    private EntityManager entityManager = new EntityManager();
-    private CollisionManager collisionManager = new CollisionManager();
+    private EntityManager entityManager;
     private IOManager io = new IOManager();
+    private Entity player,bullet;
+
+    private Texture playerTexture;
+    private Texture bulletTexture;
     
 	public GameScene(SceneManager sceneManager) {
         super(sceneManager);
+        entityManager = new EntityManager();
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         image = new Texture("libgdx.png");
-        player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
-        bullet = new Bullet(20,100,70,70,100);
+        //player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
+        //bullet = new Bullet(20,100,70,70,100);
+        playerTexture = new Texture(Gdx.files.internal("bucket.png"));
+        bulletTexture = new Texture(Gdx.files.internal("droplet.png"));
+
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture, 100);
+        bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
+        
         io.getSound().soundOn();
         
-        entityManager.addEntity(player);
-        entityManager.addEntity(bullet);
-        collisionManager.registerEntity((Collidable) player);
-        collisionManager.registerEntity((Collidable) bullet);
+        entityManager.addEntity(player,true);
+        entityManager.addEntity(bullet,true);
         
         
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        
+        /*Gdx.input.setInputProcessor(new InputAdapter() {
         	@Override
         	public boolean keyDown (int keycode) {
         		if(keycode == Keys.SPACE) {
@@ -50,7 +60,7 @@ public class GameScene extends Scene {
         		}
         		return false;
         	}
-        });
+        });*/
     }
 
     @Override
@@ -59,12 +69,21 @@ public class GameScene extends Scene {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             sceneManager.setScene(2); 
         }
+        
+        float delta = Gdx.graphics.getDeltaTime();
+
+        if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+            shoot();
+        }
+        entityManager.updateEntities(delta);
     }
 
     @Override
     public void render() {
     	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
     	float delta = Gdx.graphics.getDeltaTime();
+    	
+    	ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.end();
     	io.update();
@@ -73,19 +92,19 @@ public class GameScene extends Scene {
     	//batch.begin();
     	//batch.draw(image, 140, 210);
     	//batch.end();
-    	entityManager.moveAll();
-    	entityManager.updateEntities();
-    	collisionManager.update();
-    	entityManager.draw(batch, shape);
+    	entityManager.updateEntities(delta);
+    	entityManager.draw(batch);
     	
     	//visualize bounds hitbox
     	shape.begin(ShapeRenderer.ShapeType.Line);
-
-        Bounds a = player.getBounds();
-        shape.rect(a.getX(), a.getY(), a.getWidth(), a.getHeight());
-
-        Bounds b = bullet.getBounds();
-        shape.rect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+    	
+    	for (Entity entity : entityManager.getEntities()) {  
+    	    PhysicsBody pb = entity.get(PhysicsBody.class);
+    	    if (pb != null) {
+    	        Bounds b = pb.getBounds();
+    	        shape.rect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+    	    }
+    	}
 
         shape.end();
     }
@@ -93,5 +112,21 @@ public class GameScene extends Scene {
     @Override
     public void dispose() {
        
+    }
+    
+    //methods
+    private void shoot() {
+        Transform pt = player.get(Transform.class);
+        if (pt == null) return;
+        
+        float bw = 70;
+        float bh = 70;
+        
+        float bx = pt.getX() + pt.getWidth() / 2f - bw / 2f;
+        float by = 75 + pt.getY() + pt.getHeight()/2f - 10; //add 75 for it to spawn slightly above player 
+        Entity newBullet = EntityFactory.createBullet(bx, by, 70, 70, 300, bulletTexture,entityManager);
+
+        entityManager.addEntity(newBullet, true);
+
     }
 }

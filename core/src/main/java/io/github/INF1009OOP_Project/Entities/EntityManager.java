@@ -7,6 +7,7 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.github.INF1009OOP_Project.Collision.CollisionManager;
+import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 
 public class EntityManager {
 	private ArrayList<Entity> entityList;

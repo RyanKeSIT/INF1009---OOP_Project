@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities;
+package io.github.INF1009OOP_Project.Entities.Components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;

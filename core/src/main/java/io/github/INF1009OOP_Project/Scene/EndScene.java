@@ -16,6 +16,7 @@ import io.github.INF1009OOP_Project.UI.ClickEvent;
 import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
+import io.github.INF1009OOP_Project.Entities.Components.Clickable;
 
 public class EndScene extends Scene {
 	private SpriteBatch batch;

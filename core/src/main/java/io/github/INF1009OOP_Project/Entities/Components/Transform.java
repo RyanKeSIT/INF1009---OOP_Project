@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities;
+package io.github.INF1009OOP_Project.Entities.Components;
 
 public class Transform implements Component{
 	private float x,y,height,width;

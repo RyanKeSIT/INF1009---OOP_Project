@@ -2,6 +2,7 @@ package io.github.INF1009OOP_Project.Entities;
 
 import io.github.INF1009OOP_Project.Collision.Bounds;
 import io.github.INF1009OOP_Project.Collision.Collidable;
+import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 
 public class EntityCollidableAdapter implements Collidable{
     private Entity entity;

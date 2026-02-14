@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
+import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Entities.Components.Transform;
 
 
 public class GameScene extends Scene {

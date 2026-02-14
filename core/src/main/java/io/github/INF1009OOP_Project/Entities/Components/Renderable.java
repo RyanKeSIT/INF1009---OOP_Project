@@ -1,7 +1,9 @@
-package io.github.INF1009OOP_Project.Entities;
+package io.github.INF1009OOP_Project.Entities.Components;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.github.INF1009OOP_Project.Entities.Entity;
 
 public class Renderable implements Component{
     private Texture texture;

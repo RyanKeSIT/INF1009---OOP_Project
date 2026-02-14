@@ -3,6 +3,12 @@ package io.github.INF1009OOP_Project.Entities;
 import com.badlogic.gdx.graphics.Texture;
 //use the static methods in scene to create our entities
 
+import io.github.INF1009OOP_Project.Entities.Components.AIMovement;
+import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Entities.Components.PlayerMovement;
+import io.github.INF1009OOP_Project.Entities.Components.Renderable;
+import io.github.INF1009OOP_Project.Entities.Components.Transform;
+
 public class EntityFactory {
 	
 	public static Entity createPlayer(float x, float y, float width, float height, Texture texture, float speed) {

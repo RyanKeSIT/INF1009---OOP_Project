@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.INF1009OOP_Project.Collision.*;
+import io.github.INF1009OOP_Project.Entities.Components.Component;
+import io.github.INF1009OOP_Project.Entities.Components.Renderable;
+
 import java.util.Map;
 import java.util.HashMap;
 

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
 import io.github.INF1009OOP_Project.Entities.*;
+import io.github.INF1009OOP_Project.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Entities.Components.Transform;
 //made minimal changes to implement new entity system
 public class Button extends Entity{
 	public static Texture white1x1 = new Texture("white1x1.png");

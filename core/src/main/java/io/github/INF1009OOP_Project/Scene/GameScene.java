@@ -17,6 +17,7 @@ import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Entities.Components.PlayerShoot;
 import io.github.INF1009OOP_Project.Entities.Components.Transform;
 
 
@@ -35,6 +36,7 @@ public class GameScene extends Scene {
     
 	public GameScene(SceneManager sceneManager) {
         super(sceneManager);
+
         entityManager = new EntityManager();
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -44,14 +46,15 @@ public class GameScene extends Scene {
         playerTexture = new Texture(Gdx.files.internal("bucket.png"));
         bulletTexture = new Texture(Gdx.files.internal("droplet.png"));
 
-        player = EntityFactory.createPlayer(100,100,100,100, playerTexture, 100);
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100);
         bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
-        
+        player.get(PlayerShoot.class).setEntityManager(entityManager);
+        PlayerShoot ps = player.get(PlayerShoot.class);
+        System.out.println("Class created"+ps);
         io.getSound().soundOn();
         
         entityManager.addEntity(player,true);
         entityManager.addEntity(bullet,true);
-        
         
         
         /*Gdx.input.setInputProcessor(new InputAdapter() {
@@ -77,14 +80,14 @@ public class GameScene extends Scene {
         	System.out.println("Pause game");
         	sceneManager.setScene(3);
         }
-        
+
         
         
         float delta = Gdx.graphics.getDeltaTime();
-
+        /*
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             shoot();
-        }
+        }*/
         entityManager.updateEntities(delta);
     }
 
@@ -125,6 +128,7 @@ public class GameScene extends Scene {
     }
     
     //methods
+    /*
     private void shoot() {
         Transform pt = player.get(Transform.class);
         if (pt == null) return;
@@ -138,5 +142,5 @@ public class GameScene extends Scene {
 
         entityManager.addEntity(newBullet, true);
 
-    }
+    }*/
 }

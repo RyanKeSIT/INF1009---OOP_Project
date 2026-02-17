@@ -46,7 +46,7 @@ public class PauseScene extends Scene {
 	public void update() {
 
 		io.update();
-		
+		entityManager.updateEntities(0);
 		// switch to game scene
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			sceneManager.setScene(2); 

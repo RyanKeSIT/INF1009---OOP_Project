@@ -46,7 +46,7 @@ public class EndScene extends Scene {
 	public void update() {
 
 		io.update();
-		
+		entityManager.updateEntities(0);
 		
 		
 		

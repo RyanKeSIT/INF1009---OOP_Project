@@ -43,7 +43,7 @@ public class PauseScene extends Scene {
 
 	@Override
 	public void update() {
-
+		entityManager.updateEntities(0);
 		// switch to game scene
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.setScene(2); 

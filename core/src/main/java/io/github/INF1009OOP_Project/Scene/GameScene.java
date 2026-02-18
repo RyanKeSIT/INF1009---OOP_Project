@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +20,7 @@ import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Entities.Components.PlayerShoot;
 import io.github.INF1009OOP_Project.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.UI.Text;
 
 
 public class GameScene extends Scene {
@@ -29,7 +31,7 @@ public class GameScene extends Scene {
     private ShapeRenderer shape;
     private EntityManager entityManager;
     private Entity player,bullet;
-
+    private BitmapFont font;
     private Texture playerTexture;
     private Texture bulletTexture;
     
@@ -39,16 +41,19 @@ public class GameScene extends Scene {
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         image = new Texture("libgdx.png");
+        font = new BitmapFont();
         //player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
         //bullet = new Bullet(20,100,70,70,100);
         playerTexture = new Texture(Gdx.files.internal("bucket.png"));
         bulletTexture = new Texture(Gdx.files.internal("droplet.png"));
-
+        
+        entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
+        
         player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100);
         bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
         player.get(PlayerShoot.class).setEntityManager(entityManager);
-        PlayerShoot ps = player.get(PlayerShoot.class);
-        System.out.println("Class created"+ps);
+        player.get(PlayerShoot.class).setIOManager(io);
         io.getSound().soundOn();
         
         entityManager.addEntity(player,true);

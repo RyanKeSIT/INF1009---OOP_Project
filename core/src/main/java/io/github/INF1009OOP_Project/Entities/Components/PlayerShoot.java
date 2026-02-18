@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 
+import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Entities.Entity;
 import io.github.INF1009OOP_Project.Entities.EntityFactory;
 import io.github.INF1009OOP_Project.Entities.EntityManager;
@@ -12,6 +13,7 @@ public class PlayerShoot implements Component{
 	
 	private Texture bulletTexture;
 	private EntityManager entityManager;
+	private IOManager ioManager;
 	private Entity player;
 	
 	public PlayerShoot(Entity player,Texture bullet) {
@@ -22,6 +24,9 @@ public class PlayerShoot implements Component{
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    public void setIOManager(IOManager ioManager) {
+        this.ioManager = ioManager;
+    }
     
 	@Override
     public void update(float delta) {
@@ -29,7 +34,8 @@ public class PlayerShoot implements Component{
     }
 	
 	private void shoot() {
-
+		if(ioManager ==null) return;
+		//if (ioManager.getKeyboard().isKeyPressed(Keys.SPACE)) {
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			if(entityManager ==null) return;
 			Transform pt = player.get(Transform.class);

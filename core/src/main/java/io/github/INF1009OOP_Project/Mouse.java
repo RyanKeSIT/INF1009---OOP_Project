@@ -10,16 +10,21 @@ public class Mouse {
 	private int x;
 	private int y;
 
-	// stores pressed button
+	// stores pressed buttons
 	private Set<Integer> mousePressed;
+//	private Set<Integer> mouseJustPressed;
 
 	public Mouse() {
 		mousePressed = new HashSet<>();
+//		mouseJustPressed = new HashSet<>();
 	}
 
 	public void update() {
 		x = Gdx.input.getX();
 		y = Gdx.input.getY();
+		
+//		mouseJustPressed.clear();
+//      mouseJustPressed.addAll(mousePressed);
 		mousePressed.clear();
 
 		if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
@@ -35,7 +40,11 @@ public class Mouse {
 		return Gdx.graphics.getHeight() - y;
 	}
 
-	public boolean mousePressed(int button) {
+	public boolean isMousePressed(int button) {
 		return mousePressed.contains(button);
 	}
+	
+//	public boolean isMouseJustPressed(int button) {
+//        return mousePressed.contains(button) && ! mouseJustPressed.contains(button);
+//    }
 }

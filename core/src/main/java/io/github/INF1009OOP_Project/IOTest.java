@@ -32,7 +32,7 @@ public class IOTest extends ScreenAdapter {
 			io.getSound().playShootingSound();
 		}
 
-		if (io.getMouse().mousePressed(Buttons.LEFT)) {
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			Gdx.app.log("IO TEST", "Mouse click at " + io.getMouse().getX() + ", " + io.getMouse().getY());
 		}
 	}

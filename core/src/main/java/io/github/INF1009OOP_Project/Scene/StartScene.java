@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,11 +25,9 @@ public class StartScene extends Scene {
 	private SpriteBatch batch;
     private BitmapFont font;
     private EntityManager entityManager = new EntityManager();
-
-    private IOManager io = new IOManager();
     
-	public StartScene(SceneManager sceneManager) {
-		super(sceneManager);
+	public StartScene(SceneManager sceneManager, IOManager io) {
+		super(sceneManager, io);
 		image = new Texture("libgdx.png");
         font = new BitmapFont();
         batch = new SpriteBatch();
@@ -48,16 +47,14 @@ public class StartScene extends Scene {
 
 	@Override
 	public void update() {
-
-		io.update();
 		
 		// switch to game scene
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.setScene(1); 
 		}
 		
 		
-		if (io.getMouse().mousePressed(Buttons.LEFT)) {
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {  
 	    	    Clickable c = entity.get(Clickable.class);
 	    	    if (c!=null) {
@@ -71,10 +68,7 @@ public class StartScene extends Scene {
 
 	@Override
 	public void render() {
-		
-		
-		
-		
+
 		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 		
 		entityManager.draw(batch);

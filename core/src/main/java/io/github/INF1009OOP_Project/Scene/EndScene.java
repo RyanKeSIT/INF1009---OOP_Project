@@ -36,13 +36,11 @@ public class EndScene extends Scene {
         		 sceneManager.setScene(0);
         	 }
          }), false);
-     
-        
 	}
 
 	@Override
 	public void update() {
-
+		entityManager.updateEntities(0);
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {  
 	    	    Clickable c = entity.get(Clickable.class);
@@ -53,6 +51,7 @@ public class EndScene extends Scene {
 	    	    }
 	    	}
 		}
+		
 	}
 
 	@Override

@@ -28,15 +28,13 @@ public class GameScene extends Scene {
     private Texture image;
     private ShapeRenderer shape;
     private EntityManager entityManager;
-    private IOManager io = new IOManager();
     private Entity player,bullet;
 
     private Texture playerTexture;
     private Texture bulletTexture;
     
-	public GameScene(SceneManager sceneManager) {
-        super(sceneManager);
-
+	public GameScene(SceneManager sceneManager, IOManager io) {
+        super(sceneManager, io);
         entityManager = new EntityManager();
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
@@ -70,13 +68,12 @@ public class GameScene extends Scene {
 
     @Override
     public void update() {
-    	io.update();
     	// switch to end scene
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
             sceneManager.setScene(2); 
         }
-        // TODO: Change to use IOManager
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+
+        if(io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
         	System.out.println("Pause game");
         	sceneManager.setScene(3);
         }
@@ -86,7 +83,10 @@ public class GameScene extends Scene {
         float delta = Gdx.graphics.getDeltaTime();
         /*
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+        // if (io.getKeyboard().isKeyPressed(Keys.SPACE)) {
             shoot();
+            io.getSound().playShootingSound();
+        }
         }*/
         entityManager.updateEntities(delta);
     }

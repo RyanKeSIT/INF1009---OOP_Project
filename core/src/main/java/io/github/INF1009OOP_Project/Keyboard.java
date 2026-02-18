@@ -9,12 +9,16 @@ public class Keyboard {
 
 	// stores current pressed key
 	private Set<Integer> keysPressed;
+//	private Set<Integer> keysJustPressed;
 
 	public Keyboard() {
 		keysPressed = new HashSet<>();
+//		keysJustPressed = new HashSet<>();
 	}
 
 	public void update() {
+//		keysJustPressed.clear();
+//		keysJustPressed.addAll(keysPressed);
 		keysPressed.clear();
 
 		// left movement
@@ -31,11 +35,24 @@ public class Keyboard {
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			keysPressed.add(Keys.SPACE);
 		}
+		
+		// for controls
+		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+            keysPressed.add(Keys.ENTER);
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            keysPressed.add(Keys.ESCAPE);
+        }
 	}
 
 	public boolean isKeyPressed(int key) {
 		return keysPressed.contains(key);
 	}
+	
+//    public boolean isKeyJustPressed(int key) {
+//        return keysPressed.contains(key) && ! keysJustPressed.contains(key);
+//    }
 
 	public void keyPressed(int key) {
 		keysPressed.add(key);

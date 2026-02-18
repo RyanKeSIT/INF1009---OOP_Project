@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,11 +23,9 @@ public class PauseScene extends Scene {
 	private SpriteBatch batch;
     private BitmapFont font;
     private EntityManager entityManager = new EntityManager();
-
-    private IOManager io = new IOManager();
     
-	public PauseScene(SceneManager sceneManager) {
-		super(sceneManager);
+	public PauseScene(SceneManager sceneManager, IOManager io) {
+		super(sceneManager, io);
         font = new BitmapFont();
         batch = new SpriteBatch();
         
@@ -45,15 +44,13 @@ public class PauseScene extends Scene {
 	@Override
 	public void update() {
 
-		io.update();
-		entityManager.updateEntities(0);
 		// switch to game scene
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.setScene(2); 
 		}
 		
 		
-		if (io.getMouse().mousePressed(Buttons.LEFT)) {
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {  
 	    	    Clickable c = entity.get(Clickable.class);
 	    	    if (c!=null) {
@@ -67,9 +64,6 @@ public class PauseScene extends Scene {
 
 	@Override
 	public void render() {
-		
-		
-		
 		
 		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 		

@@ -12,7 +12,9 @@ import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 public class EntityManager {
 	private ArrayList<Entity> entityList;
     private CollisionManager collisionManager;
-
+    private ArrayList<Entity> entitiesToAdd;
+    private ArrayList<Entity> entitiesToRemove;
+    
     //map entity to collidable adapter for collision system
     private Map<Entity, EntityCollidableAdapter> collidableAdapters;
 
@@ -20,8 +22,9 @@ public class EntityManager {
 	public EntityManager() {
 		entityList = new ArrayList<>();
         collidableAdapters = new HashMap<>();
-        
         this.collisionManager = new CollisionManager();
+        entitiesToAdd = new ArrayList<>();
+        entitiesToRemove = new ArrayList<>();
 
 	}
 	
@@ -30,7 +33,7 @@ public class EntityManager {
 	}
 	
 	public void addEntity(Entity entity,boolean collision) {
-		entityList.add(entity);
+		entitiesToAdd.add(entity);
 		if (collision) {
             // Check entity has PhysicsBody
             if (!entity.has(PhysicsBody.class)) {
@@ -47,7 +50,7 @@ public class EntityManager {
 	}
 	
 	public void deleteEntity(Entity entity) {
-		entityList.remove(entity);
+		entitiesToRemove.add(entity);
 		EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
         if (adapter != null) {
             collisionManager.deleteEntity(adapter);
@@ -55,11 +58,25 @@ public class EntityManager {
 	}
 	
 	public void updateEntities(float delta) {
-		for(Entity entity: entityList) {
-			entity.update(delta);
-		}
-        collisionManager.update();
+	    for (Entity entity : entityList) {
+	        entity.update(delta);
+	    }
 
+	    collisionManager.update();
+
+	    // Add queued entities
+	    entityList.addAll(entitiesToAdd);
+	    entitiesToAdd.clear();
+
+	    // Remove queued entities
+	    for (Entity entity : entitiesToRemove) {
+	        entityList.remove(entity);
+	        EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
+	        if (adapter != null) {
+	            collisionManager.deleteEntity(adapter);
+	        }
+	    }
+	    entitiesToRemove.clear();
 	}
 	
 	public void draw(SpriteBatch batch) {

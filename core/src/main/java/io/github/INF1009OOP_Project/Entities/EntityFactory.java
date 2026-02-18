@@ -6,23 +6,25 @@ import com.badlogic.gdx.graphics.Texture;
 import io.github.INF1009OOP_Project.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Entities.Components.PlayerMovement;
+import io.github.INF1009OOP_Project.Entities.Components.PlayerShoot;
 import io.github.INF1009OOP_Project.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Entities.Components.Transform;
 
 public class EntityFactory {
 	
-	public static Entity createPlayer(float x, float y, float width, float height, Texture texture, float speed) {
+	public static Entity createPlayer(float x, float y, float width, float height, Texture playerTexture,Texture bulletTexture,EntityManager entityManager, float speed) {
 		Entity player = new Entity();
 		//add components
 		player.add(new Transform(x,y,width,height));
 		player.add(new PhysicsBody(player));
-		player.add(new Renderable(player,texture));
+		player.add(new Renderable(player,playerTexture));
 		player.add(new PlayerMovement(player,speed));
 		//collision system
 		player.add(new CollisionHandler(player, (self, other) -> {
             System.out.println("Player collided with something");
             
         }));
+		player.add(new PlayerShoot(player, bulletTexture));
 		return player;
 	}
 	

@@ -20,14 +20,15 @@ import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
 
 public class PauseScene extends Scene {
-	private SpriteBatch batch;
-    private BitmapFont font;
-    private EntityManager entityManager = new EntityManager();
+	//private SpriteBatch batch;
+    //private BitmapFont font;
+    //private EntityManager entityManager = new EntityManager();
     
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-        font = new BitmapFont();
-        batch = new SpriteBatch();
+		
+        //font = new BitmapFont();
+        //batch = new SpriteBatch();
         
         
          entityManager.addEntity(new Button(100,300, 100, 50,"Resume", 20, font, new ClickEvent() {

@@ -1,3 +1,4 @@
+
 package io.github.INF1009OOP_Project.Scene;
 
 import java.util.ArrayList;
@@ -21,16 +22,16 @@ import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
 
 public class StartScene extends Scene {
-	private Texture image;
-	private SpriteBatch batch;
-    private BitmapFont font;
-    private EntityManager entityManager = new EntityManager();
+	//private Texture image;
+	//private SpriteBatch batch;
+    //private BitmapFont font;
+    //private EntityManager entityManager = new EntityManager();
     
 	public StartScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-		image = new Texture("libgdx.png");
-        font = new BitmapFont();
-        batch = new SpriteBatch();
+		//image = new Texture("libgdx.png");
+        //font = new BitmapFont();
+        //batch = new SpriteBatch();
         
         
         entityManager.addEntity(new Text(300, 300, 200, 50, "Space Invaders", 50,Color.WHITE, font), false);

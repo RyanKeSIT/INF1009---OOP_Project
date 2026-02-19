@@ -24,24 +24,24 @@ import io.github.INF1009OOP_Project.UI.Text;
 
 
 public class GameScene extends Scene {
-	private SpriteBatch batch;
+	//private SpriteBatch batch;
     //private Entity player,bullet;
 	
-    private Texture image;
+	//private Texture image;
     private ShapeRenderer shape;
-    private EntityManager entityManager;
+    //private EntityManager entityManager;
     private Entity player,bullet;
-    private BitmapFont font;
+    //private BitmapFont font;
     private Texture playerTexture;
     private Texture bulletTexture;
     
 	public GameScene(SceneManager sceneManager, IOManager io) {
         super(sceneManager, io);
-        entityManager = new EntityManager();
-        batch = new SpriteBatch();
+        //entityManager = new EntityManager();
+        //batch = new SpriteBatch();
         shape = new ShapeRenderer();
-        image = new Texture("libgdx.png");
-        font = new BitmapFont();
+        //image = new Texture("libgdx.png");
+        //font = new BitmapFont();
         //player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
         //bullet = new Bullet(20,100,70,70,100);
         playerTexture = new Texture(Gdx.files.internal("bucket.png"));

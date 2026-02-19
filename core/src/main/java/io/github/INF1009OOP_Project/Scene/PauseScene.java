@@ -26,8 +26,8 @@ public class PauseScene extends Scene {
     
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-        font = new BitmapFont();
-        batch = new SpriteBatch();
+        //font = new BitmapFont();
+        //batch = new SpriteBatch();
         
         
          entityManager.addEntity(new Button(100,300, 100, 50,"Resume", 20, font, new ClickEvent() {

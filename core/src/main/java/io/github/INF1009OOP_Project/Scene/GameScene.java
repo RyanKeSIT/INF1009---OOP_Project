@@ -50,7 +50,7 @@ public class GameScene extends Scene {
         entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
         
-        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100);
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
         bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
         //player.get(PlayerShoot.class).setEntityManager(entityManager);
         //player.get(PlayerShoot.class).setIOManager(io);

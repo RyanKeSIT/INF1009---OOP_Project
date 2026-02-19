@@ -22,7 +22,7 @@ public class StartScene extends Scene {
         	 @Override
         	 public void onClick(){
         		 System.out.println("Start button clicked");
-        		 sceneManager.setScene(1);
+        		 startNewGame();
         	 }
         }), false);
      
@@ -52,6 +52,14 @@ public class StartScene extends Scene {
 		}
 	}
 
+	private void startNewGame() {
+        // Get GameScene and reset it
+        GameScene gameScene = (GameScene) sceneManager.getScene(1);
+        gameScene.resetGame();
+        sceneManager.setScene(1);
+
+	}
+	
 	@Override
 	public void render() {
 

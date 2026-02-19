@@ -78,6 +78,17 @@ public class EntityManager {
 	    entitiesToRemove.clear();
 	}
 	
+	public void clearAll() {
+	    // Unregister all collision adapters
+	    for (EntityCollidableAdapter adapter : collidableAdapters.values()) {
+	        collisionManager.deleteEntity(adapter);
+	    }
+	    collidableAdapters.clear();
+	    
+	    // Clear entity list
+	    entityList.clear();	    
+	}
+	
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 	    for (Entity entity : entityList) entity.draw(batch);

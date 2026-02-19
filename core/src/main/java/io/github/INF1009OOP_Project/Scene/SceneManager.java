@@ -11,6 +11,10 @@ public class SceneManager {
     public void addScene(Scene s) {
         sceneList.add(s);
     }
+    
+    public Scene getScene(int index) {
+        return sceneList.get(index);
+    }
 
     public void setScene(int index) {
         currentScene = sceneList.get(index);

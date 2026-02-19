@@ -29,15 +29,16 @@ public class GameScene extends Scene {
         bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
         obstacleTexture = new Texture(Gdx.files.internal("bucket.png"));
         		
-        entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
-        entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
+        //entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
+        //entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
         
-        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
-        bullet = EntityFactory.createObstacle(100, 400, 70, 70, obstacleTexture);
+        //player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
+        //bullet = EntityFactory.createObstacle(100, 400, 70, 70, obstacleTexture);
         io.getSound().soundOn();
+        initializeGame();
         
-        entityManager.addEntity(player,true);
-        entityManager.addEntity(bullet,true);
+        //entityManager.addEntity(player,true);
+        //entityManager.addEntity(bullet,true);
     }
 
     @Override
@@ -94,6 +95,28 @@ public class GameScene extends Scene {
     
     //methods
     
+    private void initializeGame() {
+        // clear old entities first
+        entityManager.clearAll();
+        
+        //UI
+        entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
+        
+        //create player and bullet
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
+        bullet = EntityFactory.createObstacle(100, 400, 70, 70, obstacleTexture);
+        
+        entityManager.addEntity(player,true);
+        entityManager.addEntity(bullet,true);
+        
+    }
+    
+    //acts as getter method for initializeGame so startscene can access
+    public void resetGame() {
+        initializeGame();
+    }
+    
     private void shoot() {
         Transform pt = player.get(Transform.class);
         if (pt == null) return;
@@ -108,4 +131,6 @@ public class GameScene extends Scene {
         entityManager.addEntity(newBullet, true);
 
     }
+    
+    
 }

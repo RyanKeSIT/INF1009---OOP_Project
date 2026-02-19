@@ -13,21 +13,15 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.UI.Button;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
-import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class EndScene extends Scene {
-	//private SpriteBatch batch;
-    //private BitmapFont font;
-    //private EntityManager entityManager = new EntityManager();
     
 	public EndScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-        //font = new BitmapFont();
-        //batch = new SpriteBatch();
-        
         
          entityManager.addEntity(new Button(300,300, 150, 50,"Main Menu", 20, font, new ClickEvent() {
         	 @Override

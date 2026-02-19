@@ -3,8 +3,8 @@ package io.github.INF1009OOP_Project.Entities.Components;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
-import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Entities.Entity;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class PlayerMovement extends Movement{
 	
@@ -36,7 +36,7 @@ public class PlayerMovement extends Movement{
             vx = speed;
         }
         
-     // Apply velocity , physics body will move the transform
+        // Apply velocity , physics body will move the transform
         pb.setVelocity(vx, 0f);
         
     }

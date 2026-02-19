@@ -3,6 +3,7 @@ package io.github.INF1009OOP_Project.Entities.Components;
 import io.github.INF1009OOP_Project.Collision.Bounds;
 import io.github.INF1009OOP_Project.Entities.Entity;
 
+//This component is to handle the physics-based movement of the entity
 public class PhysicsBody implements Component{
 	private Entity entity;
 	

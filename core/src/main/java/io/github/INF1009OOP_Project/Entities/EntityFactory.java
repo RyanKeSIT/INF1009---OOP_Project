@@ -3,13 +3,13 @@ package io.github.INF1009OOP_Project.Entities;
 import com.badlogic.gdx.graphics.Texture;
 //use the static methods in scene to create our entities
 
-import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Entities.Components.AIMovement;
+import io.github.INF1009OOP_Project.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Entities.Components.PlayerMovement;
-import io.github.INF1009OOP_Project.Entities.Components.PlayerShoot;
 import io.github.INF1009OOP_Project.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class EntityFactory {
 	
@@ -22,15 +22,11 @@ public class EntityFactory {
 		PlayerMovement movement = new PlayerMovement(player, speed);
 		movement.setIOManager(io);
 		player.add(movement);
-		
-		// player.add(new PlayerMovement(player,speed));
-		
 		//collision system
 		player.add(new CollisionHandler(player, (self, other) -> {
             System.out.println("Player collided with something");
             
         }));
-		//player.add(new PlayerShoot(player, bulletTexture));
 		return player;
 	}
 	

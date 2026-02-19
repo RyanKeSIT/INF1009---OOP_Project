@@ -1,6 +1,6 @@
 package io.github.INF1009OOP_Project;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 import io.github.INF1009OOP_Project.Scene.*;
 
 public class GameMaster  {

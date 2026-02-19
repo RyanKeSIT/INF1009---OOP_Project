@@ -3,8 +3,8 @@ package io.github.INF1009OOP_Project.Scene;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Entities.EntityManager;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public abstract class Scene {
 

@@ -2,6 +2,7 @@ package io.github.INF1009OOP_Project.Entities.Components;
 
 import io.github.INF1009OOP_Project.Entities.Entity;
 
+//For user movement
 public class Movement implements Component{
 	//subclasses need access hence protected
     protected float speed;

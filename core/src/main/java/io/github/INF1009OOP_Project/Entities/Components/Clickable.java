@@ -3,7 +3,7 @@ package io.github.INF1009OOP_Project.Entities.Components;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
-import io.github.INF1009OOP_Project.IOManager;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
 
 public class Clickable implements Component{

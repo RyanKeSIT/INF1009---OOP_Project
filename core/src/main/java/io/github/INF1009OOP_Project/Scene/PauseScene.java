@@ -1,23 +1,14 @@
 package io.github.INF1009OOP_Project.Scene;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.UI.Button;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
-import io.github.INF1009OOP_Project.IOManager;
-import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class PauseScene extends Scene {
 	//private SpriteBatch batch;
@@ -47,7 +38,7 @@ public class PauseScene extends Scene {
 		entityManager.updateEntities(0);
 		// switch to game scene
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
-			sceneManager.setScene(2); 
+			sceneManager.setScene(1); 
 		}
 		
 		

@@ -13,12 +13,6 @@ public class SceneManager {
     }
 
     public void setScene(int index) {
-    	// clean up old scene before switching scene
-        //if (currentScene != null) {
-            //currentScene.dispose();
-        //}
-    	
-        // get new scene
         currentScene = sceneList.get(index);
     }
 

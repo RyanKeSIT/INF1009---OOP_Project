@@ -1,5 +1,6 @@
 package io.github.INF1009OOP_Project.Entities.Components;
 
+//This component is used to represent the spatial data (position and size) of the object
 public class Transform implements Component{
 	private float x,y,height,width;
 	

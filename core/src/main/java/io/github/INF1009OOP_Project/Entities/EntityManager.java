@@ -23,9 +23,8 @@ public class EntityManager {
 		entityList = new ArrayList<>();
         collidableAdapters = new HashMap<>();
         this.collisionManager = new CollisionManager();
-        entitiesToAdd = new ArrayList<>();
-        entitiesToRemove = new ArrayList<>();
-
+        entitiesToAdd = new ArrayList<>(); //This is done to add a buffer list for entities being added
+        entitiesToRemove = new ArrayList<>(); //This is done to add a buffer list for entities being removed
 	}
 	
 	public ArrayList<Entity> getEntities() {

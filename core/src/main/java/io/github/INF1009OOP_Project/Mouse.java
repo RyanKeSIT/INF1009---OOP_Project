@@ -24,7 +24,7 @@ public class Mouse {
 		y = Gdx.input.getY();
 		
 //		mouseJustPressed.clear();
-//      mouseJustPressed.addAll(mousePressed);
+//		mouseJustPressed.addAll(mousePressed);
 		mousePressed.clear();
 
 		if (Gdx.input.isButtonPressed(Buttons.LEFT)) {

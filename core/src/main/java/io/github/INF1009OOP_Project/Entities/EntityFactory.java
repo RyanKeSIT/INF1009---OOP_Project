@@ -24,7 +24,7 @@ public class EntityFactory {
             System.out.println("Player collided with something");
             
         }));
-		player.add(new PlayerShoot(player, bulletTexture));
+		//player.add(new PlayerShoot(player, bulletTexture));
 		return player;
 	}
 	

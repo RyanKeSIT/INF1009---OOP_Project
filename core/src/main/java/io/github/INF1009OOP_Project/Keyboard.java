@@ -9,16 +9,16 @@ public class Keyboard {
 
 	// stores current pressed key
 	private Set<Integer> keysPressed;
-//	private Set<Integer> keysJustPressed;
+	private Set<Integer> keysJustPressed;
 
 	public Keyboard() {
 		keysPressed = new HashSet<>();
-//		keysJustPressed = new HashSet<>();
+		keysJustPressed = new HashSet<>();
 	}
 
 	public void update() {
-//		keysJustPressed.clear();
-//		keysJustPressed.addAll(keysPressed);
+		keysJustPressed.clear();
+		keysJustPressed.addAll(keysPressed);
 		keysPressed.clear();
 
 		// left movement
@@ -50,9 +50,9 @@ public class Keyboard {
 		return keysPressed.contains(key);
 	}
 	
-//    public boolean isKeyJustPressed(int key) {
-//        return keysPressed.contains(key) && ! keysJustPressed.contains(key);
-//    }
+    public boolean isKeyJustPressed(int key) {
+        return keysPressed.contains(key) && ! keysJustPressed.contains(key);
+    }
 
 	public void keyPressed(int key) {
 		keysPressed.add(key);

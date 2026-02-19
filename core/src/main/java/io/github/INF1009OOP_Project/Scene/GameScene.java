@@ -52,8 +52,8 @@ public class GameScene extends Scene {
         
         player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100);
         bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
-        player.get(PlayerShoot.class).setEntityManager(entityManager);
-        player.get(PlayerShoot.class).setIOManager(io);
+        //player.get(PlayerShoot.class).setEntityManager(entityManager);
+        //player.get(PlayerShoot.class).setIOManager(io);
         io.getSound().soundOn();
         
         entityManager.addEntity(player,true);
@@ -83,6 +83,9 @@ public class GameScene extends Scene {
         	sceneManager.setScene(3);
         }
 
+        if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
+            shoot();
+        }
         
         
         float delta = Gdx.graphics.getDeltaTime();
@@ -133,7 +136,7 @@ public class GameScene extends Scene {
     }
     
     //methods
-    /*
+    
     private void shoot() {
         Transform pt = player.get(Transform.class);
         if (pt == null) return;
@@ -147,5 +150,5 @@ public class GameScene extends Scene {
 
         entityManager.addEntity(newBullet, true);
 
-    }*/
+    }
 }

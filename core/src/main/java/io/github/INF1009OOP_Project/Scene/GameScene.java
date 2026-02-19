@@ -50,10 +50,10 @@ public class GameScene extends Scene {
         entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
         
-        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100);
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
         bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
-        player.get(PlayerShoot.class).setEntityManager(entityManager);
-        player.get(PlayerShoot.class).setIOManager(io);
+        //player.get(PlayerShoot.class).setEntityManager(entityManager);
+        //player.get(PlayerShoot.class).setIOManager(io);
         io.getSound().soundOn();
         
         entityManager.addEntity(player,true);
@@ -83,6 +83,9 @@ public class GameScene extends Scene {
         	sceneManager.setScene(3);
         }
 
+        if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
+            shoot();
+        }
         
         
         float delta = Gdx.graphics.getDeltaTime();
@@ -133,7 +136,7 @@ public class GameScene extends Scene {
     }
     
     //methods
-    /*
+    
     private void shoot() {
         Transform pt = player.get(Transform.class);
         if (pt == null) return;
@@ -147,5 +150,5 @@ public class GameScene extends Scene {
 
         entityManager.addEntity(newBullet, true);
 
-    }*/
+    }
 }

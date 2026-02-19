@@ -26,6 +26,7 @@ public class PauseScene extends Scene {
     
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
+		
         //font = new BitmapFont();
         //batch = new SpriteBatch();
         

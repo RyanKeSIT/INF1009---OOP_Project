@@ -8,23 +8,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.UI.*;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
-import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class StartScene extends Scene {
-	//private Texture image;
-	//private SpriteBatch batch;
-    //private BitmapFont font;
-    //private EntityManager entityManager = new EntityManager();
     
 	public StartScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
-		//image = new Texture("libgdx.png");
-        //font = new BitmapFont();
-        //batch = new SpriteBatch();
-        
         
         entityManager.addEntity(new Text(300, 300, 200, 50, "Space Invaders", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {

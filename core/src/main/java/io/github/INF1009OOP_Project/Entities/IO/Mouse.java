@@ -12,11 +12,11 @@ public class Mouse {
 
 	// stores pressed buttons
 	private Set<Integer> mousePressed;
-//	private Set<Integer> mouseJustPressed;
+	//	private Set<Integer> mouseJustPressed;
 
 	public Mouse() {
 		mousePressed = new HashSet<>();
-//		mouseJustPressed = new HashSet<>();
+		//mouseJustPressed = new HashSet<>();
 	}
 
 	public void update() {

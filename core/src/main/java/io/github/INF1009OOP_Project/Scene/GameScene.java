@@ -16,51 +16,28 @@ import io.github.INF1009OOP_Project.UI.Text;
 
 
 public class GameScene extends Scene {
-	//private SpriteBatch batch;
-    //private Entity player,bullet;
-	
-	//private Texture image;
     private ShapeRenderer shape;
-    //private EntityManager entityManager;
     private Entity player,bullet;
-    //private BitmapFont font;
     private Texture playerTexture;
     private Texture bulletTexture;
+    private Texture obstacleTexture;
     
 	public GameScene(SceneManager sceneManager, IOManager io) {
         super(sceneManager, io);
-        //entityManager = new EntityManager();
-        //batch = new SpriteBatch();
         shape = new ShapeRenderer();
-        //image = new Texture("libgdx.png");
-        //font = new BitmapFont();
-        //player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
-        //bullet = new Bullet(20,100,70,70,100);
-        playerTexture = new Texture(Gdx.files.internal("bucket.png"));
-        bulletTexture = new Texture(Gdx.files.internal("droplet.png"));
-        
+        playerTexture = new Texture(Gdx.files.internal("Ship.png"));
+        bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
+        obstacleTexture = new Texture(Gdx.files.internal("bucket.png"));
+        		
         entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
         
         player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
-        bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
-        //player.get(PlayerShoot.class).setEntityManager(entityManager);
-        //player.get(PlayerShoot.class).setIOManager(io);
+        bullet = EntityFactory.createObstacle(100, 400, 70, 70, obstacleTexture);
         io.getSound().soundOn();
         
         entityManager.addEntity(player,true);
         entityManager.addEntity(bullet,true);
-        
-        
-        /*Gdx.input.setInputProcessor(new InputAdapter() {
-        	@Override
-        	public boolean keyDown (int keycode) {
-        		if(keycode == Keys.SPACE) {
-        			((Player)player).shoot();
-        		}
-        		return false;
-        	}
-        });*/
     }
 
     @Override
@@ -81,13 +58,6 @@ public class GameScene extends Scene {
         
         
         float delta = Gdx.graphics.getDeltaTime();
-        /*
-        if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-        // if (io.getKeyboard().isKeyPressed(Keys.SPACE)) {
-            shoot();
-            io.getSound().playShootingSound();
-        }
-        }*/
         entityManager.updateEntities(delta);
     }
 
@@ -100,12 +70,6 @@ public class GameScene extends Scene {
         batch.begin();
         batch.end();
     	
-    	// Keyboard, Mouse, Sound test
-    	
-    	//batch.begin();
-    	//batch.draw(image, 140, 210);
-    	//batch.end();
-    	// entityManager.updateEntities(delta);
     	entityManager.draw(batch);
     	
     	//visualize bounds hitbox

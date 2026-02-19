@@ -54,6 +54,7 @@ public class GameScene extends Scene {
 
         if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
             shoot();
+            io.getSound().playShootingSound();
         }
         
         

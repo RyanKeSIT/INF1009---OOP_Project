@@ -4,11 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
 import io.github.INF1009OOP_Project.Entities.Entity;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class PlayerMovement extends Movement{
 	
+	private IOManager io;
+	
 	public PlayerMovement(Entity entity, float speed) {
         super(entity, speed);
+    }
+	
+	public void setIOManager(IOManager io) {
+        this.io = io;
     }
 	
 	@Override
@@ -20,16 +27,16 @@ public class PlayerMovement extends Movement{
         float vx = 0f;
         
         // Move left
-        if (Gdx.input.isKeyPressed(Keys.LEFT) && transform.getX() > 50) {
+        if (io.getKeyboard().isKeyPressed(Keys.LEFT) && transform.getX() > 50) {
             vx = -speed;
         }
 
         // Move right
-        if (Gdx.input.isKeyPressed(Keys.RIGHT) && transform.getX() < (Gdx.graphics.getWidth() - 50)) {
+        if (io.getKeyboard().isKeyPressed(Keys.RIGHT) && transform.getX() < (Gdx.graphics.getWidth() - 50)) {
             vx = speed;
         }
         
-     // Apply velocity , physics body will move the transform
+        // Apply velocity , physics body will move the transform
         pb.setVelocity(vx, 0f);
         
     }

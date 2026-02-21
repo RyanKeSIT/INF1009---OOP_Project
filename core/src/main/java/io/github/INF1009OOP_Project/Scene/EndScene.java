@@ -1,35 +1,18 @@
 package io.github.INF1009OOP_Project.Scene;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.UI.Button;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
-import io.github.INF1009OOP_Project.IOManager;
-import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class EndScene extends Scene {
-	private SpriteBatch batch;
-    private BitmapFont font;
-    private EntityManager entityManager = new EntityManager();
-
-    private IOManager io = new IOManager();
     
-	public EndScene(SceneManager sceneManager) {
-		super(sceneManager);
-        font = new BitmapFont();
-        batch = new SpriteBatch();
-        
+	public EndScene(SceneManager sceneManager, IOManager io) {
+		super(sceneManager, io);
         
          entityManager.addEntity(new Button(300,300, 150, 50,"Main Menu", 20, font, new ClickEvent() {
         	 @Override
@@ -38,19 +21,12 @@ public class EndScene extends Scene {
         		 sceneManager.setScene(0);
         	 }
          }), false);
-     
-        
 	}
 
 	@Override
 	public void update() {
-
-		io.update();
-		
-		
-		
-		
-		if (io.getMouse().mousePressed(Buttons.LEFT)) {
+		entityManager.updateEntities(0);
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {  
 	    	    Clickable c = entity.get(Clickable.class);
 	    	    if (c!=null) {
@@ -60,16 +36,13 @@ public class EndScene extends Scene {
 	    	    }
 	    	}
 		}
+		
 	}
 
 	@Override
 	public void render() {
-		
-		
-		
-		
-		ScreenUtils.clear(0,0,1,0);
-		
+
+		ScreenUtils.clear(0,0,1,0);		
 		entityManager.draw(batch);
 	}
 

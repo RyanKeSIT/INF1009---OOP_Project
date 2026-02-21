@@ -1,45 +1,28 @@
+
 package io.github.INF1009OOP_Project.Scene;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.UI.*;
 import io.github.INF1009OOP_Project.UI.ClickEvent;
-import io.github.INF1009OOP_Project.IOManager;
-import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
 
 public class StartScene extends Scene {
-	private Texture image;
-	private SpriteBatch batch;
-    private BitmapFont font;
-    private EntityManager entityManager = new EntityManager();
-
-    private IOManager io = new IOManager();
     
-	public StartScene(SceneManager sceneManager) {
-		super(sceneManager);
-		image = new Texture("libgdx.png");
-        font = new BitmapFont();
-        batch = new SpriteBatch();
-        
+	public StartScene(SceneManager sceneManager, IOManager io) {
+		super(sceneManager, io);
         
         entityManager.addEntity(new Text(300, 300, 200, 50, "Space Invaders", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {
         	 @Override
         	 public void onClick(){
         		 System.out.println("Start button clicked");
-        		 sceneManager.setScene(1);
+        		 startNewGame();
         	 }
         }), false);
      
@@ -48,16 +31,16 @@ public class StartScene extends Scene {
 
 	@Override
 	public void update() {
-
-		io.update();
 		
+		io.update();
+		entityManager.updateEntities(0);
 		// switch to game scene
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.setScene(1); 
 		}
 		
 		
-		if (io.getMouse().mousePressed(Buttons.LEFT)) {
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {  
 	    	    Clickable c = entity.get(Clickable.class);
 	    	    if (c!=null) {
@@ -69,12 +52,17 @@ public class StartScene extends Scene {
 		}
 	}
 
+	private void startNewGame() {
+        // Get GameScene and reset it
+        GameScene gameScene = (GameScene) sceneManager.getScene(1);
+        gameScene.resetGame();
+        sceneManager.setScene(1);
+
+	}
+	
 	@Override
 	public void render() {
-		
-		
-		
-		
+
 		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 		
 		entityManager.draw(batch);

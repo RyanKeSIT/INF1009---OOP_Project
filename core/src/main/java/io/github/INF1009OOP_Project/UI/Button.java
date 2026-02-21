@@ -19,8 +19,6 @@ public class Button extends Entity{
 	private BitmapFont font;
 	private float fontSize;
 
-	
-	
 	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f, ClickEvent e){
 		super();
         this.add(new Transform(x, y, w, h));
@@ -38,11 +36,6 @@ public class Button extends Entity{
 		this.getFont().setColor(this.textColor);
 		this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
 	}
-	
-	
-	
-	
-	
 	
 	public boolean isOutline() {
 		return isOutline;

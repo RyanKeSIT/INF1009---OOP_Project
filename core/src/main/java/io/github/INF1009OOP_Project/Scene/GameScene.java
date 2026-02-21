@@ -1,90 +1,57 @@
 package io.github.INF1009OOP_Project.Scene;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import io.github.INF1009OOP_Project.IOManager;
 import io.github.INF1009OOP_Project.Collision.*;
 import io.github.INF1009OOP_Project.Entities.*;
 import io.github.INF1009OOP_Project.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Entities.IO.IOManager;
+import io.github.INF1009OOP_Project.UI.Text;
 
 
 public class GameScene extends Scene {
-	private SpriteBatch batch;
-    //private Entity player,bullet;
-	
-    private Texture image;
     private ShapeRenderer shape;
-    private EntityManager entityManager;
-    private IOManager io = new IOManager();
     private Entity player,bullet;
-
     private Texture playerTexture;
     private Texture bulletTexture;
+    private Texture obstacleTexture;
     
-	public GameScene(SceneManager sceneManager) {
-        super(sceneManager);
-        entityManager = new EntityManager();
-        batch = new SpriteBatch();
+	public GameScene(SceneManager sceneManager, IOManager io) {
+        super(sceneManager, io);
         shape = new ShapeRenderer();
-        image = new Texture("libgdx.png");
-        //player = new Player(100,100,100,100, new Texture(Gdx.files.internal("bucket.png")),100);
-        //bullet = new Bullet(20,100,70,70,100);
-        playerTexture = new Texture(Gdx.files.internal("bucket.png"));
-        bulletTexture = new Texture(Gdx.files.internal("droplet.png"));
-
-        player = EntityFactory.createPlayer(100,100,100,100, playerTexture, 100);
-        bullet = EntityFactory.createObstacle(100, 400, 70, 70, bulletTexture);
-        
+        playerTexture = new Texture(Gdx.files.internal("Ship.png"));
+        bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
+        obstacleTexture = new Texture(Gdx.files.internal("bucket.png"));
+        		
         io.getSound().soundOn();
-        
-        entityManager.addEntity(player,true);
-        entityManager.addEntity(bullet,true);
-        
-        
-        
-        /*Gdx.input.setInputProcessor(new InputAdapter() {
-        	@Override
-        	public boolean keyDown (int keycode) {
-        		if(keycode == Keys.SPACE) {
-        			((Player)player).shoot();
-        		}
-        		return false;
-        	}
-        });*/
+        initializeGame();
     }
 
     @Override
     public void update() {
-    	io.update();
     	// switch to end scene
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
             sceneManager.setScene(2); 
         }
-        // TODO: Change to use IOManager
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+
+        if(io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
         	System.out.println("Pause game");
         	sceneManager.setScene(3);
         }
-        
+
+        if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
+            shoot();
+            io.getSound().playShootingSound();
+        }
         
         
         float delta = Gdx.graphics.getDeltaTime();
-
-        if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-            shoot();
-        }
         entityManager.updateEntities(delta);
     }
 
@@ -97,12 +64,6 @@ public class GameScene extends Scene {
         batch.begin();
         batch.end();
     	
-    	// Keyboard, Mouse, Sound test
-    	
-    	//batch.begin();
-    	//batch.draw(image, 140, 210);
-    	//batch.end();
-    	// entityManager.updateEntities(delta);
     	entityManager.draw(batch);
     	
     	//visualize bounds hitbox
@@ -125,6 +86,29 @@ public class GameScene extends Scene {
     }
     
     //methods
+    
+    private void initializeGame() {
+        // clear old entities first
+        entityManager.clearAll();
+        
+        //UI
+        entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
+        
+        //create player and bullet
+        player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
+        bullet = EntityFactory.createObstacle(100, 400, 70, 70, obstacleTexture);
+        
+        entityManager.addEntity(player,true);
+        entityManager.addEntity(bullet,true);
+        
+    }
+    
+    //acts as getter method for initializeGame so startscene can access
+    public void resetGame() {
+        initializeGame();
+    }
+    
     private void shoot() {
         Transform pt = player.get(Transform.class);
         if (pt == null) return;
@@ -139,4 +123,6 @@ public class GameScene extends Scene {
         entityManager.addEntity(newBullet, true);
 
     }
+    
+    
 }

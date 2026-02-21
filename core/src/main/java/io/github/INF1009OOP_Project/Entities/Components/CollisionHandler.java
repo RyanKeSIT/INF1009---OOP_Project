@@ -1,6 +1,7 @@
-package io.github.INF1009OOP_Project.Entities;
+package io.github.INF1009OOP_Project.Entities.Components;
 import io.github.INF1009OOP_Project.Collision.Collidable;
-import io.github.INF1009OOP_Project.Entities.Components.Component;
+import io.github.INF1009OOP_Project.Entities.Entity;
+import io.github.INF1009OOP_Project.Entities.EntityCollidableAdapter;
 
 public class CollisionHandler implements Component{
 	private Entity entity;

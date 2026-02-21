@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Entities.IO;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -10,7 +10,7 @@ public class Mouse {
 	private int x;
 	private int y;
 
-	// stores pressed button
+	// stores pressed buttons
 	private Set<Integer> mousePressed;
 
 	public Mouse() {
@@ -20,6 +20,7 @@ public class Mouse {
 	public void update() {
 		x = Gdx.input.getX();
 		y = Gdx.input.getY();
+
 		mousePressed.clear();
 
 		if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
@@ -35,7 +36,8 @@ public class Mouse {
 		return Gdx.graphics.getHeight() - y;
 	}
 
-	public boolean mousePressed(int button) {
+	public boolean isMousePressed(int button) {
 		return mousePressed.contains(button);
 	}
+	
 }

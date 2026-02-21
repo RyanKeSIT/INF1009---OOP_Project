@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.github.INF1009OOP_Project.Entities.Entity;
 
+//This component is used to help render the object using a texture
 public class Renderable implements Component{
     private Texture texture;
     private Entity entity;

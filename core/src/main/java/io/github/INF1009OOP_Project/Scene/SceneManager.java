@@ -11,14 +11,12 @@ public class SceneManager {
     public void addScene(Scene s) {
         sceneList.add(s);
     }
+    
+    public Scene getScene(int index) {
+        return sceneList.get(index);
+    }
 
     public void setScene(int index) {
-    	// clean up old scene before switching scene
-        //if (currentScene != null) {
-            //currentScene.dispose();
-        //}
-    	
-        // get new scene
         currentScene = sceneList.get(index);
     }
 

@@ -17,7 +17,7 @@ public class StartScene extends Scene {
 	public StartScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
         
-        entityManager.addEntity(new Text(300, 300, 200, 50, "Space Invaders", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Text(200, 400, 200, 50, "Abstract Engine Demo", 50,Color.WHITE, font), false);
         entityManager.addEntity(new Button(100,300, 100, 50,"Start", 20, font, new ClickEvent() {
         	 @Override
         	 public void onClick(){

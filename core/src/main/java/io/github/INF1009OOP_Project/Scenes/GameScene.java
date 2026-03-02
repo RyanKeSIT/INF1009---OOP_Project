@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.EntityFactory;
-import io.github.INF1009OOP_Project.Abstract.Collision.*;
-import io.github.INF1009OOP_Project.Abstract.Entities.*;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.PhysicsBody;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.Transform;
-import io.github.INF1009OOP_Project.Abstract.Entities.UI.Text;
-import io.github.INF1009OOP_Project.Abstract.IO.IOManager;
-import io.github.INF1009OOP_Project.Abstract.Scene.Scene;
-import io.github.INF1009OOP_Project.Abstract.Scene.SceneManager;
+import io.github.INF1009OOP_Project.Engine.Collision.*;
+import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
+import io.github.INF1009OOP_Project.Engine.IO.IOManager;
+import io.github.INF1009OOP_Project.Engine.Scene.Scene;
+import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 
 
 public class GameScene extends Scene {

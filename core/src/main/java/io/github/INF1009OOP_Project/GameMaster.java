@@ -1,7 +1,7 @@
 package io.github.INF1009OOP_Project;
 
-import io.github.INF1009OOP_Project.Abstract.IO.IOManager;
-import io.github.INF1009OOP_Project.Abstract.Scene.*;
+import io.github.INF1009OOP_Project.Engine.IO.IOManager;
+import io.github.INF1009OOP_Project.Engine.Scene.*;
 import io.github.INF1009OOP_Project.Scenes.EndScene;
 import io.github.INF1009OOP_Project.Scenes.GameScene;
 import io.github.INF1009OOP_Project.Scenes.PauseScene;

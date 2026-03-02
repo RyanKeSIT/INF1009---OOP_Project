@@ -6,12 +6,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import io.github.INF1009OOP_Project.Abstract.Entities.*;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.Clickable;
-import io.github.INF1009OOP_Project.Abstract.Entities.UI.*;
-import io.github.INF1009OOP_Project.Abstract.IO.IOManager;
-import io.github.INF1009OOP_Project.Abstract.Scene.Scene;
-import io.github.INF1009OOP_Project.Abstract.Scene.SceneManager;
+import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.UI.*;
+import io.github.INF1009OOP_Project.Engine.IO.IOManager;
+import io.github.INF1009OOP_Project.Engine.Scene.Scene;
+import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 
 public class StartScene extends Scene {
     

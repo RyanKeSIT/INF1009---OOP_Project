@@ -3,15 +3,15 @@ package io.github.INF1009OOP_Project;
 import com.badlogic.gdx.graphics.Texture;
 //use the static methods in scene to create our entities
 
-import io.github.INF1009OOP_Project.Abstract.Entities.Entity;
-import io.github.INF1009OOP_Project.Abstract.Entities.EntityManager;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.AIMovement;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.CollisionHandler;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.PhysicsBody;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.PlayerMovement;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.Renderable;
-import io.github.INF1009OOP_Project.Abstract.Entities.Components.Transform;
-import io.github.INF1009OOP_Project.Abstract.IO.IOManager;
+import io.github.INF1009OOP_Project.Engine.Entities.Entity;
+import io.github.INF1009OOP_Project.Engine.Entities.EntityManager;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 
 public class EntityFactory {
 	

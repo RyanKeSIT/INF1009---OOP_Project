@@ -16,13 +16,18 @@ public class EndScene extends Scene {
 	public EndScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
         
-         entityManager.addEntity(new Button(300,300, 150, 50,"Main Menu", 20, font, new ClickEvent() {
-        	 @Override
-        	 public void onClick(){
-        		 System.out.println("Main menu");
-        		 sceneManager.setScene(0);
-        	 }
-         }), false);
+		entityManager.addEntity(new Button(300, 300, 150, 50, "Main Menu", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Main menu");
+				// remove end scene
+				sceneManager.pop();
+				// remove game scene
+				sceneManager.pop();
+				// push start scene
+				sceneManager.push(new StartScene(sceneManager, io));
+			}
+		}), false);
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class EndScene extends Scene {
 
 	@Override
 	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
 

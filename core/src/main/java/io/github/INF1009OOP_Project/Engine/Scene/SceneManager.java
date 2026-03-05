@@ -1,35 +1,49 @@
 package io.github.INF1009OOP_Project.Engine.Scene;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 public class SceneManager {
-	
-    private Scene currentScene;
-    
-	private ArrayList<Scene> sceneList = new ArrayList<>();
+ 
+    private Stack<Scene> stack = new Stack<>();
 
-    public void addScene(Scene s) {
-        sceneList.add(s);
-    }
-    
-    public Scene getScene(int index) {
-        return sceneList.get(index);
+    // add a new scene on top of the stack
+    public void push(Scene scene) {
+        stack.push(scene);
     }
 
-    public void setScene(int index) {
-        currentScene = sceneList.get(index);
+    // remove the top scene
+    public void pop() {
+        if (!stack.isEmpty()) {
+            stack.pop();
+        }
+    }
+
+    // return the top scene without removing it
+    public Scene peek() {
+        if (!stack.isEmpty()) {
+            return stack.peek();
+        }
+        return null;
+    }
+
+    
+    public void update() {
+        if (!stack.isEmpty()) {
+            stack.peek().update();
+        }
     }
 
     public void render() {
-        if (currentScene != null) {
-            currentScene.update();
-            currentScene.render();
-        }
-    }
+        if (!stack.isEmpty()) {
+        	 int startIndex = stack.size() - 1;
 
-    public void dispose() {
-    	for (Scene scene : sceneList) {
-            scene.dispose();
-        }
+             while (startIndex > 0 && stack.get(startIndex).isOverlay()) {
+                 startIndex--;
+             }
+
+             for (int i = startIndex; i < stack.size(); i++) {
+                 stack.get(i).render();
+             }
+        }  
     }
 }

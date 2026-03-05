@@ -2,9 +2,6 @@ package io.github.INF1009OOP_Project;
 
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.*;
-import io.github.INF1009OOP_Project.Scenes.EndScene;
-import io.github.INF1009OOP_Project.Scenes.GameScene;
-import io.github.INF1009OOP_Project.Scenes.PauseScene;
 import io.github.INF1009OOP_Project.Scenes.StartScene;
 
 public class GameMaster  {
@@ -16,22 +13,22 @@ public class GameMaster  {
 		sceneManager = new SceneManager();
 		io = new IOManager();
 
-		// add scenes
-		sceneManager.addScene(new StartScene(sceneManager, io));
-		sceneManager.addScene(new GameScene(sceneManager, io));
-		sceneManager.addScene(new EndScene(sceneManager, io));
-		sceneManager.addScene(new PauseScene(sceneManager, io));
-
-		// set scene to start scene
-		sceneManager.setScene(0);
+		io.getSound().soundOn();
+		
+		// push start scene 
+        sceneManager.push(new StartScene(sceneManager, io));
 	}
 
 	public void render() {
 		io.update();
-		sceneManager.render();
+		sceneManager.update(); 
+        sceneManager.render();
+	
 	}
 
 	public void dispose() {
-		sceneManager.dispose();
+		while (sceneManager.peek() != null) {
+			sceneManager.pop();
+		}
 	}
 }

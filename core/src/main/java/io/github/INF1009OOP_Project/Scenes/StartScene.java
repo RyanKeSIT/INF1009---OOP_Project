@@ -24,6 +24,7 @@ public class StartScene extends Scene {
         	 public void onClick(){
         		 System.out.println("Start button clicked");
         		 startNewGame();
+        	
         	 }
         }), false);
      
@@ -34,10 +35,13 @@ public class StartScene extends Scene {
 	public void update() {
 		
 		io.update();
+		
 		entityManager.updateEntities(0);
-		// switch to game scene
+		
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
-			sceneManager.setScene(1); 
+			sceneManager.pop();
+			// push game scene
+            sceneManager.push(new GameScene(sceneManager, io));
 		}
 		
 		
@@ -53,12 +57,19 @@ public class StartScene extends Scene {
 		}
 	}
 
-	private void startNewGame() {
+	
+	//private void startNewGame() {
         // Get GameScene and reset it
-        GameScene gameScene = (GameScene) sceneManager.getScene(1);
-        gameScene.resetGame();
-        sceneManager.setScene(1);
+        //GameScene gameScene = (GameScene) sceneManager.getScene(1);
+        //gameScene.resetGame();
+        //sceneManager.setScene(1);
 
+	//}
+	
+	private void startNewGame() {
+	    sceneManager.pop();
+	    // push game scene
+	    sceneManager.push(new GameScene(sceneManager, io));
 	}
 	
 	@Override
@@ -71,7 +82,9 @@ public class StartScene extends Scene {
 
 	@Override
 	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
+
 
 }

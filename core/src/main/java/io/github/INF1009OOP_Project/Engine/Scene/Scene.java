@@ -29,5 +29,8 @@ public abstract class Scene {
 	public abstract void render();
 
 	public abstract void dispose();
-
+	
+	public boolean isOverlay() {
+		return false;
+	}
 }

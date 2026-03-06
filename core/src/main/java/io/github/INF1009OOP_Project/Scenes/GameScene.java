@@ -38,14 +38,16 @@ public class GameScene extends Scene {
 
     @Override
     public void update() {
-    	// switch to end scene
+    	
         if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
-            sceneManager.setScene(2); 
+            // if player die or game ends, push end scene
+        	 sceneManager.push(new EndScene(sceneManager, io));
         }
 
         if(io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
         	System.out.println("Pause game");
-        	sceneManager.setScene(3);
+        	// push pause scene
+        	 sceneManager.push(new PauseScene(sceneManager, io));
         }
 
         if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
@@ -83,10 +85,7 @@ public class GameScene extends Scene {
         shape.end();
     }
 
-    @Override
-    public void dispose() {
-       
-    }
+
     
     //methods
     
@@ -126,6 +125,12 @@ public class GameScene extends Scene {
         entityManager.addEntity(newBullet, true);
 
     }
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
     
     
 }

@@ -1,5 +1,7 @@
 package io.github.INF1009OOP_Project.Scenes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.EntityFactory;
+import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
@@ -22,7 +25,8 @@ public class GameScene extends Scene {
     private Texture playerTexture;
     private Texture bulletTexture;
     private Texture obstacleTexture;
-    private String[] questions;
+    private ArrayList<MathOperations> questions;
+    private boolean currentQuestionActive;
     private Entity player, bullet, bucket;
     private float consoleTimer;
 
@@ -63,21 +67,28 @@ public class GameScene extends Scene {
         // Wait a bit until the question renders
         consoleTimer += delta;
         System.out.println(consoleTimer);
-        if (consoleTimer > 5) {
+        // Render questions
+        if (consoleTimer > 5 && !currentQuestionActive) {
+            currentQuestionActive = true;
             // Create questions as obstacles
-            float max = 4;
-            for (float i = 0, x = 0; i < max; i++) {
+            for (float i = 0, x = 0; i < questions.size(); i++) {
                 // Register text question
-                if (i == 0)
+                if (i == 0) {
+                    // Get current question
+                    MathOperations ops = questions.get((int) i);
+                    // Render current question
                     entityManager.addEntity(
-                            new Text(100, 400, 200, 50, "Q: THIS IS A TEST QUESTION...", 25, Color.WHITE, font), false);
+                            new Text(100, 400, 200, 50, "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25,
+                                    Color.WHITE, font),
+                            false);
+                }
 
                 // Create a question block as an entity
                 Entity questionEntity = EntityFactory.createObstacle(x, 300, 50, 50, obstacleTexture);
                 // Get extents
                 Bounds pqe = questionEntity.get(PhysicsBody.class).getBounds();
                 // Evenly spread x through entire game bound
-                x += 750 / max + pqe.getWidth();
+                x += 750 / questions.size() + pqe.getWidth();
 
                 // Register entity
                 entityManager.addEntity(questionEntity, true);
@@ -86,7 +97,7 @@ public class GameScene extends Scene {
             consoleTimer = 0;
         }
 
-        //
+        // Detect collision
     }
 
     @Override
@@ -120,7 +131,17 @@ public class GameScene extends Scene {
         entityManager.addEntity(new Text(400, 0, 200, 50, "Escape to pause!", 20, Color.WHITE, font), false);
         entityManager.addEntity(new Text(400, 25, 200, 50, "Enter to end game!", 20, Color.WHITE, font), false);
 
-        // Add questions
+        // Add questions now
+        float max = 3;
+        String[] ops = { "+", "-", "*", "/" };
+        for (int i = 0; i < max; i++) {
+            // Dynamically generate numbers and their answers
+            int firstNum = (int) (Math.random() * 11); // 0 - 10
+            int secondNum = (int) (Math.random() * 10) + 1; // 1 - 10
+            int opsNum = (int) (Math.random() * 4); // 0 - 3
+
+            questions.add(new MathOperations(firstNum, secondNum, ops[opsNum]));
+        }
 
         // Create player
         player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, bulletTexture, entityManager, 100, io);

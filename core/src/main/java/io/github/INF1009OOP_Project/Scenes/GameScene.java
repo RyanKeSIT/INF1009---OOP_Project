@@ -25,9 +25,9 @@ public class GameScene extends Scene {
     private Texture playerTexture;
     private Texture bulletTexture;
     private Texture obstacleTexture;
-    private ArrayList<MathOperations> questions;
-    private boolean currentQuestionActive;
-    private Entity player, bullet, bucket;
+    private ArrayList<MathOperations> questions = new ArrayList<>();
+    private int currentQuestionNumber;
+    private Entity player;
     private float consoleTimer;
 
     public GameScene(SceneManager sceneManager, IOManager io) {
@@ -44,12 +44,10 @@ public class GameScene extends Scene {
 
     @Override
     public void update() {
-
         if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
             // if player die or game ends, push end scene
             sceneManager.push(new EndScene(sceneManager, io));
         }
-
         if (io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
             System.out.println("Pause game");
             // push pause scene
@@ -66,34 +64,46 @@ public class GameScene extends Scene {
 
         // Wait a bit until the question renders
         consoleTimer += delta;
-        System.out.println(consoleTimer);
-        // Render questions
-        if (consoleTimer > 5 && !currentQuestionActive) {
-            currentQuestionActive = true;
-            // Create questions as obstacles
-            for (float i = 0, x = 0; i < questions.size(); i++) {
-                // Register text question
-                if (i == 0) {
-                    // Get current question
-                    MathOperations ops = questions.get((int) i);
-                    // Render current question
-                    entityManager.addEntity(
-                            new Text(100, 400, 200, 50, "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25,
-                                    Color.WHITE, font),
-                            false);
+        // Render every 5 seconds
+        if (consoleTimer > 5) {
+            // Only render questions if question is not active
+            if (currentQuestionNumber == -1) {
+                // Get 1 question first
+                currentQuestionNumber = (int) (Math.random() * questions.size()); // 0 - question size
+                MathOperations ops = questions.get(currentQuestionNumber);
+                // Render question
+                entityManager.addEntity(
+                        new Text(100, 400, 200, 50,
+                                "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25,
+                                Color.WHITE, font),
+                        false);
+                // Get the 4 random and correct answers and render them at index
+                int x;
+                for (int i = 0; i < 3; i++) {
+                    String wrongAns = ops.getWrongAns().get(i).toString();
+                    x += (int) 750 / 3;
+                    entityManager.addEntity(new Text(x, 300, 50, 50, wrongAns, 25, font), true);
                 }
-
-                // Create a question block as an entity
-                Entity questionEntity = EntityFactory.createObstacle(x, 300, 50, 50, obstacleTexture);
-                // Get extents
-                Bounds pqe = questionEntity.get(PhysicsBody.class).getBounds();
-                // Evenly spread x through entire game bound
-                x += 750 / questions.size() + pqe.getWidth();
-
-                // Register entity
-                entityManager.addEntity(questionEntity, true);
             }
+            // Check for collision to change currentQuestionNumber to -1
 
+            // If done, pop question and set current question number to -1
+            if (currentQuestionNumber == -1)
+                questions.remove(currentQuestionNumber);
+            // Repeat
+
+            // // Create a question block as an entity
+            // Entity questionEntity = EntityFactory.createObstacle(x, 300, 50, 50,
+            // obstacleTexture);
+            // // Get extents
+            // Bounds pqe = questionEntity.get(PhysicsBody.class).getBounds();
+            // // Evenly spread x through entire game bound
+            // x += 750 / questions.size() + pqe.getWidth();
+
+            // // Register entity
+            // entityManager.addEntity(questionEntity, true);
+
+            // Reset 5 second timer
             consoleTimer = 0;
         }
 
@@ -133,14 +143,22 @@ public class GameScene extends Scene {
 
         // Add questions now
         float max = 3;
-        String[] ops = { "+", "-", "*", "/" };
+        String[] ops = { "+", "-", "x", "/" };
         for (int i = 0; i < max; i++) {
             // Dynamically generate numbers and their answers
             int firstNum = (int) (Math.random() * 11); // 0 - 10
             int secondNum = (int) (Math.random() * 10) + 1; // 1 - 10
-            int opsNum = (int) (Math.random() * 4); // 0 - 3
+            String operation = ops[(int) (Math.random() * 4)]; // 0 - 3
+            // For division only, generate perfectly dividable integers
+            if (operation == "/") {
+                secondNum = (int) (Math.random() * 10) + 1; // 1 to 10
+                int answer = (int) (Math.random() * 10) + 1; // 1 to 10
 
-            questions.add(new MathOperations(firstNum, secondNum, ops[opsNum]));
+                firstNum = secondNum * answer;
+            }
+
+            MathOperations operations = new MathOperations(firstNum, secondNum, operation);
+            questions.add(operations);
         }
 
         // Create player

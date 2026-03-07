@@ -25,7 +25,9 @@ public class GameScene extends Scene {
     private Texture bulletTexture;
     private Texture obstacleTexture;
     
-	public GameScene(SceneManager sceneManager, IOManager io) {
+    private int qnCount = 10;
+    
+	public GameScene(SceneManager sceneManager, IOManager io, boolean[] options) {
         super(sceneManager, io);
         shape = new ShapeRenderer();
         playerTexture = new Texture(Gdx.files.internal("Ship.png"));

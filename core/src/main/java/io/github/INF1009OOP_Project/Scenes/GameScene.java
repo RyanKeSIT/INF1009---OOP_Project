@@ -196,17 +196,17 @@ public class GameScene extends Scene {
 
         // Add questions now
         if (questions.isEmpty()) {
-            float max = 3;
+            float max = 3; // Number of questions
             String[] ops = { "+", "-", "x", "/" };
             for (int i = 0; i < max; i++) {
                 // Dynamically generate numbers and their answers
-                int firstNum = (int) (Math.random() * 11); // 0 - 10
-                int secondNum = (int) (Math.random() * 10) + 1; // 1 - 10
+                int firstNum = (int) (Math.random() * 101); // 0 - 100
+                int secondNum = (int) (Math.random() * 100) + 1; // 1 - 100
                 String operation = ops[(int) (Math.random() * 4)]; // 0 - 3
                 // For division only, generate perfectly divisible integers
-                if (operation == "/") {
-                    secondNum = (int) (Math.random() * 10) + 1; // 1 to 10
-                    int answer = (int) (Math.random() * 10) + 1; // 1 to 10
+                if (operation.equals("/")) {
+                    secondNum = (int) (Math.random() * 100) + 1; // 1 to 100
+                    int answer = (int) (Math.random() * 100) + 1; // 1 to 100
 
                     firstNum = secondNum * answer;
                 }

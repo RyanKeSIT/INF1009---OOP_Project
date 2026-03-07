@@ -200,13 +200,13 @@ public class GameScene extends Scene {
             String[] ops = { "+", "-", "x", "/" };
             for (int i = 0; i < max; i++) {
                 // Dynamically generate numbers and their answers
-                int firstNum = (int) (Math.random() * 101); // 0 - 100
-                int secondNum = (int) (Math.random() * 100) + 1; // 1 - 100
+                int firstNum = (int) (Math.random() * 21); // 0 - 20
+                int secondNum = (int) (Math.random() * 20) + 1; // 1 - 20
                 String operation = ops[(int) (Math.random() * 4)]; // 0 - 3
                 // For division only, generate perfectly divisible integers
                 if (operation.equals("/")) {
-                    secondNum = (int) (Math.random() * 100) + 1; // 1 to 100
-                    int answer = (int) (Math.random() * 100) + 1; // 1 to 100
+                    secondNum = (int) (Math.random() * 20) + 1; // 1 to 20
+                    int answer = (int) (Math.random() * 20) + 1; // 1 to 20
 
                     firstNum = secondNum * answer;
                 }

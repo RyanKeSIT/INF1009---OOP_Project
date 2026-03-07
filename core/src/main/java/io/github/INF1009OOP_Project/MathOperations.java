@@ -1,6 +1,6 @@
 package io.github.INF1009OOP_Project;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class MathOperations {
     int a;
@@ -35,12 +35,18 @@ public class MathOperations {
         }
 
         // Generate 3 other unique wrong answers
-        while (this.wrongAns.size() < 3) {
+        Set<Integer> usedWrongAns = new HashSet<>();
+        usedWrongAns.add(this.ans);
+        int maxAttempts = 100;
+        int currentAttemptNo = 0;
+
+        while (this.wrongAns.size() < 3 && currentAttemptNo < maxAttempts) {
             int alternateAns = generateRandomInteger();
+            currentAttemptNo++;
 
             // Number must not be the correct answer and must not already be in the wrongAns
             // list
-            if (alternateAns != this.ans && !this.wrongAns.contains(alternateAns))
+            if (usedWrongAns.add(alternateAns))
                 this.wrongAns.add(alternateAns);
         }
     }

@@ -34,20 +34,20 @@ public class MathOperations {
                 break;
         }
 
-        // Generate 3 other wrong answers
-        for (int i = 0; i < 3; i++) {
+        // Generate 3 other unique wrong answers
+        while (this.wrongAns.size() < 3) {
             int alternateAns = generateRandomInteger();
-            // Only accept if it is NOT the answer, else just increment the current number
-            if (this.ans != alternateAns)
+
+            // Number must not be the correct answer and must not already be in the wrongAns
+            // list
+            if (alternateAns != this.ans && !this.wrongAns.contains(alternateAns))
                 this.wrongAns.add(alternateAns);
-            else
-                this.wrongAns.add(generateRandomInteger());
         }
     }
 
     Integer generateRandomInteger() {
-        // 0 - (a * b)
-        return (int) (Math.random() * this.a * this.b);
+        // 0 - (a * b + b), where
+        return (int) (Math.random() * Math.max(this.a * this.b + this.b, this.a + 10));
     }
 
     public Integer getA() {

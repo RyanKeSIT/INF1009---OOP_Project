@@ -13,8 +13,10 @@ import io.github.INF1009OOP_Project.EntityFactory;
 import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
@@ -26,7 +28,7 @@ public class GameScene extends Scene {
     private Texture bulletTexture;
     private Texture obstacleTexture;
     private ArrayList<MathOperations> questions = new ArrayList<>();
-    private int currentQuestionNumber;
+    private int currentQuestionNumber = -1;
     private Entity player;
     private float consoleTimer;
 
@@ -64,8 +66,15 @@ public class GameScene extends Scene {
 
         // Wait a bit until the question renders
         consoleTimer += delta;
-        // Render every 5 seconds
-        if (consoleTimer > 5) {
+        // Render every 3 seconds
+        if (consoleTimer > 3) {
+            // Check if there are no more questions, then show main menu (won!)
+            if (questions.isEmpty()) {
+                sceneManager.push(new EndScene(sceneManager, io));
+                consoleTimer = 0;
+                return;
+            }
+
             // Only render questions if question is not active
             if (currentQuestionNumber == -1) {
                 // Get 1 question first
@@ -74,40 +83,84 @@ public class GameScene extends Scene {
                 // Render question
                 entityManager.addEntity(
                         new Text(100, 400, 200, 50,
-                                "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25,
+                                "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB()
+                                        + " = " + " ?",
+                                25,
                                 Color.WHITE, font),
                         false);
+                entityManager.addEntity(
+                        new Text(100, 425, 200, 50, questions.size() + " questions left...", 25, Color.WHITE, font),
+                        false);
+
                 // Get the 4 random and correct answers and render them at index
-                int x;
-                for (int i = 0; i < 3; i++) {
-                    String wrongAns = ops.getWrongAns().get(i).toString();
-                    x += (int) 750 / 3;
-                    entityManager.addEntity(new Text(x, 300, 50, 50, wrongAns, 25, font), true);
+                int maxAnswerLength = 4;
+                int correctAnswerIndex = (int) (Math.random() * 4); // 0 - 3
+                int wrongAnswerIndex = 0;
+                int imageWidth = 50;
+                for (int i = 0; i < maxAnswerLength; i++) {
+                    // Equally distribute space and add offset
+                    int x = (int) Gdx.graphics.getWidth() / maxAnswerLength * i + imageWidth;
+
+                    if (i == correctAnswerIndex) {
+                        // Render correct answer
+                        String correctAns = ops.getAns().toString();
+
+                        // Render actual collidable
+                        Entity correctAnswerEntity = EntityFactory.createObstacle(x, 300, imageWidth, imageWidth,
+                                obstacleTexture);
+                        correctAnswerEntity.add(new CollisionHandler(correctAnswerEntity, (self, other) -> {
+                            if (other.has(AIMovement.class)) {
+                                // Check if hit by bullet
+                                if (currentQuestionNumber != -1) {
+                                    questions.remove(currentQuestionNumber);
+                                    currentQuestionNumber = -1;
+
+                                    // Clear buckets and text only, don't reset player
+                                    entityManager.clearAll();
+                                    // Re-add player (don't create new)
+                                    entityManager.addEntity(player, true);
+                                    // Re-add UI
+                                    entityManager.addEntity(
+                                            new Text(400, 0, 200, 50, "Escape to pause!", 20, Color.WHITE, font),
+                                            false);
+                                    entityManager.addEntity(
+                                            new Text(400, 25, 200, 50, "Enter to end game!", 20, Color.WHITE, font),
+                                            false);
+                                }
+                            }
+                        }));
+                        entityManager.addEntity(correctAnswerEntity, true);
+                        // Render text
+                        entityManager.addEntity(new Text(x, 300, imageWidth, imageWidth, correctAns, 25, font), false);
+                    } else {
+                        // Fix for wrong answer index
+                        if (i > wrongAnswerIndex)
+                            wrongAnswerIndex = i - 1;
+                        else
+                            wrongAnswerIndex = i;
+
+                        // Render wrong answer
+                        String wrongAns = ops.getWrongAns().get(wrongAnswerIndex).toString();
+
+                        // Render actual collidable
+                        Entity wrongAnswerEntity = EntityFactory.createObstacle(x, 300, imageWidth, imageWidth,
+                                obstacleTexture);
+                        wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {
+                            if (other.has(AIMovement.class)) {
+                                // Game Over
+                                sceneManager.push(new EndScene(sceneManager, io));
+                            }
+                        }));
+                        entityManager.addEntity(wrongAnswerEntity, true);
+                        // Render text
+                        entityManager.addEntity(new Text(x, 300, imageWidth, imageWidth, wrongAns, 25, font), false);
+                    }
                 }
             }
-            // Check for collision to change currentQuestionNumber to -1
-
-            // If done, pop question and set current question number to -1
-            if (currentQuestionNumber == -1)
-                questions.remove(currentQuestionNumber);
-            // Repeat
-
-            // // Create a question block as an entity
-            // Entity questionEntity = EntityFactory.createObstacle(x, 300, 50, 50,
-            // obstacleTexture);
-            // // Get extents
-            // Bounds pqe = questionEntity.get(PhysicsBody.class).getBounds();
-            // // Evenly spread x through entire game bound
-            // x += 750 / questions.size() + pqe.getWidth();
-
-            // // Register entity
-            // entityManager.addEntity(questionEntity, true);
 
             // Reset 5 second timer
             consoleTimer = 0;
         }
-
-        // Detect collision
     }
 
     @Override
@@ -142,23 +195,24 @@ public class GameScene extends Scene {
         entityManager.addEntity(new Text(400, 25, 200, 50, "Enter to end game!", 20, Color.WHITE, font), false);
 
         // Add questions now
-        float max = 3;
-        String[] ops = { "+", "-", "x", "/" };
-        for (int i = 0; i < max; i++) {
-            // Dynamically generate numbers and their answers
-            int firstNum = (int) (Math.random() * 11); // 0 - 10
-            int secondNum = (int) (Math.random() * 10) + 1; // 1 - 10
-            String operation = ops[(int) (Math.random() * 4)]; // 0 - 3
-            // For division only, generate perfectly dividable integers
-            if (operation == "/") {
-                secondNum = (int) (Math.random() * 10) + 1; // 1 to 10
-                int answer = (int) (Math.random() * 10) + 1; // 1 to 10
+        if (questions.isEmpty()) {
+            float max = 3;
+            String[] ops = { "+", "-", "x", "/" };
+            for (int i = 0; i < max; i++) {
+                // Dynamically generate numbers and their answers
+                int firstNum = (int) (Math.random() * 11); // 0 - 10
+                int secondNum = (int) (Math.random() * 10) + 1; // 1 - 10
+                String operation = ops[(int) (Math.random() * 4)]; // 0 - 3
+                // For division only, generate perfectly divisible integers
+                if (operation == "/") {
+                    secondNum = (int) (Math.random() * 10) + 1; // 1 to 10
+                    int answer = (int) (Math.random() * 10) + 1; // 1 to 10
 
-                firstNum = secondNum * answer;
+                    firstNum = secondNum * answer;
+                }
+
+                questions.add(new MathOperations(firstNum, secondNum, operation));
             }
-
-            MathOperations operations = new MathOperations(firstNum, secondNum, operation);
-            questions.add(operations);
         }
 
         // Create player

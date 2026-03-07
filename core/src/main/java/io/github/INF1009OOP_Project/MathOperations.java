@@ -36,14 +36,21 @@ public class MathOperations {
 
         // Generate 3 other wrong answers
         for (int i = 0; i < 3; i++) {
-            int alternateAns = (int) (Math.random() * 101); // 0 - 100
-            // Only accept if it is NOT the answer
+            int alternateAns = generateRandomInteger();
+            // Only accept if it is NOT the answer, else just increment the current number
             if (this.ans != alternateAns)
                 this.wrongAns.add(alternateAns);
+            else
+                this.wrongAns.add(generateRandomInteger());
         }
     }
 
-    public int getA() {
+    Integer generateRandomInteger() {
+        // 0 - (a * b)
+        return (int) (Math.random() * this.a * this.b);
+    }
+
+    public Integer getA() {
         return a;
     }
 
@@ -51,11 +58,11 @@ public class MathOperations {
         return ops;
     }
 
-    public int getB() {
+    public Integer getB() {
         return b;
     }
 
-    public int getAns() {
+    public Integer getAns() {
         return ans;
     }
 

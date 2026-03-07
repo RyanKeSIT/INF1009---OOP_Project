@@ -12,13 +12,15 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 //made minimal changes to implement new entity system
 public class Button extends Entity{
 	public static Texture white1x1 = new Texture("white1x1.png");
+	public static Texture gray1x1 = new Texture("gray1x1.png");
 	private boolean isOutline = false;
 	private String text;
-	private Color backgroundColor;
-	private Color textColor = Color.BLACK;
+	protected Texture background = white1x1;
+	protected Color textColor = Color.BLACK;
 	private BitmapFont font;
 	private float fontSize;
-
+	private boolean hidden = false;
+	
 	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f, ClickEvent e){
 		super();
         this.add(new Transform(x, y, w, h));
@@ -30,11 +32,24 @@ public class Button extends Entity{
 	}
 	
 	public void draw(SpriteBatch sb) {
-        Transform tr = get(Transform.class);
-		sb.draw(white1x1, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
-		font.getData().setScale(fontSize/14f);
-		this.getFont().setColor(this.textColor);
-		this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
+		if(!hidden) {
+			Transform tr = get(Transform.class);
+			sb.draw(background, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
+			font.getData().setScale(fontSize/14f);
+			this.getFont().setColor(this.textColor);
+			this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
+			
+		}
+	}
+	
+	
+	public void show() {
+		hidden = false;
+		this.get(Clickable.class).enable();
+	}
+	public void hide() {
+		hidden = true;
+		this.get(Clickable.class).disable();
 	}
 	
 	public boolean isOutline() {
@@ -49,11 +64,11 @@ public class Button extends Entity{
 	public void setText(String text) {
 		this.text = text;
 	}
-	public Color getBackgroundColor() {
-		return backgroundColor;
+	public Texture getBackground() {
+		return background;
 	}
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
+	public void setBackground(Texture background) {
+		this.background = background;
 	}
 	public Color getTextColor() {
 		return textColor;

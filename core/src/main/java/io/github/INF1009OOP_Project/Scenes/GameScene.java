@@ -30,9 +30,10 @@ public class GameScene extends Scene {
     private ArrayList<MathOperations> questions = new ArrayList<>();
     private int currentQuestionNumber = -1;
     private Entity player;
-    private float consoleTimer;
-
-    public GameScene(SceneManager sceneManager, IOManager io) {
+    private float consoleTimer;    
+    private int qnCount = 10;
+    
+	public GameScene(SceneManager sceneManager, IOManager io, boolean[] options) {
         super(sceneManager, io);
 
         shape = new ShapeRenderer();
@@ -196,9 +197,8 @@ public class GameScene extends Scene {
 
         // Add questions now
         if (questions.isEmpty()) {
-            float max = 3; // Number of questions
             String[] ops = { "+", "-", "x", "/" };
-            for (int i = 0; i < max; i++) {
+            for (int i = 0; i < qnCount; i++) {
                 // Dynamically generate numbers and their answers
                 int firstNum = (int) (Math.random() * 21); // 0 - 20
                 int secondNum = (int) (Math.random() * 20) + 1; // 1 - 20

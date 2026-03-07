@@ -12,19 +12,38 @@ public class Mouse {
 
 	// stores pressed buttons
 	private Set<Integer> mousePressed;
-
+	
+	private int lmbCD = 0;
+	private int rmbCD = 0;
+	
 	public Mouse() {
 		mousePressed = new HashSet<>();
 	}
 
 	public void update() {
+		if(lmbCD > 0) {
+			lmbCD --;
+		}
+		if(rmbCD > 0) {
+			rmbCD --;
+		}
+		
 		x = Gdx.input.getX();
 		y = Gdx.input.getY();
 
 		mousePressed.clear();
 
 		if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			mousePressed.add(Buttons.LEFT);
+			if(lmbCD == 0) {
+				mousePressed.add(Buttons.LEFT);				
+				lmbCD = 10;
+			}
+		}
+		else if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+			if(rmbCD == 0) {
+				mousePressed.add(Buttons.RIGHT);				
+				rmbCD = 10;
+			}
 		}
 	}
 

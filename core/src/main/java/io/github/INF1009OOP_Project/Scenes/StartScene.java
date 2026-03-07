@@ -34,15 +34,10 @@ public class StartScene extends Scene {
 	@Override
 	public void update() {
 		
-		io.update();
+		
 		
 		entityManager.updateEntities(0);
 		
-		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
-			sceneManager.pop();
-			// push game scene
-            sceneManager.push(new GameScene(sceneManager, io));
-		}
 		
 		
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
@@ -69,7 +64,7 @@ public class StartScene extends Scene {
 	private void startNewGame() {
 	    sceneManager.pop();
 	    // push game scene
-	    sceneManager.push(new GameScene(sceneManager, io));
+	    sceneManager.push(new ModeSelectionScene(sceneManager, io));
 	}
 	
 	@Override

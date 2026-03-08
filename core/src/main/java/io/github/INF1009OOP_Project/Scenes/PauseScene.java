@@ -17,12 +17,22 @@ public class PauseScene extends Scene {
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
 
+		// Resume Game Button
 		entityManager.addEntity(new Button(100, 300, 100, 50, "Resume", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
 				System.out.println("Resume game");
 				// remove pause scene, game scene underneath will resume
 				sceneManager.pop();
+			}
+		}), false);
+		
+		// Main Menu Button
+		entityManager.addEntity(new Button(100, 200, 150, 50, "Main Menu", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Go to Main Menu");
+				sceneManager.push(new StartScene(sceneManager, io));
 			}
 		}), false);
 	}

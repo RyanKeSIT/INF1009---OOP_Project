@@ -1,6 +1,7 @@
 package io.github.INF1009OOP_Project.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,8 +11,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.INF1009OOP_Project.EntityFactory;
 import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
+import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
@@ -46,17 +50,25 @@ public class GameScene extends Scene {
         	 sceneManager.push(new EndScene(sceneManager, io));
         }
 
-        if(io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
-        	System.out.println("Pause game");
-        	// push pause scene
-        	 sceneManager.push(new PauseScene(sceneManager, io));
-        }
+//        if(io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
+//        	System.out.println("Pause game");
+//        	// push pause scene
+//        	 sceneManager.push(new PauseScene(sceneManager, io));
+//        }
 
         if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
             shoot();
             io.getSound().playShootingSound();
         }
         
+        if (io.getMouse().isMousePressed(Buttons.LEFT)) {
+            for (Entity entity : entityManager.getEntities()) {
+                Clickable c = entity.get(Clickable.class);
+                if (c != null && c.isHover(io.getMouse().getX(), io.getMouse().getY())) {
+                    c.onClick();
+                }
+            }
+        }
         
         float delta = Gdx.graphics.getDeltaTime();
         entityManager.updateEntities(delta);
@@ -87,8 +99,6 @@ public class GameScene extends Scene {
         shape.end();
     }
 
-
-    
     //methods
     
     private void initializeGame() {
@@ -96,8 +106,8 @@ public class GameScene extends Scene {
         entityManager.clearAll();
         
         //UI
-        entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
-        entityManager.addEntity(new Text(300, 400, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
+        // entityManager.addEntity(new Text(300, 300, 200, 50, "Escape to pause!", 50,Color.WHITE, font), false);
+        entityManager.addEntity(new Text(300, 300, 200, 50, "Enter to end game!", 50,Color.WHITE, font), false);
         
         //create player and bullet
         player = EntityFactory.createPlayer(100,100,100,100, playerTexture,bulletTexture,entityManager, 100, io);
@@ -106,6 +116,22 @@ public class GameScene extends Scene {
         entityManager.addEntity(player,true);
         entityManager.addEntity(bullet,true);
         
+        // Pause button position (bottom right)
+        float pw = 70;
+        float ph = 70;
+        float padding = 10;
+
+        float px = Gdx.graphics.getWidth() - pw - padding;
+        float py = padding;  // bottom edge plus padding
+        
+        Button pauseButton = new Button(px, py, pw, ph, "Pause", 20, font, new ClickEvent() {
+            @Override
+            public void onClick() {
+                System.out.println("Pause game");
+                sceneManager.push(new PauseScene(sceneManager, io));
+            }
+        });
+        entityManager.addEntity(pauseButton, false);
     }
     
     //acts as getter method for initializeGame so startscene can access

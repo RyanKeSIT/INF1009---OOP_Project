@@ -70,11 +70,11 @@ public class GameScene extends Scene {
 			sceneManager.push(new EndScene(sceneManager, io,score));
 		}
 
-		if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
+		//if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			shoot();
 			if (io.getSound() != null)
 				io.getSound().playShootingSound();
-
 		}
 
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
@@ -304,7 +304,7 @@ public class GameScene extends Scene {
 		}
 
 		// Create player
-		player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, bulletTexture, entityManager, 200, io);
+		player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, entityManager, 200, io);
 		// Register player entity
 		entityManager.addEntity(player, true);
 		

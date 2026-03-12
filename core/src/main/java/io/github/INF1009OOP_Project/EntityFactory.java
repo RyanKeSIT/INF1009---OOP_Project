@@ -14,8 +14,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 
 public class EntityFactory {
-	public static Entity createPlayer(float x, float y, float width, float height, Texture playerTexture,
-			Texture bulletTexture, EntityManager entityManager, float speed, IOManager io) {
+	public static Entity createPlayer(float x, float y, float width, float height, Texture playerTexture, EntityManager entityManager, float speed, IOManager io) {
 		Entity player = new Entity();
 		// add components
 		player.add(new Transform(x, y, width, height));

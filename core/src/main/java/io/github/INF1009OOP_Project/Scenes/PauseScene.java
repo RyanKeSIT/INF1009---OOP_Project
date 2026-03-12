@@ -17,6 +17,7 @@ public class PauseScene extends Scene {
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
 
+		// Resume Game Button
 		entityManager.addEntity(new Button(100, 300, 100, 50, "Resume", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {

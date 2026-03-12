@@ -14,6 +14,7 @@ import io.github.INF1009OOP_Project.EntityFactory;
 import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
@@ -53,26 +54,27 @@ public class GameScene extends Scene {
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
 		obstacleTexture = new Texture(Gdx.files.internal("bucket.png"));
-		io.getSound().soundOn();
 
+		if (!io.getSound().isMuted()) {
+			io.getSound().soundOn();
+		}
 		initializeGame();
 	}
 
 	@Override
 	public void update() {
+		io.update();
+
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			// if player die or game ends, push end scene
 			sceneManager.push(new EndScene(sceneManager, io,score));
 		}
-		// if (io.getKeyboard().isKeyPressed(Keys.ESCAPE)) {
-		// System.out.println("Pause game");
-		// push pause scene
-		// sceneManager.push(new PauseScene(sceneManager, io));
-		// }
 
 		if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
 			shoot();
-			io.getSound().playShootingSound();
+			if (io.getSound() != null)
+				io.getSound().playShootingSound();
+
 		}
 
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
@@ -267,6 +269,14 @@ public class GameScene extends Scene {
 		// clear old entities first
 		entityManager.clearAll();
 
+		// Pause button position (bottom right)
+		float pw = 70;
+		float ph = 70;
+		float padding = 10;
+
+		float px = Gdx.graphics.getWidth() - pw - padding;
+		float py = padding; // bottom edge plus padding
+
 		// UI
 		// entityManager.addEntity(new Text(400, 0, 200, 50, "Escape to pause!", 20,
 		// Color.WHITE, font), false);
@@ -326,6 +336,20 @@ public class GameScene extends Scene {
 		});
 		entityManager.addEntity(pauseButton, false);
 
+		// Settings button position (beside pause button)
+		float sw = 90;
+		float sh = 70;
+		float sx = px - sw - padding;
+		float sy = padding;
+
+		Button settingButton = new Button(sx, sy, sw, sh, "Settings", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Settings");
+				sceneManager.push(new SettingScene(sceneManager, io));
+			}
+		});
+		entityManager.addEntity(settingButton, false);
 	}
 
 	// acts as getter method for initializeGame so startscene can access

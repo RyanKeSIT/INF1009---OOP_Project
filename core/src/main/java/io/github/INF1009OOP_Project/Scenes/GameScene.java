@@ -38,6 +38,7 @@ public class GameScene extends Scene {
 	private Entity player;
 	private float consoleTimer;
 	private int qnCount = 10;
+	private float cooldownTimer = 2f;
 
 	private int score = 0;
 	// max score is fixed
@@ -67,14 +68,17 @@ public class GameScene extends Scene {
 
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			// if player die or game ends, push end scene
-			sceneManager.push(new EndScene(sceneManager, io,score));
+			sceneManager.push(new EndScene(sceneManager, io, score));
 		}
 
-		//if (io.getKeyboard().isKeyJustPressed(Keys.SPACE)) {
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+		cooldownTimer -= Gdx.graphics.getDeltaTime();
+
+		if (io.getKeyboard().isKeyJustPressed(Keys.SPACE) && cooldownTimer <= 0) {
+		// if (Gdx.input.isKeyJustPressed(Keys.SPACE) && cooldownTimer <= 0) {
 			shoot();
 			if (io.getSound() != null)
 				io.getSound().playShootingSound();
+			cooldownTimer = 2f; // reset cooldown timer to 2s
 		}
 
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
@@ -90,18 +94,18 @@ public class GameScene extends Scene {
 		float delta = Gdx.graphics.getDeltaTime();
 		entityManager.updateEntities(delta);
 
-        // update timer
-        gameTimer -= delta;
+		// update timer
+		gameTimer -= delta;
 
-        if (gameTimer <= 0) {
-            sceneManager.push(new EndScene(sceneManager, io, score));
-        }
+		if (gameTimer <= 0) {
+			sceneManager.push(new EndScene(sceneManager, io, score));
+		}
 
-        // format timer
-        int mins = (int)(gameTimer / 60);
-        int sec = (int)(gameTimer % 60);
+		// format timer
+		int mins = (int) (gameTimer / 60);
+		int sec = (int) (gameTimer % 60);
 
-        timerText.setText("Time: " + String.format("%02d:%02d", mins, sec)); 
+		timerText.setText("Time: " + String.format("%02d:%02d", mins, sec));
 
 		// Wait a bit until the question renders
 		consoleTimer += delta;
@@ -109,7 +113,7 @@ public class GameScene extends Scene {
 		if (consoleTimer > 3) {
 			// Check if there are no more questions, then show main menu (won!)
 			if (questions.isEmpty()) {
-				sceneManager.push(new EndScene(sceneManager, io,score));
+				sceneManager.push(new EndScene(sceneManager, io, score));
 				consoleTimer = 0;
 				return;
 			}
@@ -195,7 +199,7 @@ public class GameScene extends Scene {
 						// Render actual collidable
 						Entity wrongAnswerEntity = EntityFactory.createObstacle(x, 300, imageWidth, imageWidth,
 								obstacleTexture);
-						
+
 						wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {
 							if (other.has(AIMovement.class)) {
 
@@ -215,7 +219,7 @@ public class GameScene extends Scene {
 									entityManager.addEntity(scoreText, false);
 
 									// add pause button again
-									
+
 									Button pauseButton = new Button(20, 400, 70, 70, "Pause", 20, font,
 											new ClickEvent() {
 												@Override
@@ -307,19 +311,18 @@ public class GameScene extends Scene {
 		player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, entityManager, 200, io);
 		// Register player entity
 		entityManager.addEntity(player, true);
-		
+
 		// timer
-        timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50,
-                200, 50, "Time: 10:00", 25, Color.WHITE, font);
-        entityManager.addEntity(timerText, false);
+		timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50, 200, 50, "Time: 10:00", 25,
+				Color.WHITE, font);
+		entityManager.addEntity(timerText, false);
 
-        // score
-        scoreText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 80,
-                200, 50, "Score: 0/10", 25, Color.WHITE, font);
-        entityManager.addEntity(scoreText, false);
+		// score
+		scoreText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 80, 200, 50, "Score: 0/10", 25,
+				Color.WHITE, font);
+		entityManager.addEntity(scoreText, false);
 
-
-		// Pause button position (bottom right)
+		// Pause button position
 		// float pw = 70;
 		// float ph = 70;
 		// float padding = 10;
@@ -337,12 +340,12 @@ public class GameScene extends Scene {
 		entityManager.addEntity(pauseButton, false);
 
 		// Settings button position (beside pause button)
-		float sw = 90;
-		float sh = 70;
-		float sx = px - sw - padding;
-		float sy = padding;
+//		float sw = 90;
+//		float sh = 70;
+//		float sx = px - sw - padding;
+//		float sy = padding;
 
-		Button settingButton = new Button(sx, sy, sw, sh, "Settings", 20, font, new ClickEvent() {
+		Button settingButton = new Button(100, 400, 70, 70, "Settings", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
 				System.out.println("Settings");

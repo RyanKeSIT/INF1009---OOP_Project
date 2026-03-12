@@ -40,10 +40,10 @@ public class Keyboard {
 	public boolean isKeyPressed(int key) {
 		return keysPressed.contains(key);
 	}
-	
-    public boolean isKeyJustPressed(int key) {
-        return keysPressed.contains(key) && ! keysJustPressed.contains(key);
-    }
+
+	public boolean isKeyJustPressed(int key) {
+		return keysJustPressed.contains(key);
+	}
 
 	public void keyPressed(int key) {
 		keysPressed.add(key);

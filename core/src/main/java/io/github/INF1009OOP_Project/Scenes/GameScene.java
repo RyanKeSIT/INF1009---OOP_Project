@@ -294,7 +294,7 @@ public class GameScene extends Scene {
 		}
 
 		// Create player
-		player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, bulletTexture, entityManager, 100, io);
+		player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, bulletTexture, entityManager, 200, io);
 		// Register player entity
 		entityManager.addEntity(player, true);
 		

@@ -15,23 +15,24 @@ import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
+import io.github.INF1009OOP_Project.Entities.UI.ModeCheckbox;
+import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
 
 public class GameScene extends Scene {
     private ShapeRenderer shape;
     private Texture playerTexture;
     private Texture bulletTexture;
-    private Texture obstacleTexture;
-    private ArrayList<MathOperations> questions = new ArrayList<>();
+    private ModeCheckbox[] questionOps;
+    private QuestionsFactory qnsF;
+    private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
     private int currentQuestionNumber = -1;
     private Entity player;
     private float consoleTimer;
@@ -46,13 +47,13 @@ public class GameScene extends Scene {
     private Text scoreText;
     private Text timerText;
 
-    public GameScene(SceneManager sceneManager, IOManager io, boolean[] options) {
+    public GameScene(SceneManager sceneManager, IOManager io, ModeCheckbox[] options) {
         super(sceneManager, io);
 
+        this.questionOps = options;
         shape = new ShapeRenderer();
         playerTexture = new Texture(Gdx.files.internal("Ship.png"));
         bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
-        obstacleTexture = new Texture(Gdx.files.internal("bucket.png"));
 
         if (!io.getSound().isMuted()) {
             io.getSound().soundOn();
@@ -108,7 +109,7 @@ public class GameScene extends Scene {
         // Render every 3 seconds
         if (consoleTimer > 3) {
             // Check if there are no more questions, then show main menu (won!)
-            if (questions.isEmpty()) {
+            if (qnsF.getQuestions().isEmpty()) {
                 sceneManager.push(new EndScene(sceneManager, io, score));
                 consoleTimer = 0;
                 return;
@@ -116,120 +117,40 @@ public class GameScene extends Scene {
 
             // Only render questions if question is not active
             if (currentQuestionNumber == -1) {
-
                 // Get 1 question first
-                currentQuestionNumber = MathUtils.random(0, questions.size() - 1); // 0 - question size
-                MathOperations ops = questions.get(currentQuestionNumber);
-                // Render question
-                entityManager.addEntity(new Text(200, 400, 200, 50,
-                        "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25, Color.WHITE,
-                        font), false);
-                entityManager.addEntity(
-                        new Text(200, 425, 200, 50, questions.size() + " questions left...", 25, Color.WHITE, font),
-                        false);
+                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestions().size() - 1); // 0 - question size
+                MathOperations ops = qnsF.getQuestions().get(currentQuestionNumber);
 
-                // Get the 4 random and correct answers and render them at index
-                int maxAnswerLength = 4;
-                int correctAnswerIndex = MathUtils.random(0, 3); // 0 - 3
-                int wrongAnswerIndex = 0;
-                int imageWidth = 50;
-                for (int i = 0; i < maxAnswerLength; i++) {
-                    // Equally distribute space and add offset
-                    int x = (int) Gdx.graphics.getWidth() / maxAnswerLength * i + imageWidth;
+                // Generate question entities
+                ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(
+                        ops,
+                        qnsF.getQuestions().size(),
+                        font,
+                        () -> {
+                            if (currentQuestionNumber != -1) {
+                                qnsF.getQuestions().remove(currentQuestionNumber);
+                                currentQuestionNumber = -1;
 
-                    if (i == correctAnswerIndex) {
-                        // Render correct answer
-                        String correctAns = ops.getAns().toString();
+                                // increment score
+                                score++;
+                                scoreText.setText("Score: " + score + "/" + maxScore);
 
-                        // Render actual collidable
-                        Entity correctAnswerEntity = EntityFactory.createObstacle(x, 300, imageWidth, imageWidth,
-                                obstacleTexture);
-
-                        correctAnswerEntity.add(new CollisionHandler(correctAnswerEntity, (self, other) -> {
-                            if (other.has(AIMovement.class)) {
-
-                                if (currentQuestionNumber != -1) {
-
-                                    questions.remove(currentQuestionNumber);
-                                    currentQuestionNumber = -1;
-
-                                    // increment score
-                                    score++;
-                                    scoreText.setText("Score: " + score + "/" + maxScore);
-
-                                    entityManager.clearAll();
-
-                                    // Re-add player
-                                    entityManager.addEntity(player, true);
-
-                                    // add timer and score again
-                                    entityManager.addEntity(timerText, false);
-                                    entityManager.addEntity(scoreText, false);
-
-                                    // add pause button again
-                                    Button pauseButton = new Button(20, 400, 70, 70, "Pause", 20, font,
-                                            new ClickEvent() {
-                                                @Override
-                                                public void onClick() {
-                                                    sceneManager.push(new PauseScene(sceneManager, io));
-                                                }
-                                            });
-
-                                    entityManager.addEntity(pauseButton, false);
-                                }
+                                clearQuestionEntities();
                             }
-                        }));
-                        entityManager.addEntity(correctAnswerEntity, true);
+                        },
+                        () -> {
+                            if (currentQuestionNumber != -1) {
+                                qnsF.getQuestions().remove(currentQuestionNumber);
+                                currentQuestionNumber = -1;
 
-                        // Render text
-                        entityManager.addEntity(new Text(x, 300, imageWidth, imageWidth, correctAns, 25, font), false);
-                    } else {
-                        // Render wrong answer
-                        String wrongAns = ops.getWrongAns().get(wrongAnswerIndex).toString();
-                        wrongAnswerIndex++;
-
-                        // Render actual collidable
-                        Entity wrongAnswerEntity = EntityFactory.createObstacle(x, 300, imageWidth, imageWidth,
-                                obstacleTexture);
-
-                        wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {
-                            if (other.has(AIMovement.class)) {
-
-                                if (currentQuestionNumber != -1) {
-
-                                    questions.remove(currentQuestionNumber);
-                                    currentQuestionNumber = -1;
-
-                                    entityManager.clearAll();
-
-                                    // add player again
-                                    entityManager.addEntity(player, true);
-
-                                    // add timer and score again
-                                    entityManager.addEntity(timerText, false);
-
-                                    entityManager.addEntity(scoreText, false);
-
-                                    // add pause button again
-
-                                    Button pauseButton = new Button(20, 400, 70, 70, "Pause", 20, font,
-                                            new ClickEvent() {
-                                                @Override
-                                                public void onClick() {
-                                                    sceneManager.push(new PauseScene(sceneManager, io));
-                                                }
-                                            });
-
-                                    entityManager.addEntity(pauseButton, false);
-                                }
+                                clearQuestionEntities();
                             }
-                        }));
+                        });
 
-                        entityManager.addEntity(wrongAnswerEntity, true);
-
-                        // Render text
-                        entityManager.addEntity(new Text(x, 300, imageWidth, imageWidth, wrongAns, 25, font), false);
-                    }
+                // Add to both tracking list and entity manager
+                for (Entity e : qEntities) {
+                    currentQuestionEntities.add(e);
+                    entityManager.addEntity(e, e.has(PhysicsBody.class));
                 }
             }
 
@@ -264,25 +185,11 @@ public class GameScene extends Scene {
         // clear old entities first
         entityManager.clearAll();
 
-        // Add questions now
-        if (questions.isEmpty()) {
-            String[] ops = { "+", "-", "x", "/" };
-            for (int i = 0; i < qnCount; i++) {
-                // Dynamically generate numbers and their answers
-                int firstNum = MathUtils.random(0, 10); // 0 - 10
-                int secondNum = MathUtils.random(1, 10); // 1 - 10
-                String operation = ops[MathUtils.random(0, 3)]; // 0 - 3
-                // For division only, generate perfectly divisible integers
-                if (operation.equals("/")) {
-                    secondNum = MathUtils.random(1, 10); // 1 to 10
-                    int answer = MathUtils.random(1, 10); // 1 to 10
-
-                    firstNum = secondNum * answer;
-                }
-
-                questions.add(new MathOperations(firstNum, secondNum, operation));
-            }
-        }
+        // Clear old question entities
+        currentQuestionEntities.clear();
+        currentQuestionNumber = -1;
+        // Generate questions
+        qnsF = new QuestionsFactory(qnCount, questionOps);
 
         // Create player
         player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, entityManager, 200, io);
@@ -334,6 +241,13 @@ public class GameScene extends Scene {
         Entity newBullet = EntityFactory.createBullet(bx, by, 70, 70, 300, bulletTexture, entityManager);
 
         entityManager.addEntity(newBullet, true);
+    }
+
+    private void clearQuestionEntities() {
+        for (Entity e : currentQuestionEntities) {
+            entityManager.deleteEntity(e);
+        }
+        currentQuestionEntities.clear();
     }
 
     @Override

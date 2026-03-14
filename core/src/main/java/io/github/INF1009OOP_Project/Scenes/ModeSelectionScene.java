@@ -1,10 +1,7 @@
 package io.github.INF1009OOP_Project.Scenes;
 
-import java.util.Arrays;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -20,7 +17,7 @@ import io.github.INF1009OOP_Project.Entities.UI.ModeCheckbox;
 
 public class ModeSelectionScene extends Scene {
 	private ModeCheckbox add, sub, mult, div;
-	private boolean[] options = new boolean[4];
+	private ModeCheckbox[] options = new ModeCheckbox[4];
 	private Button startBtn;
 
 	public ModeSelectionScene(SceneManager sceneManager, IOManager io) {
@@ -59,12 +56,12 @@ public class ModeSelectionScene extends Scene {
 	@Override
 	public void update() {
 		entityManager.updateEntities(0);
-		options[0] = add.checked();
-		options[1] = sub.checked();
-		options[2] = mult.checked();
-		options[3] = div.checked();
+		options[0] = add;
+		options[1] = sub;
+		options[2] = mult;
+		options[3] = div;
 
-		if (options[0] || options[1] || options[2] || options[3]) {
+		if (options[0].checked() || options[1].checked() || options[2].checked() || options[3].checked()) {
 			startBtn.show();
 		} else {
 			startBtn.hide();

@@ -17,6 +17,7 @@ public class PauseScene extends Scene {
 	public PauseScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
 
+		// Resume Game Button
 		entityManager.addEntity(new Button(100, 300, 100, 50, "Resume", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
@@ -25,13 +26,20 @@ public class PauseScene extends Scene {
 				sceneManager.pop();
 			}
 		}), false);
+
+		entityManager.addEntity(new Button(100, 200, 150, 50, "Main Menu", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Go to Main Menu");
+				sceneManager.push(new StartScene(sceneManager, io));
+			}
+		}), false);
 	}
 
-	
 	@Override
 	public void update() {
 		entityManager.updateEntities(0);
-		
+
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.pop();
 		}
@@ -61,11 +69,10 @@ public class PauseScene extends Scene {
 		return true;
 	}
 
-
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

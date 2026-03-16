@@ -35,24 +35,15 @@ public class Keyboard {
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			keysPressed.add(Keys.SPACE);
 		}
-		
-		// for controls
-		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-            keysPressed.add(Keys.ENTER);
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            keysPressed.add(Keys.ESCAPE);
-        }
 	}
 
 	public boolean isKeyPressed(int key) {
 		return keysPressed.contains(key);
 	}
-	
-    public boolean isKeyJustPressed(int key) {
-        return keysPressed.contains(key) && ! keysJustPressed.contains(key);
-    }
+
+	public boolean isKeyJustPressed(int key) {
+		return keysJustPressed.contains(key);
+	}
 
 	public void keyPressed(int key) {
 		keysPressed.add(key);
@@ -63,11 +54,11 @@ public class Keyboard {
 	}
 
 	public boolean moveLeft() {
-		return Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A);
+		return isKeyPressed(Keys.LEFT) || isKeyPressed(Keys.A);
 	}
 
 	public boolean moveRight() {
-		return isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D);
+		return isKeyPressed(Keys.RIGHT) || isKeyPressed(Keys.D);
 	}
 
 	public boolean isShooting() {

@@ -35,12 +35,12 @@ public class EntityManager {
         entitiesToAdd = new ArrayList<>(); //This is done to add a buffer list for entities being added
         entitiesToRemove = new ArrayList<>(); //This is done to add a buffer list for entities being removed
 	}
-	
+
 	public ArrayList<Entity> getEntities() {
-	    return entityList;
+		return entityList;
 	}
-	
-	public void addEntity(Entity entity,boolean collision) {
+
+	public void addEntity(Entity entity, boolean collision) {
 		entitiesToAdd.add(entity);
 		if (collision) {
             // Check entity has PhysicsBody
@@ -64,7 +64,7 @@ public class EntityManager {
 			moveable.add(entity);
 		}
 	}
-	
+
 	public void deleteEntity(Entity entity) {
 		entitiesToRemove.add(entity);
 		EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
@@ -98,7 +98,7 @@ public class EntityManager {
 	    }
 	    entitiesToRemove.clear();
 	}
-	
+
 	public void clearAll() {
 	    // Unregister all collision adapters
 	    for (EntityCollidableAdapter adapter : collidableAdapters.values()) {
@@ -111,14 +111,11 @@ public class EntityManager {
 	    renderable.clear();
 	    moveable.clear();
 	}
-	
+
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 	    for (Entity entity : renderable) entity.draw(batch);
 	    batch.end();
 	}
-	
-	
-	
-	
+
 }

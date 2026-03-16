@@ -8,8 +8,8 @@ public class SoundManager {
 
 	private Music bgm;
 	private Sound shootingSound;
-
 	private float volume;
+	private boolean muted = false;
 
 	public SoundManager() {
 		volume = 0.5f;
@@ -25,19 +25,35 @@ public class SoundManager {
 	}
 
 	public void soundOn() {
-		bgm.play();
+		muted = false;
+
+		if (!bgm.isPlaying()) {
+			bgm.play();
+		}
 	}
 
 	public void soundOff() {
+		muted = true;
 		bgm.stop();
+		shootingSound.stop();
 	}
 
 	public void playShootingSound() {
-		shootingSound.play(volume);
+		if (!muted) {
+			shootingSound.play(volume);
+		}
 	}
 
 	public void setVolume(float volume) {
 		this.volume = volume;
 		bgm.setVolume(volume);
+	}
+
+	public float getVolume() {
+		return this.volume;
+	}
+
+	public boolean isMuted() {
+		return muted;
 	}
 }

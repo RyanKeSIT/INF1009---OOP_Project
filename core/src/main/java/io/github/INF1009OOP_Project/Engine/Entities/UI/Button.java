@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 //made minimal changes to implement new entity system
 public class Button extends Entity{
@@ -25,6 +26,7 @@ public class Button extends Entity{
 		super();
         this.add(new Transform(x, y, w, h));
         this.add(new Clickable(e, this.get(Transform.class)));
+        
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);

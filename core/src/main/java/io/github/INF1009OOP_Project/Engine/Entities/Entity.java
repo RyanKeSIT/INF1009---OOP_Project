@@ -30,6 +30,8 @@ public class Entity {
         return components.containsKey(componentClass);
     }
     
+    
+    
     //delete component from entity
     public <T extends Component> void remove(Class<T> componentClass) {
         components.remove(componentClass);

@@ -26,7 +26,20 @@ public class Button extends Entity{
 		super();
         this.add(new Transform(x, y, w, h));
         this.add(new Clickable(e, this.get(Transform.class)));
-        
+        this.add(new Renderable(this, null) {
+        	@Override
+        	public void draw(SpriteBatch sb) {
+        		
+        		if(!hidden) {
+        			Transform tr = get(Transform.class);
+        			sb.draw(background, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
+        			font.getData().setScale(fontSize/14f);
+        			getFont().setColor(textColor);
+        			getFont().draw(sb, getText(), tr.getX(), tr.getY() + (tr.getHeight() + fontSize/2f)/2f, tr.getWidth(), Align.center, false);
+        			
+        		}
+        	}
+        });
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);

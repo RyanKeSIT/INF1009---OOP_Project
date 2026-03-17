@@ -7,6 +7,7 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.github.INF1009OOP_Project.Engine.Collision.CollisionManager;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Movement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
@@ -19,8 +20,7 @@ public class EntityManager {
     private ArrayList<Entity> entitiesToAdd;
     private ArrayList<Entity> entitiesToRemove;
     
-    private ArrayList<Entity> renderable;
-    private ArrayList<Entity> moveable;
+   private ComponentManager componentManager;
     
     //map entity to collidable adapter for collision system
     private Map<Entity, EntityCollidableAdapter> collidableAdapters;
@@ -28,8 +28,9 @@ public class EntityManager {
     
 	public EntityManager() {
 		entityList = new ArrayList<>();
-		renderable = new ArrayList<>();
-		moveable = new ArrayList<>();
+		
+		componentManager = new ComponentManager();
+		
         collidableAdapters = new HashMap<>();
         this.collisionManager = new CollisionManager();
         entitiesToAdd = new ArrayList<>(); //This is done to add a buffer list for entities being added
@@ -42,6 +43,7 @@ public class EntityManager {
 
 	public void addEntity(Entity entity, boolean collision) {
 		entitiesToAdd.add(entity);
+		
 		if (collision) {
             // Check entity has PhysicsBody
             if (!entity.has(PhysicsBody.class)) {
@@ -56,13 +58,9 @@ public class EntityManager {
             collisionManager.registerEntity(adapter);  
         }
 		
+		componentManager.addComponents(entity);
 		
-		if(entity.has(Renderable.class) || entity.has(Transform.class)) {
-			renderable.add(entity);
-		}
-		if(entity.has(Movement.class) || entity.has(PlayerMovement.class) || entity.has(PhysicsBody.class)) {
-			moveable.add(entity);
-		}
+		
 	}
 
 	public void deleteEntity(Entity entity) {
@@ -72,16 +70,18 @@ public class EntityManager {
             collisionManager.deleteEntity(adapter);
         }
         
-        renderable.remove(entity);
-        moveable.remove(entity);
+        componentManager.removeComponents(entity);
 	}
 	
 	
 	public void updateEntities(float delta) {
-	    for (Entity entity : moveable) {
-	        entity.update(delta);
-	    }
-
+	    componentManager.updateComponent(Movement.class, delta);
+	    componentManager.updateComponent(PlayerMovement.class, delta);
+	    componentManager.updateComponent(AIMovement.class, delta);
+	    componentManager.updateComponent(PhysicsBody.class, delta);
+	    componentManager.updateComponent(Transform.class, delta);
+	    
+	    
 	    collisionManager.update();
 
 	    // Add queued entities
@@ -108,13 +108,12 @@ public class EntityManager {
 	    
 	    // Clear entity list
 	    entityList.clear();	   
-	    renderable.clear();
-	    moveable.clear();
+	    componentManager.clear();
 	}
 
 	public void draw(SpriteBatch batch) {
 		batch.begin();
-	    for (Entity entity : renderable) entity.draw(batch);
+		componentManager.draw(batch);
 	    batch.end();
 	}
 

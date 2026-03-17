@@ -36,6 +36,11 @@ public class ComponentManager {
 	public void removeComponents(Entity entity) {
 		 for (Component component : entity.get().values()) {
 			 components.get(component.getClass()).remove(component);
+			 Class<?> clazz = component.getClass().getSuperclass();
+		     while (clazz != null && Component.class.isAssignableFrom(clazz)) {
+		         components.get((Class<? extends Component>)clazz).remove(component);
+		         clazz = clazz.getSuperclass();
+		     }
 	     }
 	}
 	

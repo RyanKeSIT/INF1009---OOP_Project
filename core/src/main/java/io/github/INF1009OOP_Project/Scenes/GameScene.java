@@ -169,7 +169,7 @@ public class GameScene extends Scene {
         entityManager.draw(batch);
 
         // visualize bounds hitbox
-        shape.begin(ShapeRenderer.ShapeType.Line);
+        /*shape.begin(ShapeRenderer.ShapeType.Line);
         for (Entity entity : entityManager.getEntities()) {
             PhysicsBody pb = entity.get(PhysicsBody.class);
             if (pb != null) {
@@ -178,6 +178,7 @@ public class GameScene extends Scene {
             }
         }
         shape.end();
+        */
     }
 
     // methods

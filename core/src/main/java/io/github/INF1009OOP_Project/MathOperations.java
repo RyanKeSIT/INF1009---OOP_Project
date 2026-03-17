@@ -35,25 +35,16 @@ public class MathOperations {
         }
 
         // Generate 3 other unique wrong answers
-        Set<Integer> usedWrongAns = new HashSet<>();
-        usedWrongAns.add(this.ans);
-        int maxAttempts = 100;
-        int currentAttemptNo = 0;
+        int minValue = Math.min(0, this.ans - 10);
+        int maxValue = Math.max(this.a * this.b + this.b, this.a + 10);
+        List<Integer> pool = new ArrayList<>();
+        for (int i = minValue; i <= maxValue; i++)
+            if (i != this.ans)
+                pool.add(i);
 
-        while (this.wrongAns.size() < 3 && currentAttemptNo < maxAttempts) {
-            int alternateAns = generateRandomInteger();
-            currentAttemptNo++;
-
-            // Number must not be the correct answer and must not already be in the wrongAns
-            // list
-            if (usedWrongAns.add(alternateAns))
-                this.wrongAns.add(alternateAns);
-        }
-    }
-
-    Integer generateRandomInteger() {
-        // 0 - (a * b + b), where
-        return (int) (Math.random() * Math.max(this.a * this.b + this.b, this.a + 10));
+        Collections.shuffle(pool, new Random());
+        for (int i = 0; i < Math.min(3, pool.size()); i++)
+            this.wrongAns.add(pool.get(i));
     }
 
     public Integer getA() {

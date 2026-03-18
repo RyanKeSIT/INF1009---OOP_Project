@@ -51,7 +51,7 @@ public class QuestionsFactory {
     /**
      * Generates an arraylist of question entities (text and obstacles) for a given
      * question
-     * NOTE: These entities are not in the EntityManager, need to add them!!!
+     * NOTE: These entities are not in the EntityManager, need to add them afterwards yeah....
      */
     public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,
             BitmapFont font, Consumer<Entity> onCorrect, Consumer<Entity> onWrong) {

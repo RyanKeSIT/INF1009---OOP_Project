@@ -7,14 +7,15 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+// import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.INF1009OOP_Project.EntityFactory;
 import io.github.INF1009OOP_Project.MathOperations;
-import io.github.INF1009OOP_Project.Engine.Collision.*;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
@@ -126,24 +127,47 @@ public class GameScene extends Scene {
                         ops,
                         qnsF.getQuestions().size(),
                         font,
-                        () -> {
-                            if (currentQuestionNumber != -1) {
-                                qnsF.getQuestions().remove(currentQuestionNumber);
-                                currentQuestionNumber = -1;
+                        (enemy) -> {
+                            // Correct answer
+                            if (currentQuestionNumber == -1)
+                                return;
 
-                                // increment score
-                                score++;
-                                scoreText.setText("Score: " + score + "/" + maxScore);
+                            Health h = enemy.get(Health.class);
+                            if (h != null) {
+                                h.takeDamage(1);
 
-                                clearQuestionEntities();
+                                if (h.isDead()) {
+                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    currentQuestionNumber = -1;
+                                    score++;
+                                    scoreText.setText("Score: " + score + "/" + maxScore);
+
+                                    clearQuestionEntities();
+                                }
                             }
                         },
-                        () -> {
-                            if (currentQuestionNumber != -1) {
-                                qnsF.getQuestions().remove(currentQuestionNumber);
-                                currentQuestionNumber = -1;
+                        (enemy) -> {
+                            // Wrong answer
+                            if (currentQuestionNumber == -1)
+                                return;
 
-                                clearQuestionEntities();
+                            Health h = enemy.get(Health.class);
+                            if (h != null) {
+                                h.takeDamage(1);
+
+                                if (h.isDead()) {
+                                    Health ph = player.get(Health.class);
+                                    if (ph != null) {
+                                        ph.takeDamage(1);
+                                        if (ph.isDead())
+                                            sceneManager.push(new EndScene(sceneManager, io, score));
+                                    }
+
+                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    currentQuestionNumber = -1;
+
+                                    clearQuestionEntities();
+                                }
                             }
                         });
 
@@ -168,17 +192,34 @@ public class GameScene extends Scene {
 
         entityManager.draw(batch);
 
-        // visualize bounds hitbox
-        /*shape.begin(ShapeRenderer.ShapeType.Line);
+        // Render health bars
+        shape.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity entity : entityManager.getEntities()) {
-            PhysicsBody pb = entity.get(PhysicsBody.class);
-            if (pb != null) {
-                Bounds b = pb.getBounds();
-                shape.rect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+            Health h = entity.get(Health.class);
+            Transform t = entity.get(Transform.class);
+
+            if (h != null && t != null) {
+                float healthPercent = (float) h.getCurrentHealth() / h.getMaxHealth();
+                float barWidth = t.getWidth() * 0.8f;
+                float barHeight = 5;
+                float barX = t.getX() + (t.getWidth() - barWidth) / 2f;
+
+                // Red background bar
+                shape.setColor(Color.RED);
+                // Positioning of the health bar
+                float barY;
+                if (entity == player)
+                    barY = t.getY(); // Bottom for player
+                else
+                    barY = t.getY() + t.getHeight() + 5; // Top for enemies
+                shape.rect(barX, barY, barWidth, barHeight);
+
+                // Green health bar
+                shape.setColor(Color.GREEN);
+                shape.rect(barX, barY, barWidth * healthPercent, barHeight);
             }
         }
         shape.end();
-        */
     }
 
     // methods
@@ -189,7 +230,7 @@ public class GameScene extends Scene {
         // Clear old question entities
         currentQuestionEntities.clear();
         currentQuestionNumber = -1;
-        // Generate questions
+        // Generate questions and populate
         qnsF = new QuestionsFactory(qnCount, questionOps);
 
         // Create player
@@ -236,10 +277,10 @@ public class GameScene extends Scene {
         if (pt == null)
             return;
 
-        float bw = 70;
+        float bw = 50;
         float bx = pt.getX() + pt.getWidth() / 2f - bw / 2f;
         float by = 75 + pt.getY() + pt.getHeight() / 2f - 10; // add 75 for it to spawn slightly above player
-        Entity newBullet = EntityFactory.createBullet(bx, by, 70, 70, 300, bulletTexture, entityManager);
+        Entity newBullet = EntityFactory.createBullet(bx, by, bw, bw, 300, bulletTexture, entityManager);
 
         entityManager.addEntity(newBullet, true);
     }

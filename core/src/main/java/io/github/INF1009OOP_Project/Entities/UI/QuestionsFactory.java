@@ -1,6 +1,7 @@
 package io.github.INF1009OOP_Project.Entities.UI;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,7 +17,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 
 public class QuestionsFactory {
-    private ArrayList<MathOperations> questions = new ArrayList<>();
+    ArrayList<MathOperations> questions = new ArrayList<>();
 
     public QuestionsFactory(int numberOfQuestions, ModeCheckbox[] MCOps) {
         // Whitelist checked math operations
@@ -30,7 +31,6 @@ public class QuestionsFactory {
             int firstNum = MathUtils.random(0, 10); // 0 - 10
             int secondNum = MathUtils.random(1, 10); // 1 - 10
             // Dynamically generate operator
-
             String operation = ops.get(MathUtils.random(0, ops.size() - 1)); // 0 - ops.length - 1
             // For division only, generate perfectly divisible integers
             if (operation.equals("/")) {
@@ -51,10 +51,10 @@ public class QuestionsFactory {
     /**
      * Generates an arraylist of question entities (text and obstacles) for a given
      * question
-     * NOTE: These entities are not in the EntityManager, need to add them!!!
+     * NOTE: These entities are not in the EntityManager, need to add them afterwards yeah....
      */
     public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,
-            BitmapFont font, Runnable onCorrect, Runnable onWrong) {
+            BitmapFont font, Consumer<Entity> onCorrect, Consumer<Entity> onWrong) {
         Texture obstacleTexture = new Texture(Gdx.files.internal("enemyShip.png"));
         ArrayList<Entity> entities = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class QuestionsFactory {
 
                 correctAnswerEntity.add(new CollisionHandler(correctAnswerEntity, (self, other) -> {
                     if (other.has(AIMovement.class)) {
-                        onCorrect.run();
+                        onCorrect.accept(self);
                     }
                 }));
                 entities.add(correctAnswerEntity);
@@ -97,7 +97,7 @@ public class QuestionsFactory {
 
                 wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {
                     if (other.has(AIMovement.class)) {
-                        onWrong.run();
+                        onWrong.accept(self);
                     }
                 }));
                 entities.add(wrongAnswerEntity);

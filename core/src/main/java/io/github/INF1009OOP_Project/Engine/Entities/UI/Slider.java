@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.IO.Mouse;
 
@@ -43,6 +44,26 @@ public class Slider extends Entity {
 
 		this.listener = l;
 		setValue(initial);
+
+		this.add(new Renderable() {
+			@Override
+			public void draw(SpriteBatch sb) {
+
+				// reset colour
+				sb.setColor(Color.WHITE);
+
+				sb.setColor(barColor);
+				sb.draw(white1x1, tr.getX(), tr.getY() + tr.getHeight() / 2f - 4, tr.getWidth(), 8);
+
+				float knobX = tr.getX() + value * tr.getWidth() - knobWidth / 2f;
+				float knobY = tr.getY() + tr.getHeight() / 2f - knobWidth / 2f;
+				sb.setColor(knobColor);
+				sb.draw(white1x1, knobX, knobY, knobWidth, knobWidth);
+
+				// reset colour
+				sb.setColor(Color.WHITE);
+			}
+		});
 	}
 
 	public void update(IOManager io) {

@@ -15,6 +15,12 @@ public class Renderable implements Component{
         this.texture = texture;
     }
     
+    // for slider to override draw method
+    public Renderable() {
+        this.entity = null;
+        this.texture = null;
+    }
+    
     public Texture getTexture() {
         return texture;
     }

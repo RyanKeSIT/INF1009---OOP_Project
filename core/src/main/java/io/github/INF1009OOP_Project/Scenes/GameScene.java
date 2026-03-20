@@ -7,7 +7,6 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-// import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -24,14 +23,13 @@ import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
-import io.github.INF1009OOP_Project.Entities.UI.ModeCheckbox;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
 
 public class GameScene extends Scene {
     private ShapeRenderer shape;
     private Texture playerTexture;
     private Texture bulletTexture;
-    private ModeCheckbox[] questionOps;
+    private ArrayList<String> questionOps;
     private QuestionsFactory qnsF;
     private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
     private int currentQuestionNumber = -1;
@@ -48,10 +46,10 @@ public class GameScene extends Scene {
     private Text scoreText;
     private Text timerText;
 
-    public GameScene(SceneManager sceneManager, IOManager io, ModeCheckbox[] options) {
+    public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
         super(sceneManager, io);
 
-        this.questionOps = options;
+        this.questionOps = questionOps;
         shape = new ShapeRenderer();
         playerTexture = new Texture(Gdx.files.internal("Ship.png"));
         bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
@@ -110,7 +108,7 @@ public class GameScene extends Scene {
         // Render every 3 seconds
         if (consoleTimer > 3) {
             // Check if there are no more questions, then show main menu (won!)
-            if (qnsF.getQuestions().isEmpty()) {
+            if (qnsF.isEmpty()) {
                 sceneManager.push(new EndScene(sceneManager, io, score));
                 consoleTimer = 0;
                 return;
@@ -119,13 +117,13 @@ public class GameScene extends Scene {
             // Only render questions if question is not active
             if (currentQuestionNumber == -1) {
                 // Get 1 question first
-                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestions().size() - 1); // 0 - question size
-                MathOperations ops = qnsF.getQuestions().get(currentQuestionNumber);
+                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestionSize() - 1); // 0 - question size
+                MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
 
                 // Generate question entities
                 ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(
                         ops,
-                        qnsF.getQuestions().size(),
+                        qnsF.getQuestionSize(),
                         font,
                         (enemy) -> {
                             // Correct answer
@@ -137,7 +135,7 @@ public class GameScene extends Scene {
                                 h.takeDamage(1);
 
                                 if (h.isDead()) {
-                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
                                     currentQuestionNumber = -1;
                                     score++;
                                     scoreText.setText("Score: " + score + "/" + maxScore);
@@ -163,7 +161,7 @@ public class GameScene extends Scene {
                                             sceneManager.push(new EndScene(sceneManager, io, score));
                                     }
 
-                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
                                     currentQuestionNumber = -1;
 
                                     clearQuestionEntities();

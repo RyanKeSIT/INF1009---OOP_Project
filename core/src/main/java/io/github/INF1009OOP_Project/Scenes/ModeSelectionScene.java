@@ -1,5 +1,7 @@
 package io.github.INF1009OOP_Project.Scenes;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
@@ -43,9 +45,15 @@ public class ModeSelectionScene extends Scene {
 			@Override
 			public void onClick() {
 				sceneManager.pop();
-				// push game scene
 
-				sceneManager.push(new GameScene(sceneManager, io, options));
+				// Only push options with checked inputs
+				ArrayList<String> MCOps = new ArrayList<>();
+				for (int i = 0; i < options.length; i++)
+					if (options[i].checked())
+						MCOps.add(options[i].getText());
+
+				// push game scene
+				sceneManager.push(new GameScene(sceneManager, io, MCOps));
 
 			}
 		});

@@ -7,7 +7,6 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-// import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -24,14 +23,13 @@ import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
-import io.github.INF1009OOP_Project.Entities.UI.ModeCheckbox;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
 
 public class GameScene extends Scene {
     private ShapeRenderer shape;
     private Texture playerTexture;
     private Texture bulletTexture;
-    private ModeCheckbox[] questionOps;
+    private ArrayList<String> questionOps;
     private QuestionsFactory qnsF;
     private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
     private int currentQuestionNumber = -1;
@@ -48,10 +46,10 @@ public class GameScene extends Scene {
     private Text scoreText;
     private Text timerText;
 
-    public GameScene(SceneManager sceneManager, IOManager io, ModeCheckbox[] options) {
+    public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
         super(sceneManager, io);
 
-        this.questionOps = options;
+        this.questionOps = questionOps;
         shape = new ShapeRenderer();
         playerTexture = new Texture(Gdx.files.internal("Ship.png"));
         bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));

@@ -19,13 +19,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 public class QuestionsFactory {
     ArrayList<MathOperations> questions = new ArrayList<>();
 
-    public QuestionsFactory(int numberOfQuestions, ModeCheckbox[] MCOps) {
-        // Whitelist checked math operations
-        ArrayList<String> ops = new ArrayList<>();
-        for (int i = 0; i < MCOps.length; i++)
-            if (MCOps[i].checked())
-                ops.add(MCOps[i].getText());
-
+    public QuestionsFactory(int numberOfQuestions, ArrayList<String> ops) {
         for (int j = 0; j < numberOfQuestions; j++) {
             // Dynamically generate numbers and their answers
             int firstNum = MathUtils.random(0, 10); // 0 - 10

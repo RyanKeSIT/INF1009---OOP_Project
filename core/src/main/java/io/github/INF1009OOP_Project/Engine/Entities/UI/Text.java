@@ -78,6 +78,7 @@ public class Text extends Entity{
 		return fontSize;
 	}
 	public void setFontSize(float fontSize) {
+		font.getData().setScale(fontSize/14f);
 		this.fontSize = fontSize;
 	}
 }

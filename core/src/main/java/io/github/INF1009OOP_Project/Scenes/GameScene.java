@@ -28,271 +28,303 @@ import io.github.INF1009OOP_Project.Entities.PlayerFactory;
 import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
-    private ShapeRenderer shape;
-    private Texture playerTexture;
-    private Texture bulletTexture;
-    private ArrayList<String> questionOps;
-    private QuestionsFactory qnsF;
-    private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
-    private int currentQuestionNumber = -1;
-    private Entity player;
-    private float consoleTimer;
-    private int qnCount = 10;
-    private float cooldownTimer = 2f;
+	private ShapeRenderer shape;
+	private Texture playerTexture;
+	private Texture bulletTexture;
+	private ArrayList<String> questionOps;
+	private QuestionsFactory qnsF;
+	private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
+	private int currentQuestionNumber = -1;
+	private Entity player;
+	private float consoleTimer;
+	private int qnCount = 10;
+	private float cooldownTimer = 1f;
+	private Text resultText;
+	private float resultTimer = 2f;
 
-    private int score = 0;
-    // max score is fixed
-    private final int maxScore = 10;
-    // 10 mins = 600 sec
-    private float gameTimer = 600f;
-    private Text scoreText;
-    private Text timerText;
+	private int score = 0;
+	private final int maxScore = 10; // max score is fixed
+	private float gameTimer = 600f; // 10 mins = 600 sec
+	private Text scoreText;
+	private Text timerText;
 
-    public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
-        super(sceneManager, io);
+	public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
+		super(sceneManager, io);
 
-        this.questionOps = questionOps;
-        shape = new ShapeRenderer();
-        playerTexture = new Texture(Gdx.files.internal("Ship.png"));
-        bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
+		this.questionOps = questionOps;
+		shape = new ShapeRenderer();
+		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
+		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
 
-        if (!io.getSound().isMuted()) {
-            io.getSound().soundOn();
-        }
+		initializeGame();
+	}
 
-        initializeGame();
-    }
+	@Override
+	public void update() {
+		io.update();
 
-    @Override
-    public void update() {
-        io.update();
+		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
+			// if player die or game ends, push end scene
+			sceneManager.push(new EndScene(sceneManager, io, score));
+		}
 
-        if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
-            // if player die or game ends, push end scene
-            sceneManager.push(new EndScene(sceneManager, io, score));
-        }
+		// update cooldown timer
+		cooldownTimer -= Gdx.graphics.getDeltaTime();
 
-        cooldownTimer -= Gdx.graphics.getDeltaTime();
+		if (io.getKeyboard().isKeyJustPressed(Keys.SPACE) && cooldownTimer <= 0) {
+			shoot();
+			if (io.getSound() != null)
+				io.getSound().playShootingSound();
+			cooldownTimer = 1f;
+		}
 
-        if (io.getKeyboard().isKeyJustPressed(Keys.SPACE) && cooldownTimer <= 0) {
-            // if (Gdx.input.isKeyJustPressed(Keys.SPACE) && cooldownTimer <= 0) {
-            shoot();
-            if (io.getSound() != null)
-                io.getSound().playShootingSound();
-            cooldownTimer = 2f; // reset cooldown timer to 2s
-        }
+		// update result text timer
+		if (resultTimer > 0) {
+			resultTimer -= Gdx.graphics.getDeltaTime();
+			if (resultTimer <= 0) {
+				resultText.setText("");
+			}
+		}
 
-        if (io.getMouse().isMousePressed(Buttons.LEFT)) {
-            for (Entity entity : entityManager.getEntities()) {
-                Clickable c = entity.get(Clickable.class);
-                if (c != null && c.isHover(io.getMouse().getX(), io.getMouse().getY())) {
-                    c.onClick();
-                }
-            }
-        }
+		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
+			for (Entity entity : entityManager.getEntities()) {
+				Clickable c = entity.get(Clickable.class);
+				if (c != null && c.isHover(io.getMouse().getX(), io.getMouse().getY())) {
+					c.onClick();
+				}
+			}
+		}
 
-        // Update entities based on game tick time
-        float delta = Gdx.graphics.getDeltaTime();
-        entityManager.updateEntities(delta);
-        // update timer
-        gameTimer -= delta;
-        if (gameTimer <= 0) {
-            sceneManager.push(new EndScene(sceneManager, io, score));
-        }
+		// Update entities based on game tick time
+		float delta = Gdx.graphics.getDeltaTime();
+		entityManager.updateEntities(delta);
+		// update timer
+		gameTimer -= delta;
+		if (gameTimer <= 0) {
+			sceneManager.push(new EndScene(sceneManager, io, score));
+		}
 
-        // format timer
-        int mins = (int) (gameTimer / 60);
-        int sec = (int) (gameTimer % 60);
-        timerText.setText("Time: " + String.format("%02d:%02d", mins, sec));
+		// format timer
+		int mins = (int) (gameTimer / 60);
+		int sec = (int) (gameTimer % 60);
+		timerText.setText("Time: " + String.format("%02d:%02d", mins, sec));
 
-        // Wait a bit until the question renders
-        consoleTimer += delta;
-        // Render every 3 seconds
-        if (consoleTimer > 3) {
-            // Check if there are no more questions, then show main menu (won!)
-            if (qnsF.isEmpty()) {
-                sceneManager.push(new EndScene(sceneManager, io, score));
-                consoleTimer = 0;
-                return;
-            }
+		// Wait a bit until the question renders
+		consoleTimer += delta;
+		// Render every 3 seconds
+		if (consoleTimer > 3) {
+			// Check if there are no more questions, then show main menu (won!)
+			if (qnsF.isEmpty()) {
+				sceneManager.push(new EndScene(sceneManager, io, score));
+				consoleTimer = 0;
+				return;
+			}
 
-            // Only render questions if question is not active
-            if (currentQuestionNumber == -1) {
-                // Get 1 question first
-                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestionSize() - 1); // 0 - question size
-                MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
+			// Only render questions if question is not active
+			if (currentQuestionNumber == -1) {
+				// Get 1 question first
+				currentQuestionNumber = MathUtils.random(0, qnsF.getQuestionSize() - 1); // 0 - question size
+				MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
 
-                // Generate question entities
-                ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(
-                        ops,
-                        qnsF.getQuestionSize(),
-                        font,
-                        (enemy) -> {
-                            // Correct answer
-                            if (currentQuestionNumber == -1)
-                                return;
+				// Generate question entities
+				ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(ops, qnsF.getQuestionSize(), font,
+						(enemy) -> {
+							// Correct answer
+							if (currentQuestionNumber == -1)
+								return;
 
-                            Health h = enemy.get(Health.class);
-                            if (h != null) {
-                                h.takeDamage(1);
+							Health h = enemy.get(Health.class);
+							if (h != null) {
+								h.takeDamage(1);
 
-                                if (h.isDead()) {
-                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
-                                    currentQuestionNumber = -1;
-                                    score++;
-                                    scoreText.setText("Score: " + score + "/" + maxScore);
+								if (h.isDead()) {
+									qnsF.removeQuestionByNumber(currentQuestionNumber);
+									currentQuestionNumber = -1;
+									score++;
+									scoreText.setText("Score: " + score + "/" + maxScore);
 
-                                    clearQuestionEntities();
-                                }
-                            }
-                        },
-                        (enemy) -> {
-                            // Wrong answer
-                            if (currentQuestionNumber == -1)
-                                return;
+									showCorrectResult();
 
-                            Health h = enemy.get(Health.class);
-                            if (h != null) {
-                                h.takeDamage(1);
+									clearQuestionEntities();
+								}
+							}
+						}, (enemy) -> {
+							// Wrong answer
+							if (currentQuestionNumber == -1)
+								return;
 
-                                if (h.isDead()) {
-                                    Health ph = player.get(Health.class);
-                                    if (ph != null) {
-                                        ph.takeDamage(1);
-                                        if (ph.isDead())
-                                            sceneManager.push(new EndScene(sceneManager, io, score));
-                                    }
+							Health h = enemy.get(Health.class);
+							if (h != null) {
+								h.takeDamage(1);
 
-                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
-                                    currentQuestionNumber = -1;
+								if (h.isDead()) {
+									Health ph = player.get(Health.class);
+									if (ph != null) {
+										ph.takeDamage(1);
+										if (ph.isDead())
+											sceneManager.push(new EndScene(sceneManager, io, score));
+									}
 
-                                    clearQuestionEntities();
-                                }
-                            }
-                        });
+									qnsF.removeQuestionByNumber(currentQuestionNumber);
+									currentQuestionNumber = -1;
 
-                // Add to both tracking list and entity manager
-                for (Entity e : qEntities) {
-                    currentQuestionEntities.add(e);
-                    entityManager.addEntity(e, e.has(PhysicsBody.class));
-                }
-            }
+									showWrongResult();
 
-            // Reset 5 second timer
-            consoleTimer = 0;
-        }
-    }
+									clearQuestionEntities();
+								}
+							}
+						});
 
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+				// Add to both tracking list and entity manager
+				for (Entity e : qEntities) {
+					currentQuestionEntities.add(e);
+					entityManager.addEntity(e, e.has(PhysicsBody.class));
+				}
+			}
 
-        batch.begin();
-        batch.end();
+			// Reset 5 second timer
+			consoleTimer = 0;
+		}
+	}
 
-        entityManager.draw(batch);
+	@Override
+	public void render() {
+		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-        // Render health bars
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-        for (Entity entity : entityManager.getEntities()) {
-            Health h = entity.get(Health.class);
-            Transform t = entity.get(Transform.class);
+		batch.begin();
+		batch.end();
 
-            if (h != null && t != null) {
-                float healthPercent = (float) h.getCurrentHealth() / h.getMaxHealth();
-                float barWidth = t.getWidth() * 0.8f;
-                float barHeight = 5;
-                float barX = t.getX() + (t.getWidth() - barWidth) / 2f;
+		entityManager.draw(batch);
 
-                // Red background bar
-                shape.setColor(Color.RED);
-                // Positioning of the health bar
-                float barY;
-                if (entity == player)
-                    barY = t.getY(); // Bottom for player
-                else
-                    barY = t.getY() + t.getHeight() + 5; // Top for enemies
-                shape.rect(barX, barY, barWidth, barHeight);
+		// Render health bars
+		shape.begin(ShapeRenderer.ShapeType.Filled);
+		for (Entity entity : entityManager.getEntities()) {
+			Health h = entity.get(Health.class);
+			Transform t = entity.get(Transform.class);
 
-                // Green health bar
-                shape.setColor(Color.GREEN);
-                shape.rect(barX, barY, barWidth * healthPercent, barHeight);
-            }
-        }
-        shape.end();
-    }
+			if (h != null && t != null) {
+				float healthPercent = (float) h.getCurrentHealth() / h.getMaxHealth();
+				float barWidth = t.getWidth() * 0.8f;
+				float barHeight = 5;
+				float barX = t.getX() + (t.getWidth() - barWidth) / 2f;
 
-    // methods
-    private void initializeGame() {
-        // clear old entities first
-        entityManager.clearAll();
+				// Red background bar
+				shape.setColor(Color.RED);
+				// Positioning of the health bar
+				float barY;
+				if (entity == player)
+					barY = t.getY(); // Bottom for player
+				else
+					barY = t.getY() + t.getHeight() + 5; // Top for enemies
+				shape.rect(barX, barY, barWidth, barHeight);
 
-        // Clear old question entities
-        currentQuestionEntities.clear();
-        currentQuestionNumber = -1;
-        // Generate questions and populate
-        qnsF = new QuestionsFactory(qnCount, questionOps);
+				// Green health bar
+				shape.setColor(Color.GREEN);
+				shape.rect(barX, barY, barWidth * healthPercent, barHeight);
+			}
+		}
+		shape.end();
+	}
 
-        // Create player
-        player = new PlayerFactory(100, 0, 100, 100, playerTexture, entityManager, 200, io).createEntity();
-        entityManager.addEntity(player, true);
+	// to display right or wrong result
+	private void showCorrectResult() {
+		resultText.setText("Correct!");
+		resultText.setTextColor(Color.GREEN);
+		resultTimer = 2f;
 
-        // timer
-        timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50, 200, 50, "Time: 10:00", 25,
-                Color.WHITE, font);
-        entityManager.addEntity(timerText, false);
+		if (io.getSound() != null) {
+			io.getSound().playCorrectSound();
+		}
+	}
 
-        // score
-        scoreText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 80, 200, 50, "Score: 0/10", 25,
-                Color.WHITE, font);
-        entityManager.addEntity(scoreText, false);
+	private void showWrongResult() {
+		resultText.setText("Wrong!");
+		resultText.setTextColor(Color.RED);
+		resultTimer = 2f;
 
-        Button pauseButton = new Button(20, 400, 70, 70, "Pause", 20, font, new ClickEvent() {
-            @Override
-            public void onClick() {
-                System.out.println("Pause game");
-                sceneManager.push(new PauseScene(sceneManager, io));
-            }
-        });
-        entityManager.addEntity(pauseButton, false);
+		if (io.getSound() != null) {
+			io.getSound().playWrongSound();
+		}
+	}
 
-        Button settingButton = new Button(100, 400, 70, 70, "Settings", 20, font, new ClickEvent() {
-            @Override
-            public void onClick() {
-                System.out.println("Settings");
-                sceneManager.push(new SettingScene(sceneManager, io));
-            }
-        });
-        entityManager.addEntity(settingButton, false);
-    }
+	// methods
+	private void initializeGame() {
+		// clear old entities first
+		entityManager.clearAll();
 
-    // acts as getter method for initializeGame so startscene can access
-    public void resetGame() {
-        initializeGame();
-    }
+		// Clear old question entities
+		currentQuestionEntities.clear();
+		currentQuestionNumber = -1;
+		// Generate questions and populate
+		qnsF = new QuestionsFactory(qnCount, questionOps);
 
-    private void shoot() {
-        Transform pt = player.get(Transform.class);
-        if (pt == null)
-            return;
+		// Create player
+		player = new PlayerFactory(100, 0, 100, 100, playerTexture, entityManager, 200, io).createEntity();
+		entityManager.addEntity(player, true);
 
-        float bw = 50;
-        float bx = pt.getX() + pt.getWidth() / 2f - bw / 2f;
-        float by = 75 + pt.getY() + pt.getHeight() / 2f - 10; // add 75 for it to spawn slightly above player
-        Entity newBullet = new BulletFactory(bx, by, bw, bw, 300, bulletTexture, entityManager).createEntity();//new bullet factory
-        entityManager.addEntity(newBullet, true);
-    }
+		// timer
+		timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50, 200, 50, "Time: 10:00", 25,
+				Color.WHITE, font);
+		entityManager.addEntity(timerText, false);
 
-    private void clearQuestionEntities() {
-        for (Entity e : currentQuestionEntities) {
-            entityManager.deleteEntity(e);
-        }
-        currentQuestionEntities.clear();
-    }
+		// score
+		scoreText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 80, 200, 50, "Score: 0/10", 25,
+				Color.WHITE, font);
+		entityManager.addEntity(scoreText, false);
 
-    @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
+		// display result text
+		resultText = new Text(Gdx.graphics.getWidth() / 2f - 100, Gdx.graphics.getHeight() / 2f, 200, 50, "", 25,
+				Color.WHITE, font);
+		entityManager.addEntity(resultText, false);
 
-    }
+		Button pauseButton = new Button(20, 400, 70, 70, "Pause", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Pause game");
+				sceneManager.push(new PauseScene(sceneManager, io));
+			}
+		});
+		entityManager.addEntity(pauseButton, false);
+
+		Button settingButton = new Button(100, 400, 70, 70, "Settings", 20, font, new ClickEvent() {
+			@Override
+			public void onClick() {
+				System.out.println("Settings");
+				sceneManager.push(new SettingScene(sceneManager, io));
+			}
+		});
+		entityManager.addEntity(settingButton, false);
+	}
+
+	// acts as getter method for initializeGame so startscene can access
+	public void resetGame() {
+		initializeGame();
+	}
+
+	private void shoot() {
+		Transform pt = player.get(Transform.class);
+		if (pt == null)
+			return;
+
+		float bw = 50;
+		float bx = pt.getX() + pt.getWidth() / 2f - bw / 2f;
+		float by = 75 + pt.getY() + pt.getHeight() / 2f - 10; // add 75 for it to spawn slightly above player
+		Entity newBullet = new BulletFactory(bx, by, bw, bw, 300, bulletTexture, entityManager).createEntity();// new
+																												// bullet
+																												// factory
+		entityManager.addEntity(newBullet, true);
+	}
+
+	private void clearQuestionEntities() {
+		for (Entity e : currentQuestionEntities) {
+			entityManager.deleteEntity(e);
+		}
+		currentQuestionEntities.clear();
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
 }

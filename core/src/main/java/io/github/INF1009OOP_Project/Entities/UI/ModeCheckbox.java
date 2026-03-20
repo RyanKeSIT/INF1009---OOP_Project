@@ -47,10 +47,10 @@ public class ModeCheckbox extends Button{
 		isChecked = c;
 		if(isChecked) {
 			background = white1x1;
-			textColor = Color.BLACK;
+			this.setTextColor(Color.BLACK);
 		}else {
 			background = gray1x1;
-			textColor = Color.WHITE;
+			this.setTextColor(Color.WHITE);
 		}
 	}
 	public boolean checked() {

@@ -8,6 +8,8 @@ public class SoundManager {
 
 	private Music bgm;
 	private Sound shootingSound;
+	private Sound correctSound;
+	private Sound wrongSound;
 	private float volume;
 	private boolean muted = false;
 
@@ -18,10 +20,26 @@ public class SoundManager {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm.mp3"));
 		shootingSound = Gdx.audio.newSound(Gdx.files.internal("shootingsound.mp3"));
 
+		// correct and wrong sound
+		correctSound = Gdx.audio.newSound(Gdx.files.internal("correct_ans.mp3"));
+		wrongSound = Gdx.audio.newSound(Gdx.files.internal("wrong_ans.mp3"));
+
 		// loop bgm
 		bgm.setLooping(true);
 
 		bgm.setVolume(volume);
+	}
+
+	public void playCorrectSound() {
+		if (!muted) {
+			correctSound.play(volume);
+		}
+	}
+
+	public void playWrongSound() {
+		if (!muted) {
+			wrongSound.play(volume);
+		}
 	}
 
 	public void soundOn() {

@@ -8,23 +8,35 @@ import com.badlogic.gdx.utils.Align;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 //made minimal changes to implement new entity system
 public class Button extends Entity{
 	public static Texture white1x1 = new Texture("white1x1.png");
 	public static Texture gray1x1 = new Texture("gray1x1.png");
 	private boolean isOutline = false;
-	private String text;
+	
 	protected Texture background = white1x1;
-	protected Color textColor = Color.BLACK;
-	private BitmapFont font;
-	private float fontSize;
+	
+	private Text text;
 	private boolean hidden = false;
 	
 	public Button(float x, float y, float w, float h,String t, float fs, BitmapFont f, ClickEvent e){
 		super();
         this.add(new Transform(x, y, w, h));
         this.add(new Clickable(e, this.get(Transform.class)));
+        this.add(new Renderable(this, null) {
+        	@Override
+        	public void draw(SpriteBatch sb) {
+        		
+        		if(!hidden) {
+        			Transform tr = get(Transform.class);
+        			sb.draw(background, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
+        			text.draw(sb);
+        		}
+        	}
+        });
+        this.text = new Text(x,y,w,h,t,fs,Color.BLACK,f);
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
@@ -35,10 +47,7 @@ public class Button extends Entity{
 		if(!hidden) {
 			Transform tr = get(Transform.class);
 			sb.draw(background, tr.getX(), tr.getY(), tr.getWidth(), tr.getHeight());
-			font.getData().setScale(fontSize/14f);
-			this.getFont().setColor(this.textColor);
-			this.getFont().draw(sb, this.getText(), tr.getX(), tr.getY() + (tr.getHeight() + this.fontSize/2f)/2f, tr.getWidth(), Align.center, false);
-			
+			text.draw(sb);
 		}
 	}
 	
@@ -59,10 +68,10 @@ public class Button extends Entity{
 		this.isOutline = isOutline;
 	}
 	public String getText() {
-		return text;
+		return text.getText();
 	}
 	public void setText(String text) {
-		this.text = text;
+		this.text.setText(text);;
 	}
 	public Texture getBackground() {
 		return background;
@@ -71,23 +80,21 @@ public class Button extends Entity{
 		this.background = background;
 	}
 	public Color getTextColor() {
-		return textColor;
+		return text.getTextColor();
 	}
 	public void setTextColor(Color textColor) {
-		this.textColor = textColor;
-		this.font.setColor(this.getTextColor());
+		this.text.setTextColor(textColor);;
 	}
 	public BitmapFont getFont() {
-		return font;
+		return text.getFont();
 	}
 	public void setFont(BitmapFont font) {
-		this.font = font;
+		this.text.setFont(font);;
 	}
 	public float getFontSize() {
-		return fontSize;
+		return this.text.getFontSize();
 	}
 	public void setFontSize(float fontSize) {
-		font.getData().setScale(fontSize/14f);
-		this.fontSize = fontSize;
+		this.text.setFontSize(fontSize);
 	}
 }

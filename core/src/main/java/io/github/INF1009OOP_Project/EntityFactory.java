@@ -7,6 +7,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.EntityManager;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
@@ -14,7 +15,8 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 
 public class EntityFactory {
-	public static Entity createPlayer(float x, float y, float width, float height, Texture playerTexture, EntityManager entityManager, float speed, IOManager io) {
+	public static Entity createPlayer(float x, float y, float width, float height, Texture playerTexture,
+			EntityManager entityManager, float speed, IOManager io) {
 		Entity player = new Entity();
 		// add components
 		player.add(new Transform(x, y, width, height));
@@ -23,6 +25,7 @@ public class EntityFactory {
 		PlayerMovement movement = new PlayerMovement(player, speed);
 		movement.setIOManager(io);
 		player.add(movement);
+		player.add(new Health(player, 3)); // 3 health for player
 		// collision system
 		player.add(new CollisionHandler(player, (self, other) -> {
 			System.out.println("Player collided with something");
@@ -35,6 +38,7 @@ public class EntityFactory {
 		obstacle.add(new Transform(x, y, width, height));
 		obstacle.add(new PhysicsBody(obstacle));
 		obstacle.add(new Renderable(obstacle, texture));
+		obstacle.add(new Health(obstacle, 2)); // 2 health for enemies
 
 		obstacle.add(new CollisionHandler(obstacle, (self, other) -> {
 			System.out.println("Something coolided with obstacle");

@@ -27,12 +27,12 @@ public class PlayerMovement extends Movement{
         float vx = 0f;
         
         // Move left
-        if (io.getKeyboard().isKeyPressed(Keys.LEFT) && transform.getX() > 50) {
+        if (io.getKeyboard().isKeyPressed(Keys.LEFT) && transform.getX() > 0) {
             vx = -speed;
         }
 
         // Move right
-        if (io.getKeyboard().isKeyPressed(Keys.RIGHT) && transform.getX() < (Gdx.graphics.getWidth() - 50)) {
+        if (io.getKeyboard().isKeyPressed(Keys.RIGHT) && transform.getX() < (Gdx.graphics.getWidth() - transform.getWidth())) {
             vx = speed;
         }
         

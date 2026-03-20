@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 //made minimal changes to implement new entity system
 public class Text extends Entity{
@@ -18,17 +19,28 @@ public class Text extends Entity{
 
 	
 	
-	public Text(float x, float y, float w, float h,String t, float fs, BitmapFont f){
+	/*public Text(float x, float y, float w, float h,String t, float fs, BitmapFont f){
 		super();
         this.add(new Transform(x, y, w, h));
+        
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
 		
-	}
+	}*/
 	public Text(float x, float y, float w, float h,String t, float fs, Color color, BitmapFont f){
 		super();
         this.add(new Transform(x, y, w, h));
+        this.add(new Renderable(this, null) {
+        	@Override
+        	public void draw(SpriteBatch sb) {
+        		
+                Transform tr = get(Transform.class);
+                font.getData().setScale(fontSize/14f);
+        		getFont().setColor(textColor);
+        		getFont().draw(sb, getText(), tr.getX(), tr.getY() + (tr.getHeight() + fontSize/2f)/2f, tr.getWidth(), Align.center, false);
+        	}
+        });
 		this.setText(t);
 		this.setFont(f);
 		this.setFontSize(fs);
@@ -66,6 +78,7 @@ public class Text extends Entity{
 		return fontSize;
 	}
 	public void setFontSize(float fontSize) {
+		font.getData().setScale(fontSize/14f);
 		this.fontSize = fontSize;
 	}
 }

@@ -25,10 +25,16 @@ public class Entity {
         return componentClass.cast(components.get(componentClass));
     }
     
+    public Map<Class<?>, Component> get(){
+    	return components;
+    }
+    
     //check for component in entity
     public <T extends Component> boolean has(Class<T> componentClass) {
         return components.containsKey(componentClass);
     }
+    
+    
     
     //delete component from entity
     public <T extends Component> void remove(Class<T> componentClass) {

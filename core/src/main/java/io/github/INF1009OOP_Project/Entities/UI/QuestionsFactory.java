@@ -44,14 +44,27 @@ public class QuestionsFactory {
         }
     }
 
-    public ArrayList<MathOperations> getQuestions() {
-        return questions;
+    public Integer getQuestionSize() {
+        return questions.size();
+    }
+
+    public Boolean isEmpty() {
+        return questions.isEmpty();
+    }
+
+    public MathOperations getQuestionByNumber(int qNo) {
+        return questions.get(qNo);
+    }
+
+    public void removeQuestionByNumber(int qNo) {
+        this.questions.remove(qNo);
     }
 
     /**
      * Generates an arraylist of question entities (text and obstacles) for a given
      * question
-     * NOTE: These entities are not in the EntityManager, need to add them afterwards yeah....
+     * NOTE: These entities are not in the EntityManager, need to add them
+     * afterwards yeah....
      */
     public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,
             BitmapFont font, Consumer<Entity> onCorrect, Consumer<Entity> onWrong) {

@@ -110,7 +110,7 @@ public class GameScene extends Scene {
         // Render every 3 seconds
         if (consoleTimer > 3) {
             // Check if there are no more questions, then show main menu (won!)
-            if (qnsF.getQuestions().isEmpty()) {
+            if (qnsF.isEmpty()) {
                 sceneManager.push(new EndScene(sceneManager, io, score));
                 consoleTimer = 0;
                 return;
@@ -119,13 +119,13 @@ public class GameScene extends Scene {
             // Only render questions if question is not active
             if (currentQuestionNumber == -1) {
                 // Get 1 question first
-                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestions().size() - 1); // 0 - question size
-                MathOperations ops = qnsF.getQuestions().get(currentQuestionNumber);
+                currentQuestionNumber = MathUtils.random(0, qnsF.getQuestionSize() - 1); // 0 - question size
+                MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
 
                 // Generate question entities
                 ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(
                         ops,
-                        qnsF.getQuestions().size(),
+                        qnsF.getQuestionSize(),
                         font,
                         (enemy) -> {
                             // Correct answer
@@ -137,7 +137,7 @@ public class GameScene extends Scene {
                                 h.takeDamage(1);
 
                                 if (h.isDead()) {
-                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
                                     currentQuestionNumber = -1;
                                     score++;
                                     scoreText.setText("Score: " + score + "/" + maxScore);
@@ -163,7 +163,7 @@ public class GameScene extends Scene {
                                             sceneManager.push(new EndScene(sceneManager, io, score));
                                     }
 
-                                    qnsF.getQuestions().remove(currentQuestionNumber);
+                                    qnsF.removeQuestionByNumber(currentQuestionNumber);
                                     currentQuestionNumber = -1;
 
                                     clearQuestionEntities();

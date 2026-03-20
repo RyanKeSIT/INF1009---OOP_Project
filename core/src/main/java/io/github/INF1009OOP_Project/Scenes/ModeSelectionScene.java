@@ -43,8 +43,9 @@ public class ModeSelectionScene extends Scene {
 			@Override
 			public void onClick() {
 				sceneManager.pop();
-				// push game scene
 
+				// 
+				// push game scene
 				sceneManager.push(new GameScene(sceneManager, io, options));
 
 			}

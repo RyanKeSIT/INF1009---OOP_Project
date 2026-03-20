@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.INF1009OOP_Project.EntityFactory;
+//import io.github.INF1009OOP_Project.EntityFactory;
 import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
@@ -24,6 +24,8 @@ import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
+import io.github.INF1009OOP_Project.Entities.PlayerFactory;
+import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
     private ShapeRenderer shape;
@@ -232,8 +234,7 @@ public class GameScene extends Scene {
         qnsF = new QuestionsFactory(qnCount, questionOps);
 
         // Create player
-        player = EntityFactory.createPlayer(100, 0, 100, 100, playerTexture, entityManager, 200, io);
-        // Register player entity
+        player = new PlayerFactory(100, 0, 100, 100, playerTexture, entityManager, 200, io).createEntity();
         entityManager.addEntity(player, true);
 
         // timer
@@ -278,8 +279,7 @@ public class GameScene extends Scene {
         float bw = 50;
         float bx = pt.getX() + pt.getWidth() / 2f - bw / 2f;
         float by = 75 + pt.getY() + pt.getHeight() / 2f - 10; // add 75 for it to spawn slightly above player
-        Entity newBullet = EntityFactory.createBullet(bx, by, bw, bw, 300, bulletTexture, entityManager);
-
+        Entity newBullet = new BulletFactory(bx, by, bw, bw, 300, bulletTexture, entityManager).createEntity();//new bullet factory
         entityManager.addEntity(newBullet, true);
     }
 

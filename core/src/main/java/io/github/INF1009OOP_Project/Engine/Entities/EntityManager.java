@@ -19,7 +19,7 @@ public class EntityManager {
     private CollisionManager collisionManager;
     private ArrayList<Entity> entitiesToAdd;
     private ArrayList<Entity> entitiesToRemove;
-    
+
    private ComponentManager componentManager;
     
     //map entity to collidable adapter for collision system
@@ -74,14 +74,15 @@ public class EntityManager {
 	}
 	
 	
-	public void updateEntities(float delta) {
-	    componentManager.updateComponent(Movement.class, delta);
-	    componentManager.updateComponent(PlayerMovement.class, delta);
-	    componentManager.updateComponent(AIMovement.class, delta);
-	    componentManager.updateComponent(PhysicsBody.class, delta);
-	    componentManager.updateComponent(Transform.class, delta);
+	public void updateEntities(ComponentUpdateRegistry updateRegistry,float delta) {
+	    //componentManager.updateComponent(Movement.class, delta);
+	    //componentManager.updateComponent(PlayerMovement.class, delta);
+	    //componentManager.updateComponent(AIMovement.class, delta);
+	    //componentManager.updateComponent(PhysicsBody.class, delta);
+	    //componentManager.updateComponent(Transform.class, delta);
 	    
-	    
+		//pass component manager as a param, registry does not own it, keeps it decoupled
+	    updateRegistry.update(componentManager, delta);
 	    collisionManager.update();
 
 	    // Add queued entities

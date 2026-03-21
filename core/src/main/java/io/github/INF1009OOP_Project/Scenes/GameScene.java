@@ -17,6 +17,8 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Movement;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
@@ -64,7 +66,12 @@ public class GameScene extends Scene {
 		shape = new ShapeRenderer();
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
-
+		//register components that need updating per frame
+		updateRegistry.register(Movement.class);
+	    updateRegistry.register(PlayerMovement.class);
+	    updateRegistry.register(AIMovement.class);
+	    updateRegistry.register(PhysicsBody.class);
+	    updateRegistry.register(Transform.class);
 		initializeGame();
 	}
 
@@ -106,7 +113,7 @@ public class GameScene extends Scene {
 
 		// Update entities based on game tick time
 		float delta = Gdx.graphics.getDeltaTime();
-		entityManager.updateEntities(delta);
+		entityManager.updateEntities(updateRegistry,delta);//update registry declared as protected in scene, inherits directly
 		// update timer
 		gameTimer -= delta;
 		if (gameTimer <= 0) {
@@ -279,7 +286,7 @@ public class GameScene extends Scene {
 	private void initializeGame() {
 		// clear old entities first
 		entityManager.clearAll();
-
+		
 		// Clear old question entities
 		currentQuestionEntities.clear();
 		currentQuestionNumber = -1;

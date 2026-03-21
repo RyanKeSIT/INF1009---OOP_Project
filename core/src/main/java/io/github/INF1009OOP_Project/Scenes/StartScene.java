@@ -40,7 +40,7 @@ public class StartScene extends Scene {
 	@Override
 	public void update() {
 
-		entityManager.updateEntities(0);
+		entityManager.updateEntities(updateRegistry,0);
 
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {

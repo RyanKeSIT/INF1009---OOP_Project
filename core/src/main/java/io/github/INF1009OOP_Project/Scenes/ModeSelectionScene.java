@@ -63,7 +63,7 @@ public class ModeSelectionScene extends Scene {
 
 	@Override
 	public void update() {
-		entityManager.updateEntities(0);
+		entityManager.updateEntities(updateRegistry,0);
 		options[0] = add;
 		options[1] = sub;
 		options[2] = mult;

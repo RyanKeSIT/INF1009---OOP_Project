@@ -99,7 +99,7 @@ public class SettingScene extends Scene {
 				}
 			}
 		}
-		entityManager.updateEntities(0);
+		entityManager.updateEntities(updateRegistry,0);
 	}
 
 	@Override

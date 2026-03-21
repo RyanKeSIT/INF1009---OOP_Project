@@ -9,13 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 
-//import io.github.INF1009OOP_Project.EntityFactory;
-import io.github.INF1009OOP_Project.MathOperations;
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Entities.ObstacleFactory;
+import io.github.INF1009OOP_Project.Logic.MathOperations;
 
 public class QuestionsFactory {
     ArrayList<MathOperations> questions = new ArrayList<>();
@@ -61,7 +60,7 @@ public class QuestionsFactory {
      * NOTE: These entities are not in the EntityManager, need to add them
      * afterwards yeah....
      */
-    public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,
+    public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,int enemyHealth,
             BitmapFont font, Consumer<Entity> onCorrect, Consumer<Entity> onWrong) {
         Texture obstacleTexture = new Texture(Gdx.files.internal("enemyShip.png"));
         ArrayList<Entity> entities = new ArrayList<>();
@@ -85,7 +84,7 @@ public class QuestionsFactory {
             if (i == correctAnswerIndex) {
                 // Correct answer
                 String correctAns = ops.getAns().toString();
-                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, 2).createEntity();
+                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
 
                 correctAnswerEntity.add(new CollisionHandler(correctAnswerEntity, (self, other) -> {
                     if (other.has(AIMovement.class)) {
@@ -99,7 +98,7 @@ public class QuestionsFactory {
                 String wrongAnsStr = ops.getWrongAns().get(wrongAnswerIndex).toString();
                 wrongAnswerIndex++;
 
-                Entity wrongAnswerEntity   = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, 2).createEntity();
+                Entity wrongAnswerEntity   = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
 
 
                 wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {

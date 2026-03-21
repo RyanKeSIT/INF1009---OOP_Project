@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project;
+package io.github.INF1009OOP_Project.Logic;
 
 import com.badlogic.gdx.graphics.Texture;
 //use the static methods in scene to create our entities

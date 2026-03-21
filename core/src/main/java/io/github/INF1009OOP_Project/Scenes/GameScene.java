@@ -10,12 +10,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
-//import io.github.INF1009OOP_Project.EntityFactory;
-import io.github.INF1009OOP_Project.MathOperations;
+
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;
@@ -24,27 +24,36 @@ import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
+import io.github.INF1009OOP_Project.Logic.MathOperations;
 import io.github.INF1009OOP_Project.Entities.PlayerFactory;
 import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
+	//Textures and shapes
 	private ShapeRenderer shape;
 	private Texture playerTexture;
 	private Texture bulletTexture;
+	
+	//Questions
 	private ArrayList<String> questionOps;
 	private QuestionsFactory qnsF;
 	private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
 	private int currentQuestionNumber = -1;
-	private Entity player;
-	private float consoleTimer;
 	private int qnCount = 10;
+	//Player
+	private Entity player;
 	private float cooldownTimer = 1f;
+	private int roundCount;
+	//Obstacle
+	private int enemyHealth=2;
+	
+	//UI
 	private Text resultText;
 	private float resultTimer = 2f;
-
+	private float consoleTimer;
 	private int score = 0;
 	private final int maxScore = 10; // max score is fixed
-	private float gameTimer = 600f; // 10 mins = 600 sec
+	private float gameTimer = 18f; // 10 mins = 600 sec
 	private Text scoreText;
 	private Text timerText;
 
@@ -75,7 +84,7 @@ public class GameScene extends Scene {
 			shoot();
 			if (io.getSound() != null)
 				io.getSound().playShootingSound();
-			cooldownTimer = 1f;
+			cooldownTimer = 0.5f;
 		}
 
 		// update result text timer
@@ -103,14 +112,14 @@ public class GameScene extends Scene {
 		if (gameTimer <= 0) {
 			sceneManager.push(new EndScene(sceneManager, io, score));
 		}
-
-		// format timer
 		int mins = (int) (gameTimer / 60);
 		int sec = (int) (gameTimer % 60);
 		timerText.setText("Time: " + String.format("%02d:%02d", mins, sec));
+		
 
 		// Wait a bit until the question renders
 		consoleTimer += delta;
+		// format timer
 		// Render every 3 seconds
 		if (consoleTimer > 3) {
 			// Check if there are no more questions, then show main menu (won!)
@@ -119,7 +128,6 @@ public class GameScene extends Scene {
 				consoleTimer = 0;
 				return;
 			}
-
 			// Only render questions if question is not active
 			if (currentQuestionNumber == -1) {
 				// Get 1 question first
@@ -127,7 +135,7 @@ public class GameScene extends Scene {
 				MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
 
 				// Generate question entities
-				ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(ops, qnsF.getQuestionSize(), font,
+				ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(ops, qnsF.getQuestionSize(),enemyHealth, font,
 						(enemy) -> {
 							// Correct answer
 							if (currentQuestionNumber == -1)
@@ -142,9 +150,8 @@ public class GameScene extends Scene {
 									currentQuestionNumber = -1;
 									score++;
 									scoreText.setText("Score: " + score + "/" + maxScore);
-
+									
 									showCorrectResult();
-
 									clearQuestionEntities();
 								}
 							}
@@ -174,7 +181,13 @@ public class GameScene extends Scene {
 								}
 							}
 						});
-
+				gameTimer=18f;
+				
+				if(roundCount==4) {
+					increaseDifficulty();
+					showWarning();
+				}
+				roundCount++;
 				// Add to both tracking list and entity manager
 				for (Entity e : qEntities) {
 					currentQuestionEntities.add(e);
@@ -246,6 +259,21 @@ public class GameScene extends Scene {
 			io.getSound().playWrongSound();
 		}
 	}
+	private void showWarning() {
+		resultText.setText("Get Ready! Things are about to get fast!");
+		resultText.setTextColor(Color.RED);
+		resultTimer = 2f;
+	}
+	//Increase difficulty
+	private void increaseDifficulty() {
+		gameTimer=12f;
+		enemyHealth =1;
+		cooldownTimer=0.25f;
+		PlayerMovement pm = player.get(PlayerMovement.class);
+		if(pm!=null) {
+			pm.setSpeed(pm.getSpeed()+100);
+		}
+	}
 
 	// methods
 	private void initializeGame() {
@@ -255,18 +283,19 @@ public class GameScene extends Scene {
 		// Clear old question entities
 		currentQuestionEntities.clear();
 		currentQuestionNumber = -1;
+		roundCount=0;
+		enemyHealth=2;
 		// Generate questions and populate
 		qnsF = new QuestionsFactory(qnCount, questionOps);
 
 		// Create player
-		player = new PlayerFactory(100, 0, 100, 100, playerTexture, entityManager, 200, io).createEntity();
+		player = new PlayerFactory(100, 0, 100, 100, playerTexture, entityManager, 300, io).createEntity();
 		entityManager.addEntity(player, true);
 
 		// timer
-		timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50, 200, 50, "Time: 10:00", 25,
+		timerText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 50, 200, 50, "Time: 00:00", 25,
 				Color.WHITE, font);
 		entityManager.addEntity(timerText, false);
-
 		// score
 		scoreText = new Text(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 80, 200, 50, "Score: 0/10", 25,
 				Color.WHITE, font);

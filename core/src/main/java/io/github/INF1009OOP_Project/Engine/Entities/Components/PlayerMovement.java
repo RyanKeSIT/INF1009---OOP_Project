@@ -17,6 +17,12 @@ public class PlayerMovement extends Movement{
 	public void setIOManager(IOManager io) {
         this.io = io;
     }
+	public void setSpeed(float speed){
+		this.speed=speed;
+	}
+	public float getSpeed() {
+		return this.speed;
+	}
 	
 	@Override
     public void move(float delta) {

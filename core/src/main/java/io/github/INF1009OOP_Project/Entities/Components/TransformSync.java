@@ -16,10 +16,12 @@ public class TransformSync implements Component {
 
     @Override
     public void update(float delta) {
+        //get position of source entity (obstacle in this use case)
         Transform source = entity.get(Transform.class);
+        //get position of target entity (text label in this use case)
         Transform targetT = target.get(Transform.class);
         if (source == null || targetT == null) return;
-
+        //copy obstacles current position to text label every frame, makes text follow obstacle
         targetT.setX(source.getX());
         targetT.setY(source.getY());
     }

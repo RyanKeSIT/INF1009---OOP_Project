@@ -15,6 +15,8 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Entities.ObstacleFactory;
 import io.github.INF1009OOP_Project.Logic.MathOperations;
+import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
+import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 
 public class QuestionsFactory {
     ArrayList<MathOperations> questions = new ArrayList<>();
@@ -80,34 +82,41 @@ public class QuestionsFactory {
         for (int i = 0; i < maxAnswerLength; i++) {
             // Distribute space
             int x = (int) Gdx.graphics.getWidth() / maxAnswerLength * i + imageWidth;
-
+            float screenW = Gdx.graphics.getWidth();
+            float screenH = Gdx.graphics.getHeight();
+            float bottomBound = 200f;
             if (i == correctAnswerIndex) {
                 // Correct answer
                 String correctAns = ops.getAns().toString();
-                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
+                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
+                        (self, other) -> {
+                            if (!other.has(RandomMovement.class))
+                                onCorrect.accept(self);
+                        }).createEntity();
 
-                correctAnswerEntity.add(new CollisionHandler(correctAnswerEntity, (self, other) -> {
-                    if (other.has(AIMovement.class)) {
-                        onCorrect.accept(self);
-                    }
-                }));
+                
+                Text correctAnswerText = new Text(x, 300, imageWidth, imageWidth, correctAns, 30, Color.WHITE, font);
+                correctAnswerEntity.add(new TransformSync(correctAnswerEntity, correctAnswerText));//sync text position to entity
                 entities.add(correctAnswerEntity);
-                entities.add(new Text(x, 300, imageWidth, imageWidth, correctAns, 30, Color.WHITE, font));
+                entities.add(correctAnswerText);
+                //entities.add(new Text(x, 300, imageWidth, imageWidth, correctAns, 30, Color.WHITE, font));
             } else {
                 // Wrong answer
                 String wrongAnsStr = ops.getWrongAns().get(wrongAnswerIndex).toString();
                 wrongAnswerIndex++;
 
-                Entity wrongAnswerEntity   = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
+                //Entity wrongAnswerEntity   = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
+                Entity wrongAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
+                        (self, other) -> {
+                            if (!other.has(RandomMovement.class))
+                                onWrong.accept(self);
+                        }).createEntity();
 
-
-                wrongAnswerEntity.add(new CollisionHandler(wrongAnswerEntity, (self, other) -> {
-                    if (other.has(AIMovement.class)) {
-                        onWrong.accept(self);
-                    }
-                }));
+               
+                Text wrongAnswerText = new Text(x, 300, imageWidth, imageWidth, wrongAnsStr, 30, Color.WHITE, font);
+                wrongAnswerEntity.add(new TransformSync(wrongAnswerEntity,wrongAnswerText));//sync text position to entity
                 entities.add(wrongAnswerEntity);
-                entities.add(new Text(x, 300, imageWidth, imageWidth, wrongAnsStr, 30, Color.WHITE, font));
+                entities.add(wrongAnswerText);
             }
         }
 

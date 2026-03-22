@@ -28,6 +28,9 @@ import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
 import io.github.INF1009OOP_Project.Logic.MathOperations;
 import io.github.INF1009OOP_Project.Entities.PlayerFactory;
+import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
+import io.github.INF1009OOP_Project.Entities.Components.BounceCooldown;
+import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
@@ -71,7 +74,11 @@ public class GameScene extends Scene {
 	    updateRegistry.register(PlayerMovement.class);
 	    updateRegistry.register(AIMovement.class);
 	    updateRegistry.register(PhysicsBody.class);
+	    updateRegistry.register(RandomMovement.class);
+	    updateRegistry.register(BounceCooldown.class);
+	    updateRegistry.register(TransformSync.class);
 	    updateRegistry.register(Transform.class);
+
 		initializeGame();
 	}
 

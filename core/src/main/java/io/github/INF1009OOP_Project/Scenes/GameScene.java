@@ -17,6 +17,8 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Movement;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
@@ -26,6 +28,9 @@ import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
 import io.github.INF1009OOP_Project.Logic.MathOperations;
 import io.github.INF1009OOP_Project.Entities.PlayerFactory;
+import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
+import io.github.INF1009OOP_Project.Entities.Components.BounceCooldown;
+import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
@@ -49,14 +54,17 @@ public class GameScene extends Scene {
 	
 	//UI
 	private Text resultText;
+	private Text scoreText;
+	private Text timerText;
+	
+	//Game Variables
 	private float resultTimer = 2f;
 	private float consoleTimer;
 	private int score = 0;
 	private final int maxScore = 10; // max score is fixed
-	private float gameTimer = 18f; // 10 mins = 600 sec
-	private Text scoreText;
-	private Text timerText;
-
+	private float gameTimer; // 10 mins = 600 sec
+	private float roundTime = 18f; // 10 mins = 600 sec
+	
 	public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
 		super(sceneManager, io);
 
@@ -64,6 +72,15 @@ public class GameScene extends Scene {
 		shape = new ShapeRenderer();
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
+		//register components that need updating per frame
+		updateRegistry.register(Movement.class);
+	    updateRegistry.register(PlayerMovement.class);
+	    updateRegistry.register(AIMovement.class);
+	    updateRegistry.register(PhysicsBody.class);
+	    updateRegistry.register(RandomMovement.class);
+	    updateRegistry.register(BounceCooldown.class);
+	    updateRegistry.register(TransformSync.class);
+	    updateRegistry.register(Transform.class);
 
 		initializeGame();
 	}
@@ -106,7 +123,7 @@ public class GameScene extends Scene {
 
 		// Update entities based on game tick time
 		float delta = Gdx.graphics.getDeltaTime();
-		entityManager.updateEntities(delta);
+		entityManager.updateEntities(updateRegistry,delta);//update registry declared as protected in scene, inherits directly
 		// update timer
 		gameTimer -= delta;
 		if (gameTimer <= 0) {
@@ -181,7 +198,7 @@ public class GameScene extends Scene {
 								}
 							}
 						});
-				gameTimer=18f;
+				gameTimer=roundTime;
 				
 				if(roundCount==4) {
 					increaseDifficulty();
@@ -266,7 +283,7 @@ public class GameScene extends Scene {
 	}
 	//Increase difficulty
 	private void increaseDifficulty() {
-		gameTimer=12f;
+		roundTime=12f;
 		enemyHealth =1;
 		cooldownTimer=0.25f;
 		PlayerMovement pm = player.get(PlayerMovement.class);
@@ -279,12 +296,13 @@ public class GameScene extends Scene {
 	private void initializeGame() {
 		// clear old entities first
 		entityManager.clearAll();
-
+		
 		// Clear old question entities
 		currentQuestionEntities.clear();
 		currentQuestionNumber = -1;
 		roundCount=0;
 		enemyHealth=2;
+		gameTimer =roundTime;
 		// Generate questions and populate
 		qnsF = new QuestionsFactory(qnCount, questionOps);
 

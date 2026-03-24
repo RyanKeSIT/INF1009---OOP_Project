@@ -54,14 +54,17 @@ public class GameScene extends Scene {
 	
 	//UI
 	private Text resultText;
+	private Text scoreText;
+	private Text timerText;
+	
+	//Game Variables
 	private float resultTimer = 2f;
 	private float consoleTimer;
 	private int score = 0;
 	private final int maxScore = 10; // max score is fixed
-	private float gameTimer = 18f; // 10 mins = 600 sec
-	private Text scoreText;
-	private Text timerText;
-
+	private float gameTimer; // 10 mins = 600 sec
+	private float roundTime = 18f; // 10 mins = 600 sec
+	
 	public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
 		super(sceneManager, io);
 
@@ -195,7 +198,7 @@ public class GameScene extends Scene {
 								}
 							}
 						});
-				gameTimer=18f;
+				gameTimer=roundTime;
 				
 				if(roundCount==4) {
 					increaseDifficulty();
@@ -280,7 +283,7 @@ public class GameScene extends Scene {
 	}
 	//Increase difficulty
 	private void increaseDifficulty() {
-		gameTimer=12f;
+		roundTime=12f;
 		enemyHealth =1;
 		cooldownTimer=0.25f;
 		PlayerMovement pm = player.get(PlayerMovement.class);
@@ -299,6 +302,7 @@ public class GameScene extends Scene {
 		currentQuestionNumber = -1;
 		roundCount=0;
 		enemyHealth=2;
+		gameTimer =roundTime;
 		// Generate questions and populate
 		qnsF = new QuestionsFactory(qnCount, questionOps);
 

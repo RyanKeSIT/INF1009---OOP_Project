@@ -2,14 +2,14 @@ package io.github.INF1009OOP_Project.Logic;
 
 import java.util.*;
 
-public class MathOperations {
+public class MathQuestion {
     int a;
     int b;
     String ops;
     int ans;
     ArrayList<Integer> wrongAns = new ArrayList<>();
 
-    public MathOperations(int a, int b, String ops) {
+    public MathQuestion(int a, int b, String ops) {
         this.a = a;
         this.b = b;
         this.ops = ops;

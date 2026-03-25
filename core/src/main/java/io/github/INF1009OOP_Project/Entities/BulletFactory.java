@@ -10,9 +10,11 @@ public class BulletFactory implements EntityFactory<Entity> {
     private final EntityManager entityManager;
 
     public BulletFactory(float x, float y, float width, float height,
-                         float speed, Texture texture, EntityManager entityManager) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+            float speed, Texture texture, EntityManager entityManager) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.speed = speed;
         this.texture = texture;
         this.entityManager = entityManager;

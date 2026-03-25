@@ -2,7 +2,6 @@
 package io.github.INF1009OOP_Project.Scenes;
 
 import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -40,7 +39,7 @@ public class StartScene extends Scene {
 	@Override
 	public void update() {
 
-		entityManager.updateEntities(updateRegistry,0);
+		entityManager.updateEntities(updateRegistry, 0);
 
 		if (io.getMouse().isMousePressed(Buttons.LEFT)) {
 			for (Entity entity : entityManager.getEntities()) {

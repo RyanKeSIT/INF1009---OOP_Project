@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Button;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.ClickEvent;

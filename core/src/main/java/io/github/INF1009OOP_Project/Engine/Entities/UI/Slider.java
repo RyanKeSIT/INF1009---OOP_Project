@@ -1,11 +1,9 @@
 package io.github.INF1009OOP_Project.Engine.Entities.UI;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;

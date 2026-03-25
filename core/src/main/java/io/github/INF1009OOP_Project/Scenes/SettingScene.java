@@ -1,11 +1,10 @@
 package io.github.INF1009OOP_Project.Scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.*;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;

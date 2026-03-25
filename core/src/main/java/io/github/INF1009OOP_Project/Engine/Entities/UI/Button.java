@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Align;
 
-import io.github.INF1009OOP_Project.Engine.Entities.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;

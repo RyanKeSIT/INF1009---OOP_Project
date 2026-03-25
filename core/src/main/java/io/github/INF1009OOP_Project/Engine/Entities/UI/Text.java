@@ -1,13 +1,11 @@
 package io.github.INF1009OOP_Project.Engine.Entities.UI;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 
-import io.github.INF1009OOP_Project.Engine.Entities.*;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
+import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 //made minimal changes to implement new entity system
@@ -17,17 +15,6 @@ public class Text extends Entity{
 	private BitmapFont font;
 	private float fontSize;
 
-	
-	
-	/*public Text(float x, float y, float w, float h,String t, float fs, BitmapFont f){
-		super();
-        this.add(new Transform(x, y, w, h));
-        
-		this.setText(t);
-		this.setFont(f);
-		this.setFontSize(fs);
-		
-	}*/
 	public Text(float x, float y, float w, float h,String t, float fs, Color color, BitmapFont f){
 		super();
         this.add(new Transform(x, y, w, h));

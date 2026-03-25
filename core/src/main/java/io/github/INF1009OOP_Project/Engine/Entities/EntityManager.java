@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import io.github.INF1009OOP_Project.Engine.Collision.CollisionManager;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 
@@ -67,11 +66,6 @@ public class EntityManager {
 	}
 
 	public void updateEntities(ComponentUpdateRegistry updateRegistry, float delta) {
-		// componentManager.updateComponent(Movement.class, delta);
-		// componentManager.updateComponent(PlayerMovement.class, delta);
-		// componentManager.updateComponent(AIMovement.class, delta);
-		// componentManager.updateComponent(PhysicsBody.class, delta);
-		// componentManager.updateComponent(Transform.class, delta);
 
 		// pass component manager as a param, registry does not own it, keeps it
 		// decoupled

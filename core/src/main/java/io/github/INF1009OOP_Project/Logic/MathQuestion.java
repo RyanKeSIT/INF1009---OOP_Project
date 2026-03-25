@@ -2,7 +2,7 @@ package io.github.INF1009OOP_Project.Logic;
 
 import java.util.*;
 
-public class MathQuestion {
+public abstract class MathQuestion {
     int a;
     int b;
     String ops;
@@ -13,26 +13,8 @@ public class MathQuestion {
         this.a = a;
         this.b = b;
         this.ops = ops;
-
         // Set the answer based on ops
-        switch (this.ops) {
-            // Addition
-            case "+":
-                this.ans = a + b;
-                break;
-            // Subtraction
-            case "-":
-                this.ans = a - b;
-                break;
-            // Multiplication
-            case "x":
-                this.ans = a * b;
-                break;
-            // Division
-            case "/":
-                this.ans = a / b;
-                break;
-        }
+        this.ans = calculateAns(this.a, this.b);
 
         // Generate 3 other unique wrong answers
         int minValue = Math.min(0, this.ans - 10);
@@ -46,6 +28,8 @@ public class MathQuestion {
         for (int i = 0; i < Math.min(3, pool.size()); i++)
             this.wrongAns.add(pool.get(i));
     }
+
+    protected abstract int calculateAns(int a, int b);
 
     public Integer getA() {
         return a;

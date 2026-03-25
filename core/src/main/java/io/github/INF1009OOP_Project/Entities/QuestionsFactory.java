@@ -11,7 +11,11 @@ import com.badlogic.gdx.math.MathUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
+import io.github.INF1009OOP_Project.Logic.Addition;
+import io.github.INF1009OOP_Project.Logic.Division;
 import io.github.INF1009OOP_Project.Logic.MathQuestion;
+import io.github.INF1009OOP_Project.Logic.Multiplication;
+import io.github.INF1009OOP_Project.Logic.Subtraction;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
 import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 
@@ -33,7 +37,22 @@ public class QuestionsFactory {
                 firstNum = secondNum * answer;
             }
 
-            questions.add(new MathQuestion(firstNum, secondNum, operation));
+            questions.add(createQuestion(operation, firstNum, secondNum));
+        }
+    }
+
+    private MathQuestion createQuestion(String operation, int firstNum, int secondNum) {
+        switch (operation) {
+            case "+":
+                return new Addition(firstNum, secondNum);
+            case "-":
+                return new Subtraction(firstNum, secondNum);
+            case "x":
+                return new Multiplication(firstNum, secondNum);
+            case "/":
+                return new Division(firstNum, secondNum);
+            default:
+                throw new IllegalArgumentException("Unknown operation: " + operation);
         }
     }
 

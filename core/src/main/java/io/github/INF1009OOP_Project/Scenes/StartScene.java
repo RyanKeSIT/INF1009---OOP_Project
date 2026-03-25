@@ -18,7 +18,7 @@ public class StartScene extends Scene {
 	public StartScene(SceneManager sceneManager, IOManager io) {
 		super(sceneManager, io);
 
-		entityManager.addEntity(new Text(200, 400, 200, 50, "Abstract Engine Demo", 50, Color.WHITE, font), false);
+		entityManager.addEntity(new Text(200, 400, 200, 50, "Math Invaders", 50, Color.WHITE, font), false);
 		entityManager.addEntity(new Button(100, 300, 100, 50, "Start", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
@@ -53,14 +53,6 @@ public class StartScene extends Scene {
 			}
 		}
 	}
-
-	// private void startNewGame() {
-	// Get GameScene and reset it
-	// GameScene gameScene = (GameScene) sceneManager.getScene(1);
-	// gameScene.resetGame();
-	// sceneManager.setScene(1);
-
-	// }
 
 	private void startNewGame() {
 		sceneManager.pop();

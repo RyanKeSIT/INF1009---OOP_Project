@@ -11,9 +11,6 @@ import com.badlogic.gdx.math.MathUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.AIMovement;
-import io.github.INF1009OOP_Project.Entities.ObstacleFactory;
 import io.github.INF1009OOP_Project.Logic.MathOperations;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
 import io.github.INF1009OOP_Project.Entities.Components.TransformSync;

@@ -1,7 +1,7 @@
 package io.github.INF1009OOP_Project;
 
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
-import io.github.INF1009OOP_Project.Engine.Scene.*;
+import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Scenes.StartScene;
 
 public class GameMaster {

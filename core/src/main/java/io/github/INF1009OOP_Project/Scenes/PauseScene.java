@@ -38,7 +38,7 @@ public class PauseScene extends Scene {
 
 	@Override
 	public void update() {
-		entityManager.updateEntities(updateRegistry,0);
+		entityManager.updateEntities(updateRegistry, 0);
 
 		if (io.getKeyboard().isKeyPressed(Keys.ENTER)) {
 			sceneManager.pop();

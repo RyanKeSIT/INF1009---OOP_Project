@@ -8,42 +8,47 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
 
 public class RandomMovement implements Component {
     private final Entity entity;
-    private final float minX, maxX, minY, maxY;//area bounds for obstacles
-    private final float speed;//base speed of obstacle
+    private final float minX, maxX, minY, maxY;// area bounds for obstacles
+    private final float speed;// base speed of obstacle
 
     public RandomMovement(Entity entity, float speed,
-                          float minX, float maxX, float minY, float maxY) {
+            float minX, float maxX, float minY, float maxY) {
         this.entity = entity;
         this.speed = speed;
-        this.minX = minX; this.maxX = maxX;
-        this.minY = minY; this.maxY = maxY;
-        //pick a random angle in deg and convert to direction vector, gives obstacle unique starting direction every spawn
+        this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;
+        // pick a random angle in deg and convert to direction vector, gives obstacle
+        // unique starting direction every spawn
         Random rand = new Random();
         float angle = rand.nextFloat() * 360;
         float vx = (float) Math.cos(Math.toRadians(angle)) * speed;
         float vy = (float) Math.sin(Math.toRadians(angle)) * speed;
-        //apply initial velocity to pb, pb will move entity by this velocity each frame
+        // apply initial velocity to pb, pb will move entity by this velocity each frame
         PhysicsBody pb = entity.get(PhysicsBody.class);
-        if (pb != null) pb.setVelocity(vx, vy);
+        if (pb != null)
+            pb.setVelocity(vx, vy);
     }
 
     @Override
     public void update(float delta) {
         PhysicsBody pb = entity.get(PhysicsBody.class);
         Transform t = entity.get(Transform.class);
-        if (pb == null || t == null) return;
+        if (pb == null || t == null)
+            return;
 
-        // bounce off left bound 
+        // bounce off left bound
         if (t.getX() <= minX) {
             pb.setVelocityX(Math.abs(pb.getVelocityX()));
             t.setX(minX);
         }
-        // bounce off right bound 
+        // bounce off right bound
         if (t.getX() + t.getWidth() >= maxX) {
             pb.setVelocityX(-Math.abs(pb.getVelocityX()));
             t.setX(maxX - t.getWidth());
         }
-        // bounce off top bound 
+        // bounce off top bound
         if (t.getY() + t.getHeight() >= maxY) {
             pb.setVelocityY(-Math.abs(pb.getVelocityY()));
             t.setY(maxY - t.getHeight());

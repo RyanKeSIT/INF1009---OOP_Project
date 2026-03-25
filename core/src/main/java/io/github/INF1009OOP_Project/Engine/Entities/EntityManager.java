@@ -10,25 +10,24 @@ import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 
 public class EntityManager {
 	private ArrayList<Entity> entityList;
-    private CollisionManager collisionManager;
-    private ArrayList<Entity> entitiesToAdd;
-    private ArrayList<Entity> entitiesToRemove;
+	private CollisionManager collisionManager;
+	private ArrayList<Entity> entitiesToAdd;
+	private ArrayList<Entity> entitiesToRemove;
 
-   private ComponentManager componentManager;
-    
-    //map entity to collidable adapter for collision system
-    private Map<Entity, EntityCollidableAdapter> collidableAdapters;
+	private ComponentManager componentManager;
 
-    
+	// map entity to collidable adapter for collision system
+	private Map<Entity, EntityCollidableAdapter> collidableAdapters;
+
 	public EntityManager() {
 		entityList = new ArrayList<>();
-		
+
 		componentManager = new ComponentManager();
-		
-        collidableAdapters = new HashMap<>();
-        this.collisionManager = new CollisionManager();
-        entitiesToAdd = new ArrayList<>(); //This is done to add a buffer list for entities being added
-        entitiesToRemove = new ArrayList<>(); //This is done to add a buffer list for entities being removed
+
+		collidableAdapters = new HashMap<>();
+		this.collisionManager = new CollisionManager();
+		entitiesToAdd = new ArrayList<>(); // This is done to add a buffer list for entities being added
+		entitiesToRemove = new ArrayList<>(); // This is done to add a buffer list for entities being removed
 	}
 
 	public ArrayList<Entity> getEntities() {
@@ -37,74 +36,73 @@ public class EntityManager {
 
 	public void addEntity(Entity entity, boolean collision) {
 		entitiesToAdd.add(entity);
-		
+
 		if (collision) {
-            // Check entity has PhysicsBody
-            if (!entity.has(PhysicsBody.class)) {
-                throw new IllegalArgumentException("Need PhysicsBody for collision");
-            }
-            
-            // Create adapter
-            EntityCollidableAdapter adapter = new EntityCollidableAdapter(entity);
-            collidableAdapters.put(entity, adapter);
-            
-            // Register adapter 
-            collisionManager.registerEntity(adapter);  
-        }
-		
+			// Check entity has PhysicsBody
+			if (!entity.has(PhysicsBody.class)) {
+				throw new IllegalArgumentException("Need PhysicsBody for collision");
+			}
+
+			// Create adapter
+			EntityCollidableAdapter adapter = new EntityCollidableAdapter(entity);
+			collidableAdapters.put(entity, adapter);
+
+			// Register adapter
+			collisionManager.registerEntity(adapter);
+		}
+
 		componentManager.addComponents(entity);
-		
-		
+
 	}
 
 	public void deleteEntity(Entity entity) {
 		entitiesToRemove.add(entity);
 		EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
-        if (adapter != null) {
-            collisionManager.deleteEntity(adapter);
-        }
-        
-        componentManager.removeComponents(entity);
+		if (adapter != null) {
+			collisionManager.deleteEntity(adapter);
+		}
+
+		componentManager.removeComponents(entity);
 	}
-	
-	
-	public void updateEntities(ComponentUpdateRegistry updateRegistry,float delta) {
-	    
-		//pass component manager as a param, registry does not own it, keeps it decoupled
-	    updateRegistry.update(componentManager, delta);
-	    collisionManager.update();
 
-	    // Add queued entities
-	    entityList.addAll(entitiesToAdd);
-	    entitiesToAdd.clear();
+	public void updateEntities(ComponentUpdateRegistry updateRegistry, float delta) {
 
-	    // Remove queued entities
-	    for (Entity entity : entitiesToRemove) {
-	        entityList.remove(entity);
-	        EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
-	        if (adapter != null) {
-	            collisionManager.deleteEntity(adapter);
-	        }
-	    }
-	    entitiesToRemove.clear();
+		// pass component manager as a param, registry does not own it, keeps it
+		// decoupled
+		updateRegistry.update(componentManager, delta);
+		collisionManager.update();
+
+		// Add queued entities
+		entityList.addAll(entitiesToAdd);
+		entitiesToAdd.clear();
+
+		// Remove queued entities
+		for (Entity entity : entitiesToRemove) {
+			entityList.remove(entity);
+			EntityCollidableAdapter adapter = collidableAdapters.remove(entity);
+			if (adapter != null) {
+				collisionManager.deleteEntity(adapter);
+			}
+		}
+		entitiesToRemove.clear();
 	}
 
 	public void clearAll() {
-	    // Unregister all collision adapters
-	    for (EntityCollidableAdapter adapter : collidableAdapters.values()) {
-	        collisionManager.deleteEntity(adapter);
-	    }
-	    collidableAdapters.clear();
-	    
-	    // Clear entity list
-	    entityList.clear();	   
-	    componentManager.clear();
+		// Unregister all collision adapters
+		for (EntityCollidableAdapter adapter : collidableAdapters.values()) {
+			collisionManager.deleteEntity(adapter);
+		}
+		collidableAdapters.clear();
+
+		// Clear entity list
+		entityList.clear();
+		componentManager.clear();
 	}
 
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 		componentManager.draw(batch);
-	    batch.end();
+		batch.end();
 	}
 
 }

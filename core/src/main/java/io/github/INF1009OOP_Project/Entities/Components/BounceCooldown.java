@@ -1,6 +1,7 @@
 package io.github.INF1009OOP_Project.Entities.Components;
 
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Component;
+
 //gives obstacles a 0.2 second window where collision is ignoroed so they can have time to move apart before next collision trigger
 public class BounceCooldown implements Component {
     private float cooldown = 0f;

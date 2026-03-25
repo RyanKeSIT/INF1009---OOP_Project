@@ -15,10 +15,12 @@ public class PlayerFactory implements EntityFactory<Entity> {
     private final IOManager io;
 
     public PlayerFactory(float x, float y, float width, float height,
-                         Texture texture, EntityManager entityManager,
-                         float speed, IOManager io) {
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+            Texture texture, EntityManager entityManager,
+            float speed, IOManager io) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.texture = texture;
         this.entityManager = entityManager;
         this.speed = speed;

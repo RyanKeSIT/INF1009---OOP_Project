@@ -26,7 +26,7 @@ import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
 import io.github.INF1009OOP_Project.Entities.QuestionsFactory;
-import io.github.INF1009OOP_Project.Logic.MathOperations;
+import io.github.INF1009OOP_Project.Logic.MathQuestion;
 import io.github.INF1009OOP_Project.Entities.PlayerFactory;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
 import io.github.INF1009OOP_Project.Entities.Components.BounceCooldown;
@@ -34,37 +34,37 @@ import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 import io.github.INF1009OOP_Project.Entities.BulletFactory;
 
 public class GameScene extends Scene {
-	//Textures and shapes
+	// Textures and shapes
 	private ShapeRenderer shape;
 	private Texture playerTexture;
 	private Texture bulletTexture;
-	
-	//Questions
+
+	// Questions
 	private ArrayList<String> questionOps;
 	private QuestionsFactory qnsF;
 	private ArrayList<Entity> currentQuestionEntities = new ArrayList<>();
 	private int currentQuestionNumber = -1;
 	private int qnCount = 10;
-	//Player
+	// Player
 	private Entity player;
 	private float cooldownTimer = 1f;
 	private int roundCount;
-	//Obstacle
-	private int enemyHealth=2;
-	
-	//UI
+	// Obstacle
+	private int enemyHealth = 2;
+
+	// UI
 	private Text resultText;
 	private Text scoreText;
 	private Text timerText;
-	
-	//Game Variables
+
+	// Game Variables
 	private float resultTimer = 2f;
 	private float consoleTimer;
 	private int score = 0;
 	private final int maxScore = 10; // max score is fixed
 	private float gameTimer; // 10 mins = 600 sec
 	private float roundTime = 18f; // 10 mins = 600 sec
-	
+
 	public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
 		super(sceneManager, io);
 
@@ -72,15 +72,15 @@ public class GameScene extends Scene {
 		shape = new ShapeRenderer();
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
-		//register components that need updating per frame
+		// register components that need updating per frame
 		updateRegistry.register(Movement.class);
-	    updateRegistry.register(PlayerMovement.class);
-	    updateRegistry.register(AIMovement.class);
-	    updateRegistry.register(PhysicsBody.class);
-	    updateRegistry.register(RandomMovement.class);
-	    updateRegistry.register(BounceCooldown.class);
-	    updateRegistry.register(TransformSync.class);
-	    updateRegistry.register(Transform.class);
+		updateRegistry.register(PlayerMovement.class);
+		updateRegistry.register(AIMovement.class);
+		updateRegistry.register(PhysicsBody.class);
+		updateRegistry.register(RandomMovement.class);
+		updateRegistry.register(BounceCooldown.class);
+		updateRegistry.register(TransformSync.class);
+		updateRegistry.register(Transform.class);
 
 		initializeGame();
 	}
@@ -123,7 +123,8 @@ public class GameScene extends Scene {
 
 		// Update entities based on game tick time
 		float delta = Gdx.graphics.getDeltaTime();
-		entityManager.updateEntities(updateRegistry,delta);//update registry declared as protected in scene, inherits directly
+		entityManager.updateEntities(updateRegistry, delta);// update registry declared as protected in scene, inherits
+															// directly
 		// update timer
 		gameTimer -= delta;
 		if (gameTimer <= 0) {
@@ -132,7 +133,6 @@ public class GameScene extends Scene {
 		int mins = (int) (gameTimer / 60);
 		int sec = (int) (gameTimer % 60);
 		timerText.setText("Time: " + String.format("%02d:%02d", mins, sec));
-		
 
 		// Wait a bit until the question renders
 		consoleTimer += delta;
@@ -149,10 +149,11 @@ public class GameScene extends Scene {
 			if (currentQuestionNumber == -1) {
 				// Get 1 question first
 				currentQuestionNumber = MathUtils.random(0, qnsF.getQuestionSize() - 1); // 0 - question size
-				MathOperations ops = qnsF.getQuestionByNumber(currentQuestionNumber);
+				MathQuestion ops = qnsF.getQuestionByNumber(currentQuestionNumber);
 
 				// Generate question entities
-				ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(ops, qnsF.getQuestionSize(),enemyHealth, font,
+				ArrayList<Entity> qEntities = qnsF.generateQuestionEntities(ops, qnsF.getQuestionSize(), enemyHealth,
+						font,
 						(enemy) -> {
 							// Correct answer
 							if (currentQuestionNumber == -1)
@@ -167,7 +168,7 @@ public class GameScene extends Scene {
 									currentQuestionNumber = -1;
 									score++;
 									scoreText.setText("Score: " + score + "/" + maxScore);
-									
+
 									showCorrectResult();
 									clearQuestionEntities();
 								}
@@ -198,9 +199,9 @@ public class GameScene extends Scene {
 								}
 							}
 						});
-				gameTimer=roundTime;
-				
-				if(roundCount==4) {
+				gameTimer = roundTime;
+
+				if (roundCount == 4) {
 					increaseDifficulty();
 					showWarning();
 				}
@@ -276,19 +277,21 @@ public class GameScene extends Scene {
 			io.getSound().playWrongSound();
 		}
 	}
+
 	private void showWarning() {
 		resultText.setText("Get Ready! Things are about to get fast!");
 		resultText.setTextColor(Color.RED);
 		resultTimer = 2f;
 	}
-	//Increase difficulty
+
+	// Increase difficulty
 	private void increaseDifficulty() {
-		roundTime=12f;
-		enemyHealth =1;
-		cooldownTimer=0.25f;
+		roundTime = 12f;
+		enemyHealth = 1;
+		cooldownTimer = 0.25f;
 		PlayerMovement pm = player.get(PlayerMovement.class);
-		if(pm!=null) {
-			pm.setSpeed(pm.getSpeed()+100);
+		if (pm != null) {
+			pm.setSpeed(pm.getSpeed() + 100);
 		}
 	}
 
@@ -296,13 +299,13 @@ public class GameScene extends Scene {
 	private void initializeGame() {
 		// clear old entities first
 		entityManager.clearAll();
-		
+
 		// Clear old question entities
 		currentQuestionEntities.clear();
 		currentQuestionNumber = -1;
-		roundCount=0;
-		enemyHealth=2;
-		gameTimer =roundTime;
+		roundCount = 0;
+		enemyHealth = 2;
+		gameTimer = roundTime;
 		// Generate questions and populate
 		qnsF = new QuestionsFactory(qnCount, questionOps);
 

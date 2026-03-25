@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.MathUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
-import io.github.INF1009OOP_Project.Logic.MathOperations;
+import io.github.INF1009OOP_Project.Logic.MathQuestion;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
 import io.github.INF1009OOP_Project.Entities.Components.TransformSync;
 
 public class QuestionsFactory {
-    ArrayList<MathOperations> questions = new ArrayList<>();
+    ArrayList<MathQuestion> questions = new ArrayList<>();
 
     public QuestionsFactory(int numberOfQuestions, ArrayList<String> ops) {
         for (int j = 0; j < numberOfQuestions; j++) {
@@ -33,7 +33,7 @@ public class QuestionsFactory {
                 firstNum = secondNum * answer;
             }
 
-            questions.add(new MathOperations(firstNum, secondNum, operation));
+            questions.add(new MathQuestion(firstNum, secondNum, operation));
         }
     }
 
@@ -45,7 +45,7 @@ public class QuestionsFactory {
         return questions.isEmpty();
     }
 
-    public MathOperations getQuestionByNumber(int qNo) {
+    public MathQuestion getQuestionByNumber(int qNo) {
         return questions.get(qNo);
     }
 
@@ -59,11 +59,17 @@ public class QuestionsFactory {
      * NOTE: These entities are not in the EntityManager, need to add them
      * afterwards yeah....
      */
-    public ArrayList<Entity> generateQuestionEntities(MathOperations ops, int remainingQuestions,int enemyHealth,
+    public ArrayList<Entity> generateQuestionEntities(MathQuestion ops, int remainingQuestions, int enemyHealth,
             BitmapFont font, Consumer<Entity> onCorrect, Consumer<Entity> onWrong) {
         Texture obstacleTexture = new Texture(Gdx.files.internal("enemyShip.png"));
         ArrayList<Entity> entities = new ArrayList<>();
 
+        // Get the 4 random and correct answers and render them
+        int maxAnswerLength = 4;
+        int correctAnswerIndex = MathUtils.random(0, 3); // 0 - 3
+        int wrongAnswerIndex = 0;
+        int imageWidth = 50;
+        float screenW = Gdx.graphics.getWidth();
         // Question text
         entities.add(new Text(200, 400, 200, 50,
                 "Q: " + ops.getA() + " " + ops.getOps() + " " + ops.getB() + " = " + " ?", 25, Color.WHITE,
@@ -71,47 +77,40 @@ public class QuestionsFactory {
         entities.add(new Text(200, 425, 200, 50, remainingQuestions + " questions left...", 25, Color.WHITE,
                 font));
 
-        // Get the 4 random and correct answers and render them
-        int maxAnswerLength = 4;
-        int correctAnswerIndex = MathUtils.random(0, 3); // 0 - 3
-        int wrongAnswerIndex = 0;
-        int imageWidth = 50;
         for (int i = 0; i < maxAnswerLength; i++) {
             // Distribute space
-            int x = (int) Gdx.graphics.getWidth() / maxAnswerLength * i + imageWidth;
-            float screenW = Gdx.graphics.getWidth();
-            float screenH = Gdx.graphics.getHeight();
+            int x = (int) screenW / maxAnswerLength * i + imageWidth;
             float bottomBound = 200f;
             if (i == correctAnswerIndex) {
                 // Correct answer
                 String correctAns = ops.getAns().toString();
-                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
+                Entity correctAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture,
+                        enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
                         (self, other) -> {
                             if (!other.has(RandomMovement.class))
                                 onCorrect.accept(self);
                         }).createEntity();
 
-                
                 Text correctAnswerText = new Text(x, 300, imageWidth, imageWidth, correctAns, 30, Color.WHITE, font);
-                correctAnswerEntity.add(new TransformSync(correctAnswerEntity, correctAnswerText));//sync text position to entity
+                correctAnswerEntity.add(new TransformSync(correctAnswerEntity, correctAnswerText));// sync text position
+                                                                                                   // to entity
                 entities.add(correctAnswerEntity);
                 entities.add(correctAnswerText);
-                //entities.add(new Text(x, 300, imageWidth, imageWidth, correctAns, 30, Color.WHITE, font));
             } else {
                 // Wrong answer
                 String wrongAnsStr = ops.getWrongAns().get(wrongAnswerIndex).toString();
                 wrongAnswerIndex++;
 
-                //Entity wrongAnswerEntity   = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth).createEntity();
-                Entity wrongAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture, enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
+                Entity wrongAnswerEntity = new ObstacleFactory(x, 300, imageWidth, imageWidth, obstacleTexture,
+                        enemyHealth, 100f, 0f, screenW, bottomBound, 450f,
                         (self, other) -> {
                             if (!other.has(RandomMovement.class))
                                 onWrong.accept(self);
                         }).createEntity();
 
-               
                 Text wrongAnswerText = new Text(x, 300, imageWidth, imageWidth, wrongAnsStr, 30, Color.WHITE, font);
-                wrongAnswerEntity.add(new TransformSync(wrongAnswerEntity,wrongAnswerText));//sync text position to entity
+                wrongAnswerEntity.add(new TransformSync(wrongAnswerEntity, wrongAnswerText));// sync text position to
+                                                                                             // entity
                 entities.add(wrongAnswerEntity);
                 entities.add(wrongAnswerText);
             }

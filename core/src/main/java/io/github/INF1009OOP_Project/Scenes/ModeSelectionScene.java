@@ -15,7 +15,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
-import io.github.INF1009OOP_Project.Entities.UI.ModeCheckbox;
+import io.github.INF1009OOP_Project.Entities.ModeCheckbox;
 
 public class ModeSelectionScene extends Scene {
 	private ModeCheckbox add, sub, mult, div;

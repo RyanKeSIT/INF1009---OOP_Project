@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities.UI;
+package io.github.INF1009OOP_Project.Entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;

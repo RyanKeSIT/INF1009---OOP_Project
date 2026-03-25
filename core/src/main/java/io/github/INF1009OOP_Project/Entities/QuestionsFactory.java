@@ -1,4 +1,4 @@
-package io.github.INF1009OOP_Project.Entities.UI;
+package io.github.INF1009OOP_Project.Entities;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

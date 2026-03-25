@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Clickable;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.Health;
+import io.github.INF1009OOP_Project.Entities.Components.Health;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
@@ -25,7 +25,7 @@ import io.github.INF1009OOP_Project.Engine.Entities.UI.Text;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Engine.Scene.Scene;
 import io.github.INF1009OOP_Project.Engine.Scene.SceneManager;
-import io.github.INF1009OOP_Project.Entities.UI.QuestionsFactory;
+import io.github.INF1009OOP_Project.Entities.QuestionsFactory;
 import io.github.INF1009OOP_Project.Logic.MathOperations;
 import io.github.INF1009OOP_Project.Entities.PlayerFactory;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;

@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.*;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
+import io.github.INF1009OOP_Project.Entities.Components.Health;
 
-public class PlayerFactory implements EntityFactoryNew<Entity> {
+public class PlayerFactory implements EntityFactory<Entity> {
     private final float x, y, width, height, speed;
     private final Texture texture;
     private final EntityManager entityManager;

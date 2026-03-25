@@ -5,8 +5,9 @@ import io.github.INF1009OOP_Project.Engine.Entities.*;
 import io.github.INF1009OOP_Project.Engine.Entities.Components.*;
 import io.github.INF1009OOP_Project.Entities.Components.RandomMovement;
 import io.github.INF1009OOP_Project.Entities.Components.BounceCooldown;
+import io.github.INF1009OOP_Project.Entities.Components.Health;
 
-public class ObstacleFactory implements EntityFactoryNew<Entity> {
+public class ObstacleFactory implements EntityFactory<Entity> {
     private final float x, y, width, height, speed;
     private final Texture texture;
     private final int health;

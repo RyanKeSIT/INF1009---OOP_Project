@@ -1,6 +1,7 @@
-package io.github.INF1009OOP_Project.Engine.Entities.Components;
+package io.github.INF1009OOP_Project.Entities.Components;
 
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Component;
 
 public class Health implements Component {
     private int currentHealth;

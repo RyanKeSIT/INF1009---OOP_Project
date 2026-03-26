@@ -64,12 +64,15 @@ public class GameScene extends Scene {
 	private final int maxScore = 10; // max score is fixed
 	private float gameTimer; // 10 mins = 600 sec
 	private float roundTime = 18f; // 10 mins = 600 sec
+	private Texture backgroundTexture;
 
 	public GameScene(SceneManager sceneManager, IOManager io, ArrayList<String> questionOps) {
 		super(sceneManager, io);
 
 		this.questionOps = questionOps;
 		shape = new ShapeRenderer();
+		//image from stock.adobe.com downloaded using free trial: https://stock.adobe.com/search?k=pixel%2Bspace&asset_id=510924643
+		backgroundTexture = new Texture(Gdx.files.internal("newbackground.jpg"));
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));
 		// register components that need updating per frame
@@ -220,9 +223,10 @@ public class GameScene extends Scene {
 
 	@Override
 	public void render() {
-		ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
+		ScreenUtils.clear(0,0,0,1f);
+		
 		batch.begin();
+	    batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
 
 		entityManager.draw(batch);

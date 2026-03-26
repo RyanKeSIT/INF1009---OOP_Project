@@ -4,7 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import io.github.INF1009OOP_Project.Engine.Entities.EntityFactory;
 import io.github.INF1009OOP_Project.Engine.Entities.Entity;
 import io.github.INF1009OOP_Project.Engine.Entities.EntityManager;
-import io.github.INF1009OOP_Project.Engine.Entities.Components.*;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Transform;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PhysicsBody;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.Renderable;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.PlayerMovement;
+import io.github.INF1009OOP_Project.Engine.Entities.Components.CollisionHandler;
 import io.github.INF1009OOP_Project.Engine.IO.IOManager;
 import io.github.INF1009OOP_Project.Entities.Components.Health;
 

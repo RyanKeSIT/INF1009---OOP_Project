@@ -71,6 +71,7 @@ public class GameScene extends Scene {
 
 		this.questionOps = questionOps;
 		shape = new ShapeRenderer();
+		//image from stock.adobe.com downloaded using free trial: https://stock.adobe.com/search?k=pixel%2Bspace&asset_id=510924643
 		backgroundTexture = new Texture(Gdx.files.internal("newbackground.jpg"));
 		playerTexture = new Texture(Gdx.files.internal("Ship.png"));
 		bulletTexture = new Texture(Gdx.files.internal("Bullet.png"));

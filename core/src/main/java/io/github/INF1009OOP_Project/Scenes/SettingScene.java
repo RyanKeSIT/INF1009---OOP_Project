@@ -24,7 +24,8 @@ public class SettingScene extends Scene {
 		entityManager.addEntity(new Button(20, 20, 80, 40, "Back", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
-				System.out.println("Back to game");
+				System.out.println("Back to scene");
+				// pop setting scene, return to game scene or start scene, depends on what is below the setting scene
 				sceneManager.pop();
 			}
 		}), false);

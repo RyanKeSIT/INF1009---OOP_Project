@@ -44,7 +44,6 @@ public class ModeSelectionScene extends Scene {
 		startBtn = new Button(500, 100, 100, 50, "Start", 20, font, new ClickEvent() {
 			@Override
 			public void onClick() {
-				sceneManager.pop();
 
 				// Only push options with checked inputs
 				ArrayList<String> MCOps = new ArrayList<>();
@@ -52,7 +51,7 @@ public class ModeSelectionScene extends Scene {
 					if (options[i].checked())
 						MCOps.add(options[i].getText());
 
-				// push game scene
+				// push game scenes
 				sceneManager.push(new GameScene(sceneManager, io, MCOps));
 
 			}

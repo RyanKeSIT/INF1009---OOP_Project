@@ -39,12 +39,15 @@ public class EndScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Main menu");
-				// remove end scene
+				
+				// pop end scene, return game scene 
 				sceneManager.pop();
-				// remove game scene
+				// pop game scene, return mode selection scene
 				sceneManager.pop();
-				// push start scene
-				sceneManager.push(new StartScene(sceneManager, io));
+				// pop mode selection scene, return start scene
+				sceneManager.pop();
+				
+				
 			}
 		}), false);
 	}

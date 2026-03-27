@@ -22,7 +22,7 @@ public class PauseScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Resume game");
-				// remove pause scene, game scene underneath will resume
+				// pop pause scene, return game scene
 				sceneManager.pop();
 			}
 		}), false);
@@ -31,7 +31,13 @@ public class PauseScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Go to Main Menu");
-				sceneManager.push(new StartScene(sceneManager, io));
+			
+				sceneManager.pop(); // pop pause scene, return game scene
+				sceneManager.pop(); // pop game scene, return mode selection scene
+				sceneManager.pop(); // pop mode selection scene, return start scene
+				// did not push the start scene directly because it creates duplicate start scene and waste memory
+				
+			
 			}
 		}), false);
 	}

@@ -190,6 +190,7 @@ public class GameScene extends Scene {
 									if (ph != null) {
 										ph.takeDamage(1);
 										if (ph.isDead())
+											// push end scene
 											sceneManager.push(new EndScene(sceneManager, io, score));
 									}
 
@@ -335,6 +336,7 @@ public class GameScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Pause game");
+				// push pause scene 
 				sceneManager.push(new PauseScene(sceneManager, io));
 			}
 		});
@@ -344,6 +346,8 @@ public class GameScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Settings");
+				
+				// push setting scene
 				sceneManager.push(new SettingScene(sceneManager, io));
 			}
 		});

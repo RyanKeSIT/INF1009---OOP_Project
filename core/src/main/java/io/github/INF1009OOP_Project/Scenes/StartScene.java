@@ -32,6 +32,7 @@ public class StartScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Settings");
+				// push setting scene, start scene is below the stack
 				sceneManager.push(new SettingScene(sceneManager, io));
 			}
 		});
@@ -56,8 +57,7 @@ public class StartScene extends Scene {
 	}
 
 	private void startNewGame() {
-		sceneManager.pop();
-		// push game scene
+		// push mode selection scene, start scene below the stack
 		sceneManager.push(new ModeSelectionScene(sceneManager, io));
 	}
 

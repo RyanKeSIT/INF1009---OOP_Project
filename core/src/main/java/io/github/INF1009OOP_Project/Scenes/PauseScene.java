@@ -35,7 +35,7 @@ public class PauseScene extends Scene {
 				sceneManager.pop(); // pop pause scene, return game scene
 				sceneManager.pop(); // pop game scene, return mode selection scene
 				sceneManager.pop(); // pop mode selection scene, return start scene
-				// did not push the start scene directly because it creates duplicate start scene, waste memory, do not need the game scene and mode selection scene anymore
+				// did not push the start scene directly because it creates duplicate start scene and waste memory
 				
 			
 			}

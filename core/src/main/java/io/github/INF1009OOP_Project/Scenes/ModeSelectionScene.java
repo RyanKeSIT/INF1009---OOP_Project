@@ -51,7 +51,7 @@ public class ModeSelectionScene extends Scene {
 					if (options[i].checked())
 						MCOps.add(options[i].getText());
 
-				// push game scene
+				// push game scenes
 				sceneManager.push(new GameScene(sceneManager, io, MCOps));
 
 			}

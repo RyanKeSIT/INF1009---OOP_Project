@@ -25,7 +25,7 @@ public class SettingScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Back to scene");
-				// pop setting scene, return to game scene or start scene, depends on what is below the setting scene
+				// pop setting scene, return to game scene or start scene, depend on what is below the setting scene
 				sceneManager.pop();
 			}
 		}), false);

@@ -57,7 +57,7 @@ public class StartScene extends Scene {
 	}
 
 	private void startNewGame() {
-		// push mode selection scene, start scene is below the stack
+		// push mode selection scene, start scene below the stack
 		sceneManager.push(new ModeSelectionScene(sceneManager, io));
 	}
 

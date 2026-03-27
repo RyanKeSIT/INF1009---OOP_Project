@@ -346,6 +346,7 @@ public class GameScene extends Scene {
 			@Override
 			public void onClick() {
 				System.out.println("Settings");
+				
 				// push setting scene
 				sceneManager.push(new SettingScene(sceneManager, io));
 			}
